@@ -1,17 +1,15 @@
 :root {
-    --blue: #2A386E;
+    --blue: #2a386e;
     --white: #ffffff;
-    --light-blue: #3284BA;
+    --light-blue: #3284ba;
 }
 
 body {
     font-family: "Inter", sans-serif;
-    background-color: #F9F9F9;
+    background-color: #f9f9f9;
     height: 100vh;
     overflow: auto;
 }
-
-
 
 /* sidebar */
 
@@ -84,7 +82,7 @@ body {
 .manage-button {
     font-size: 1rem;
     color: var(--blue);
-    background-color: #EBF3F9;
+    background-color: #ebf3f9;
     border: none;
     border-radius: 5px;
     font-weight: 500;
@@ -123,34 +121,34 @@ body {
     margin: 0;
 }
 
-.card a{
+.card a {
     color: var(--blue);
     text-decoration: none;
 }
 
-.card a i{
+.card a i {
     height: 5px;
     width: 5px;
     font-size: 2rem;
 }
 
 .low-prio {
-    color: #79E245;
-    background-color: #EDFBE4;
+    color: #79e245;
+    background-color: #edfbe4;
     font-size: 0.625rem;
     padding: 5px 10px;
 }
 
 .med-prio {
-    color: #FEBC49;
-    background-color: #FEF8E7;
+    color: #febc49;
+    background-color: #fef8e7;
     font-size: 0.625rem;
     padding: 5px 10px;
 }
 
 .high-prio {
-    color: #FA2B36;
-    background-color: #FFE8E9;
+    color: #fa2b36;
+    background-color: #ffe8e9;
     font-size: 0.625rem;
     padding: 5px 10px;
 }
@@ -185,4 +183,24 @@ body {
     border-radius: 10px;
     padding: 5px 8px;
     margin-right: 0.5rem;
+}
+
+.input-label {
+    font-size: 0.875rem;
+    color: var(--blue);
+    margin-bottom: 5px;
+}
+
+.inputs {
+    border-radius: 10px;
+    width: 100%;
+    outline: 1px solid #959595;
+    padding: 5px 10px;
+    font-size: 0.875rem;
+    border: none;
+    transition: all 0.2s;
+}
+
+.inputs:focus {
+    outline: 1px solid var(--blue);
 }
