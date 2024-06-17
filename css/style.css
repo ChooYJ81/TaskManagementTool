@@ -12,8 +12,17 @@ body {
 }
 
 /* sidebar */
+.sidebar {
+    background-color: var(--white);
+    width: 15rem;
+    height: 100vh;
+    box-shadow: 10px 0 20px -5px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    z-index: 1051;
+    transition: width 0.2s;
+}
 
-.sidebar-collapsed {
+.sidebar.collapsed {
     background-color: var(--white);
     width: 4.5rem;
     height: 100vh;
@@ -22,15 +31,66 @@ body {
     z-index: 1051;
 }
 
+.sidebarLogo {
+    text-decoration: none;
+    padding: 15px 20px;
+    text-align: start;
+}
+
+.sidebarLogo img {
+    width: 1.75rem;
+    height: 1.75rem;
+}
+
 .sidebarNavItems {
     color: var(--blue);
     text-decoration: none;
-    text-align: center;
-    padding: 15px 5px;
+    padding: 1rem 1.625rem;
     transition: all 0.2s;
     width: 100%;
     height: 100%;
     font-size: 1.25rem;
+}
+
+.sidebarNavItemButton {
+    background-color: transparent;
+    border: 1px solid var(--blue);
+    color: var(--blue);
+    border-radius: 8px;
+    padding: 0.5rem 1.25rem;
+    width: 13rem;
+    font-size: 1rem;
+    margin: 0 auto 0.625rem auto;
+    transition: all 0.2s;
+}
+
+.sidebarNavItemButton.collapsed {
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+    text-align: start;
+    padding: 1rem 1.625rem;
+    font-size: 1rem;
+    margin: 0;
+    width: auto;
+}
+
+.sidebarNavItemButton:hover {
+    background-color: var(--blue);
+    color: var(--white);
+}
+
+.sidebarNavItems1 {
+    color: var(--blue);
+    text-decoration: none;
+    padding: 1rem 1rem;
+    font-size: 1.25rem;
+    transition: all 0.2s;
+}
+
+.sidebarNavItems1:hover {
+    background-color: var(--blue);
+    color: var(--white);
 }
 
 .sidebarNavItems:hover {
@@ -43,8 +103,40 @@ body {
     background-color: var(--blue);
 }
 
+.sidebarText {
+    font-size: 0.875rem;
+    margin-left: 0.5rem;
+}
+
+.sidebarHr1 {
+    width: calc(100% - 3rem);
+    margin: 0 auto;
+}
+
+.sidebarHr1.collapsed {
+    width: 100%;
+    margin: 0;
+}
+
+.sidebarHr2 {
+    width: calc(100% - 3rem);
+    margin: 0 auto 0.625rem auto;
+}
+
+.sidebarHr2.collapsed {
+    width: 100%;
+    margin: 0;
+}
+
 /* main content */
 .main-content {
+    padding: 20px 50px;
+    width: 100%;
+    margin-left: 15rem;
+    transition: margin 0.2s;
+}
+
+.main-content.collapsed {
     padding: 20px 50px;
     width: 100%;
     margin-left: 4.5rem;
@@ -170,7 +262,7 @@ body {
 .button-fill {
     color: var(--white);
     background-color: var(--blue);
-    border-radius: 20px;
+    border-radius: 10px;
     padding: 5px 10px;
     border: none;
     font-size: 0.75rem;
@@ -203,4 +295,49 @@ body {
 
 .inputs:focus {
     outline: 1px solid var(--blue);
+}
+
+.accordion-button {
+    color: var(--white) !important;
+    background-color: var(--blue) !important;
+}
+
+.accordion-button::after {
+    background-image: url(/images/down-white.svg) !important;
+}
+
+.workspace-code-title {
+    font-size: 0.75rem;
+    color: var(--blue);
+}
+
+.workspace-code {
+    font-size: 2.25rem;
+    color: var(--light-blue);
+    font-weight: bold;
+}
+
+.accordion-badge {
+    color: var(--blue);
+    background-color: var(--white);
+    font-size: 0.75rem;
+}
+
+.member-table {
+    font-size: 0.875rem;
+}
+
+.member-table th {
+    color: var(--blue);
+    text-align: center;
+}
+
+.member-table td {
+    text-align: center;
+}
+
+.accordion-member-badge {
+    background-color: var(--light-blue);
+    color: var(--white);
+    font-size: 0.75rem;
 }
