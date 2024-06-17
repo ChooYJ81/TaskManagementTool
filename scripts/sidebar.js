@@ -9,32 +9,32 @@ document.addEventListener("DOMContentLoaded", function () {
     const sidebarHr2 = document.querySelector(".sidebarHr2");
     const toggleElement = document.querySelectorAll(".toggleSidebar");
 
-    function collapseSidebar() {
-        sidebar.classList.add("collapsed");
-        sidebarText.forEach((element) => {
-            element.classList.add("d-none");
-        });
-        sidebarHr.forEach((element) => {
-            element.classList.remove("d-none");
-        });
-        sidebarButton.forEach((element) => {
-            element.classList.add("collapsed");
-        });
+    // function collapseSidebar() {
+    //     sidebar.classList.add("collapsed");
+    //     sidebarText.forEach((element) => {
+    //         element.classList.add("d-none");
+    //     });
+    //     sidebarHr.forEach((element) => {
+    //         element.classList.remove("d-none");
+    //     });
+    //     sidebarButton.forEach((element) => {
+    //         element.classList.add("collapsed");
+    //     });
 
-        setTimeout(() => {
-            sidebarNavItem.forEach((element) => {
-                element.classList.add("border-bottom");
-            });
-        }, 200);
-        sidebarHr1.forEach((element) => {
-            element.classList.add("collapsed");
-        });
+    //     setTimeout(() => {
+    //         sidebarNavItem.forEach((element) => {
+    //             element.classList.add("border-bottom");
+    //         });
+    //     }, 200);
+    //     sidebarHr1.forEach((element) => {
+    //         element.classList.add("collapsed");
+    //     });
 
-        sidebarHr2.classList.add("collapsed");
+    //     sidebarHr2.classList.add("collapsed");
 
-        mainContent.classList.add("collapsed");
-        sidebar.setAttribute("data-state", "collapsed");
-    }
+    //     mainContent.classList.add("collapsed");
+    //     sidebar.setAttribute("data-state", "collapsed");
+    // }
 
     function openSidebar() {
         sidebar.classList.remove("collapsed");
@@ -60,19 +60,24 @@ document.addEventListener("DOMContentLoaded", function () {
         sidebar.setAttribute("data-state", "open");
     }
 
-    function toggleSidebar() {
-        const state = sidebar.getAttribute("data-state");
-        if (state === "open") {
-            collapseSidebar();
-        } else {
-            openSidebar();
-        }
-    }
+    // function toggleSidebar() {
+    //     const state = sidebar.getAttribute("data-state");
+    //     if (state === "open") {
+    //         collapseSidebar();
+    //     } else {
+    //         openSidebar();
+    //     }
+    // }
+
+    let sidebarOpened = false;
 
     toggleElement.forEach((element) => {
         element.addEventListener("click", function (event) {
-            event.preventDefault(); // Prevent default link behavior
-            toggleSidebar();
+            if (!sidebarOpened){
+                event.preventDefault(); // Prevent default link behavior
+                openSidebar();
+                sidebarOpened = true;
+            }
         });
     });
 });
