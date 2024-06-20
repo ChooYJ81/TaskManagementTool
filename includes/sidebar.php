@@ -1,3 +1,4 @@
+
   <!-- collapsed -->
   <div class="sidebar collapsed toggleSidebar" data-state="collapsed" id="sidebar">
     <nav class="nav flex-column h-100">
