@@ -11,6 +11,12 @@ body {
     overflow: auto;
 }
 
+/* font */
+.form-label {
+    font-size:0.875rem   !important;
+    color: var(--blue)  !important;
+}
+
 /* sidebar */
 .sidebar {
     background-color: var(--white);
