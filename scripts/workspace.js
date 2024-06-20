@@ -279,16 +279,21 @@ function displayTasks(data) {
       // Display each task
       for (const task of data[key].tasks) {
         var assignedMember = "";
-        if(task.assignedMember == 'A0001'){ // Hardcoded for now
-          assignedMember = `<p class="text-1 mt-5" style="color:#3284BA">You are assigned to this task.</p>`;
-        }
         
         if (displayedTasks.has(task.taskID)) {
-          assignedMember = `<p class="text-1 mt-5" style="color:#3284BA">You are assigned to this task.</p>`;
+          // If this task has already been displayed, but the previous one was not assigned to the user
+          if(task.assignedMember == 'A0001'){ // Hardcoded for now
+            assignedMember = `<p class="text-1 mt-5" style="color:#3284BA">You are assigned to this task.</p>`;
+          }
           var taskCard = document.getElementById(task.taskID);
           var childDiv = taskCard.querySelector('.card-body');
-          chilDiv.insertAdjacentHTML('beforeend', assignedMember);
+          childDiv.insertAdjacentHTML('beforeend', assignedMember);
           continue; // Skip this task if it has already been displayed
+        }
+
+        // If the task comes first and assigned to the user
+        if(task.assignedMember == 'A0001'){ // Hardcoded for now
+          assignedMember = `<p class="text-1 mt-5" style="color:#3284BA">You are assigned to this task.</p>`;
         }
 
         displayedTasks.add(task.taskID); // Mark this task as displayed
