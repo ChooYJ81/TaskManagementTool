@@ -310,6 +310,17 @@ body {
     margin: 0;
 }
 
+.dropdown-item{
+    color: var(--blue) !important;
+    transition:all 0.2s ease;
+    border-radius: 5px;
+}
+
+.dropdown-item:hover{
+    background-color: var(--blue) !important;
+    color: var(--white) !important;
+}
+
 /* main content */
 .main-content {
     padding: 20px 50px;

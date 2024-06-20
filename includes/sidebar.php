@@ -85,11 +85,16 @@
           <span class="sidebarText d-none">Create Workspace</span>
         </button>
         <hr class="sidebarHr1 collapsed" />
-        <a class="sidebarNavItems1 align-items-center d-flex" href="#">
+        <div class="dropup">
+        <a class="sidebarNavItems1 align-items-center d-flex" href="#" data-bs-toggle="dropdown" >
           <i class="bi bi-person-circle pe-1"></i>
           <span class="sidebarText d-none"><?=$_SESSION['name'];?></span>
           <i class="bi bi-caret-down-fill ps-1" style="font-size: 0.8rem"></i>
         </a>
+        <ul class="dropdown-menu ms-4" style="padding: 0;">
+          <li><a class="dropdown-item py-2" href="./includes/logout.php"><i class="bi bi-box-arrow-left me-2"></i>Logout</a></li>
+        </ul>
+        </div>
       </div>
     </nav>
   </div>
