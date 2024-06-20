@@ -13,6 +13,8 @@ document.addEventListener("DOMContentLoaded", function () {
   initializeCreateTask(); // Add event listener to get the task type
   initializeMultipleSelect(); // Add event listener to enable multi-select for the select element
   submitNewTask(); // Add event listener to create a task
+
+  getTasks();
 });
 
 // Fetch data from database
@@ -62,7 +64,6 @@ function displayWorkspace(data) {
 
   const membersNo = document.getElementById("membersNo");
   membersNo.innerHTML = data.members;
-
 
   // Input for create task form
   const taskWorkspaceID = document.getElementById("taskWorkspaceID");
@@ -170,47 +171,155 @@ function displayWorkspaceMembers(data) {
 }
 
 async function submitNewTask() {
-  document.getElementById("createTaskForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
+  document
+    .getElementById("createTaskForm")
+    .addEventListener("submit", async (e) => {
+      e.preventDefault();
 
-    // Initialize an object to hold form data
-    const formDataObj = {
-      action: "createTask",
-      members: [],
-    };
+      // Initialize an object to hold form data
+      const formDataObj = {
+        action: "createTask",
+        members: [],
+      };
 
-    // Collect checked members
-    document.querySelectorAll('input[name="members[]"]:checked').forEach((checkbox) => {
-      formDataObj.members.push(checkbox.value);
+      // Collect checked members
+      document
+        .querySelectorAll('input[name="members[]"]:checked')
+        .forEach((checkbox) => {
+          formDataObj.members.push(checkbox.value);
+        });
+
+      // Collect other form data
+      const formData = new FormData(e.target);
+      for (let [key, value] of formData.entries()) {
+        if (key !== "members[]") {
+          // Skip members[] as it's already handled
+          formDataObj[key] = value;
+        }
+      }
+
+      try {
+        const response = await fetch("./backend/workspace.php", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formDataObj),
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        // Handle the response data
+        alert(data.message);
+        location.reload();
+      } catch (error) {
+        console.error("Fetch error: " + error);
+      }
+    });
+}
+
+async function getTasks() {
+  const data = {
+    workspace: workspace,
+    action: "getTasks",
+  };
+
+  try {
+    const response = await fetch("./backend/workspace.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
     });
 
-    // Collect other form data
-    const formData = new FormData(e.target);
-    for (let [key, value] of formData.entries()) {
-      if (key !== "members[]") { // Skip members[] as it's already handled
-        formDataObj[key] = value;
-      }
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    try {
-      const response = await fetch("./backend/workspace.php", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formDataObj),
-      });
+    const responseData = await response.json();
+    console.log(responseData);
+    displayTasks(responseData);
+  } catch (error) {
+    console.error("Fetch error: " + error.message);
+  }
+}
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+function displayTasks(data) {
+  for (const key in data) {
+    let className = "";
 
-      const data = await response.json();
-      // Handle the response data
-      alert(data.message);
-      location.reload();
-    } catch (error) {
-      console.error("Fetch error: " + error);
+    if (key == "To-Do") {
+      className = "toDo";
+    } else if (key == "In Progress") {
+      className = "inProgress";
+    } else if (key == "Completed") {
+      className = "completed";
     }
-  });
+
+    // Display task quantity
+    quantity = data[key].quantity;
+
+    var taskQuantity = document.getElementById(`${className}Qty`);
+    taskQuantity.innerHTML = quantity;
+
+    var displayedTasks = new Set(); // Initialize a Set to track displayed tasks
+
+    // Modify task by column
+    var taskColumn = document.getElementById(`${className}Column`);
+    if (quantity == 0) {
+      let html = `<p class="noTasks">No tasks available.</p>`;
+      taskColumn.insertAdjacentHTML('beforeend', html);
+    } else {
+      let html = "";
+
+      // Display each task
+      for (const task of data[key].tasks) {
+        var assignedMember = "";
+        if(task.assignedMember == 'A0001'){ // Hardcoded for now
+          assignedMember = `<p class="text-1 mt-5" style="color:#3284BA">You are assigned to this task.</p>`;
+        }
+        
+        if (displayedTasks.has(task.taskID)) {
+          assignedMember = `<p class="text-1 mt-5" style="color:#3284BA">You are assigned to this task.</p>`;
+          var taskCard = document.getElementById(task.taskID);
+          var childDiv = taskCard.querySelector('.card-body');
+          chilDiv.insertAdjacentHTML('beforeend', assignedMember);
+          continue; // Skip this task if it has already been displayed
+        }
+
+        displayedTasks.add(task.taskID); // Mark this task as displayed
+
+        if(task.priority == "Low Priority"){
+          priority = `<span class="badge rounded-pill low-prio">Low Priority</span>`;
+        }else if(task.priority == "Medium Priority"){
+          priority = `<span class="badge rounded-pill med-prio">Medium Priority</span>`;
+        }else if(task.priority == "High Priority"){
+          priority = `<span class="badge rounded-pill high-prio">High Priority</span>`;
+        }
+
+        html = `
+        <div class="w-100 card mb-3" id="${task.taskID}">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              ${priority}
+              <a href="#" data-bs-target="#viewModal" data-bs-toggle="modal"
+                ><i class="bi bi-three-dots-vertical fs-5 me-2"></i
+              ></a>
+            </div>
+            <p class="task-title mb-2">${task.taskName}</p>
+            <p class="text-1 mb-3">
+              ${task.taskDesc}
+            </p>
+            ${assignedMember}
+          </div>
+        </div>
+        `;
+        taskColumn.insertAdjacentHTML('beforeend', html);
+      }
+    }
+  }
 }

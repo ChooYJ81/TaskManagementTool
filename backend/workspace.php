@@ -5,7 +5,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
   require_once 'connection.php';
 
-  // session_start();
+  session_start();
 
   $action = $data['action'];
 
@@ -22,6 +22,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       break;
     case 'createTask':
       $response = createTask($pdo, $data);
+      break;
+    case 'getTasks':
+      $response = getTasks($pdo, $data['workspace']);
       break;
     default:
       $response = [
@@ -158,3 +161,41 @@ function generateTaskID($pdo){
   return $taskID;
 }
 
+// Get tasks for a workspace
+function getTasks($pdo, $workspaceID){
+  $types = ['To-Do', 'In Progress', 'Completed'];
+  $result = [
+    'To-Do' => [],
+    'In Progress' => [],
+    'Completed' => []
+  ];
+  foreach($types as $type){
+    $taskQuantity = getTaskQuantity($pdo, $workspaceID, $type);
+    $tasks = getTask($pdo, $workspaceID, $type);
+    $result[$type] = [
+      'quantity' => $taskQuantity,
+      'tasks' => $tasks
+    ];
+  }
+  return $result;
+}
+
+function getTaskQuantity($pdo, $workspaceID, $type){
+  $query = "SELECT COUNT(*) FROM Task WHERE workspaceID = :workspaceID AND type = :type";
+  $stmt = $pdo->prepare($query);
+  $stmt->bindParam(':workspaceID', $workspaceID, PDO::PARAM_STR);
+  $stmt->bindParam(':type', $type, PDO::PARAM_STR);
+  $stmt->execute();
+  $count = $stmt->fetchColumn();
+  return $count;
+}
+
+function getTask($pdo, $workspaceID, $type){
+  $query = "SELECT * FROM Task t, Assigned a WHERE workspaceID = :workspaceID AND type = :type AND t.taskID = a.taskID";
+  $stmt = $pdo->prepare($query);
+  $stmt->bindParam(':workspaceID', $workspaceID, PDO::PARAM_STR);
+  $stmt->bindParam(':type', $type, PDO::PARAM_STR);
+  $stmt->execute();
+  $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
+  return $tasks;
+}

@@ -577,3 +577,10 @@ body {
 .dropdown-option input[type="checkbox"] {
   margin-right: 5px;
 }
+
+/* task */
+.noTasks{
+    font-size: 0.875rem;
+    color: #878787;
+    text-align: center;
+}
