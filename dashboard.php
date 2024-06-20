@@ -15,7 +15,13 @@
 </head>
 
 <body>
-  <?php include 'includes/sidebar.php'; ?>
+  <div class="d-flex">
+    <?php include 'includes/sidebar.php'; ?>
+    <div class="main-content collapsed">
+      as
+    </div>
+
+  </div>
 </body>
 
 </html>

@@ -1,26 +1,78 @@
-<div class="col-1 d-flex">
   <!-- collapsed -->
-  <div class="sidebar collapsed" data-state="collapsed">
-    <nav class="nav flex-column justify-content-between h-100">
+  <div class="sidebar collapsed toggleSidebar" data-state="collapsed" id="sidebar">
+    <nav class="nav flex-column h-100">
       <div class="d-flex flex-column">
-        <a class="sidebarLogo toggleSidebar" href="#">
+        <a class="sidebarLogo d-flex" href="#">
           <img src="./images/logo.png" />
+          <p class="sidebarTitle my-0 d-none">SunCollab</p>
         </a>
         <hr class="sidebarHr1 collapsed" />
-        <a class="sidebarNavItems toggleSidebar border-bottom" href="dashboard.html">
+        <a class="sidebarNavItems border-bottom" href="dashboard.php">
           <i class="bi bi-speedometer2"></i>
           <span class="sidebarText d-none">Dashboard</span>
         </a>
-        <a class="sidebarNavItems toggleSidebar border-bottom" href="tracker.html">
+        <a class="sidebarNavItems border-bottom" href="tracker.html">
           <i class="bi bi-pencil-square"></i>
           <span class="sidebarText d-none">Personal Tracker</span>
         </a>
-        <a class="sidebarNavItems toggleSidebar active border-bottom" href="#">
+        <a class="sidebarNavItems active border-bottom workspace" href="#">
           <i class="bi bi-diagram-3"></i>
-          <span class="sidebarText d-none">Workspaces</span>
+          <span class="sidebarText d-none">Workspaces<i class="bi bi-caret-down-fill ms-2"></i></span>
         </a>
       </div>
-      <div class="d-flex flex-column">
+      <div class="workspaceList d-none sidebarBorderLeft">
+        <!-- workspace list repeat start -->
+        <a class="workspaceItems" href="#">
+          <div class="d-flex">
+            <i class="bi bi-caret-right-fill me-2"></i>
+            <div>
+              <p class="mb-1">SWE3033 Software Processes<span class="members"><i class="bi bi-people-fill ms-2 me-1"></i>10</span></p>
+              <p class="workspaceText">8 Assigned Pending Tasks</p>
+            </div>
+          </div>
+        </a>
+        <!-- repeat end -->
+        <!-- below for test -->
+        <a class="workspaceItems" href="#">
+          <div class="d-flex">
+            <i class="bi bi-caret-right-fill me-2"></i>
+            <div>
+              <p class="mb-1">SWE3033 Software Processes<span class="members"><i class="bi bi-people-fill ms-2 me-1"></i>10</span></p>
+              <p class="workspaceText">8 Assigned Pending Tasks</p>
+            </div>
+          </div>
+        </a>
+        <a class="workspaceItems" href="#">
+          <div class="d-flex">
+            <i class="bi bi-caret-right-fill me-2"></i>
+            <div>
+              <p class="mb-1">SWE3033 Software Processes<span class="members"><i class="bi bi-people-fill ms-2 me-1"></i>10</span></p>
+              <p class="workspaceText">8 Assigned Pending Tasks</p>
+            </div>
+          </div>
+        </a>
+        <a class="workspaceItems" href="#">
+          <div class="d-flex">
+            <i class="bi bi-caret-right-fill me-2"></i>
+            <div>
+              <p class="mb-1">SWE3033 Software Processes<span class="members"><i class="bi bi-people-fill ms-2 me-1"></i>10</span></p>
+              <p class="workspaceText">8 Assigned Pending Tasks</p>
+            </div>
+          </div>
+        </a>
+        <a class="workspaceItems" href="#">
+          <div class="d-flex">
+            <i class="bi bi-caret-right-fill me-2"></i>
+            <div>
+              <p class="mb-1">SWE3033 Software Processes<span class="members"><i class="bi bi-people-fill ms-2 me-1"></i>10</span></p>
+              <p class="workspaceText">8 Assigned Pending Tasks</p>
+            </div>
+          </div>
+        </a>
+        <!-- test end -->
+      </div>
+
+      <div class="d-flex flex-column mt-auto">
         <hr class="sidebarHr2 collapsed" />
         <button class="sidebarNavItemButton collapsed">
           <i class="bi bi-arrow-bar-right"></i>
@@ -40,8 +92,7 @@
       </div>
     </nav>
   </div>
-</div>
-<script src="./scripts/sidebar.js"></script>
+  <script src="./scripts/sidebar.js"></script>
 
-<!-- Modals -->
-<?php include 'includes/modals/createWorkspaceModal.php'; ?>
+  <!-- Modals -->
+  <?php include 'includes/modals/createWorkspaceModal.php'; ?>
