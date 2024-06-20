@@ -11,7 +11,7 @@
           <i class="bi bi-speedometer2"></i>
           <span class="sidebarText d-none">Dashboard</span>
         </a>
-        <a class="sidebarNavItems border-bottom" href="tracker.html">
+        <a class="sidebarNavItems border-bottom" href="tracker.php">
           <i class="bi bi-pencil-square"></i>
           <span class="sidebarText d-none">Personal Tracker</span>
         </a>
