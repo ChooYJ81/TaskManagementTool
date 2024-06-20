@@ -1,10 +1,8 @@
 // Read the parameter from the current page's URL
-// const queryParams = new URLSearchParams(window.location.search);
-// const workspace = queryParams.get('workspace');
+const queryParams = new URLSearchParams(window.location.search);
+var workspace = queryParams.get('workspace');
+workspace = atob(workspace);
 
-// Dummy URL for testing
-const url = "http://localhost/TaskManagementTool/workspace.php?workspace=W0001";
-const workspace = "W0001";
 
 document.addEventListener("DOMContentLoaded", function () {
   const date = document.getElementById("today");

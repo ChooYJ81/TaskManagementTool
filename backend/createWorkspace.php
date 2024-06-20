@@ -20,6 +20,7 @@ try {
   $code = generateCode(5,$pdo);
 
 
+  // Insert workspace details
   $query = "INSERT INTO Workspace (workspaceID, workspaceName, workspaceDesc, type, creationDate, owner, workspaceCode) VALUES (:workspaceID, :workspaceName, :workspaceDesc, :type, :creationDate, :owner, :workspaceCode)";
   $stmt = $pdo->prepare($query);
   $stmt->bindParam(':workspaceID', $workspaceID, PDO::PARAM_STR);
@@ -29,9 +30,15 @@ try {
   $stmt->bindParam(':creationDate', $currentDateTime, PDO::PARAM_STR);
   $stmt->bindParam(':owner', $accountID, PDO::PARAM_STR);
   $stmt->bindParam(':workspaceCode', $code, PDO::PARAM_STR);
-  
   $stmt->execute();
 
+  // Insert member details
+  $query = "INSERT INTO Member (workspaceID, accountID, role) VALUES (:workspaceID, :accountID, 'Owner')";
+  $stmt = $pdo->prepare($query);
+  $stmt->bindParam(':workspaceID', $workspaceID, PDO::PARAM_STR);
+  $stmt->bindParam(':accountID', $accountID, PDO::PARAM_STR);
+  $stmt->execute();
+  
   $message = 'Workspace created successfully';
 } catch (Exception $e) {
   $message = 'Error processing the request: ' . $e->getMessage();
