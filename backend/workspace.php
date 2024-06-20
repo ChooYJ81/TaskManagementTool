@@ -5,7 +5,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
   require_once 'connection.php';
 
-  session_start();
+  // session_start();
 
   $action = $data['action'];
 
@@ -16,6 +16,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       break;
     case 'getWorkspace':
       $response = getWorkspace($pdo, $data['workspace']);
+      break;
+    case 'getWorkspaceMembers':
+      $response = getWorkspaceMembers($pdo, $data['workspace']);
+      break;
+    case 'createTask':
+      $response = createTask($pdo, $data);
       break;
     default:
       $response = [
@@ -67,6 +73,39 @@ function getWorkspace($pdo, $workspaceID)
   return $workspace;
 }
 
+function createTask($pdo, $data){
+  $taskID = generateTaskID($pdo);
+  $date = date('Y-m-d H:i:s');
+  
+  $query = "INSERT INTO Task (taskID, workspaceID, creator, taskName, taskDesc, type, priority, creationDate, due) VALUES (:taskID, :workspaceID, :creator, :taskName, :taskDesc, :type, :priority, :creationDate, :due)";
+  $stmt = $pdo->prepare($query);
+  $stmt->bindParam(':taskID', $taskID, PDO::PARAM_STR);
+  $stmt->bindParam(':workspaceID', $data['workspaceID'], PDO::PARAM_STR);
+  $accountID = 'A0001'; // Hardcoded for testing
+  $stmt->bindParam(':creator', $accountID, PDO::PARAM_STR);
+  $stmt->bindParam(':taskName', $data['taskName'], PDO::PARAM_STR);
+  $stmt->bindParam(':taskDesc', $data['taskDesc'], PDO::PARAM_STR);
+  $stmt->bindParam(':type', $data['type'], PDO::PARAM_STR);
+  $stmt->bindParam(':priority', $data['priority'], PDO::PARAM_STR);
+  $stmt->bindParam(':creationDate', $date, PDO::PARAM_STR);
+  $stmt->bindParam(':due', $data['due'], PDO::PARAM_STR);
+  $stmt->execute();
+
+  foreach ($data['members'] as $member) {
+    $query = "INSERT INTO Assigned (taskID, assignedMember) VALUES (:taskID, :assignedMember)";
+    $stmt = $pdo->prepare($query);
+    $stmt->bindParam(':taskID', $taskID, PDO::PARAM_STR);
+    $stmt->bindParam(':assignedMember', $member, PDO::PARAM_STR);
+    $stmt->execute();
+  }
+
+  $response = [
+    'message' => 'Task created successfully',
+  ];
+
+  return $response;
+}
+
 // Helper functions 
 function getWorkspaceDetail($pdo, $workspaceID)
 {
@@ -97,3 +136,25 @@ function getMembersQuantity($pdo, $workspaceID)
   $membersCount = $stmt->fetchColumn(); // Fetches the count directly
   return $membersCount;
 }
+
+// Get list of workspace members
+function getWorkspaceMembers($pdo, $workspaceID)
+{
+  $query = "SELECT a.accountID, a.username FROM Account a, Member m WHERE m.workspaceID = :workspaceID AND m.accountID = a.accountID";
+  $stmt = $pdo->prepare($query);
+  $stmt->bindParam(':workspaceID', $workspaceID, PDO::PARAM_STR);
+  $stmt->execute();
+  $members = $stmt->fetchAll(PDO::FETCH_ASSOC);
+  return $members;
+}
+
+// Generate a unique task ID
+function generateTaskID($pdo){
+  $query = "SELECT COUNT(*) FROM Task";
+  $stmt = $pdo->prepare($query);
+  $stmt->execute();
+  $count = $stmt->fetchColumn();
+  $taskID = "T" . str_pad($count + 1, 4, "0", STR_PAD_LEFT);
+  return $taskID;
+}
+

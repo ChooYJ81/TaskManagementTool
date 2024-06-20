@@ -118,7 +118,7 @@ function getWorkspaceList() {
   })
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
+      // console.log(data);
       displayWorkspaceList(data);
     });
 }

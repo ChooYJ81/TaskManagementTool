@@ -20,146 +20,101 @@
     <?php include 'includes/sidebar.php'; ?>
 
     <div class="main-content collapsed">
-    <?php if (isset($_GET['workspace'])) { ?>
-      <!-- date -->
-      <p class="date" id="today"></p>
-      <hr class="w-100" />
-      <!-- hosted -->
-      <div class="d-flex justify-content-between align-items-center">
-        <div>
-          <p class="text-1" id="workspaceHistory">
-           
-          </p>
-          <div class="d-flex align-items-center title-1">
-            <!-- title -->
-            <p class="m-0" id="workspaceTitle"></p>
-            <i class="bi bi-dot mx-1 fs-2" style="color: #f0f0f0"></i>
-            <i class="bi bi-people-fill me-2"></i>
-            <p class="m-0 text-dark fw-medium" id="membersNo"></p>
-          </div>
-          <!-- description -->
-          <p class="text-2 mb-5" id="workspaceDescription">
-          </p>
-        </div>
-        <button class="manage-button" data-bs-target="#manageModal" data-bs-toggle="modal">
-          <i class="bi bi-gear me-2 fs-5"></i>Manage Workspace
-        </button>
-      </div>
+      <?php if (isset($_GET['workspace'])) { ?>
+        <!-- date -->
+        <p class="date" id="today"></p>
+        <hr class="w-100" />
+        <!-- hosted -->
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <p class="text-1" id="workspaceHistory">
 
-      <!-- card -->
-      <div class="row justify-content-around">
-        <div class="col-4">
-          <div class="card">
-            <div class="card-body d-flex justify-content-between align-items-center py-1">
-              <div class="d-flex">
-                <p class="progress-title">To-dos</p>
-                <p class="progress-title-number ms-2 my-auto">
-                  <!-- no. of to-dos task -->
-                  10
-                </p>
-              </div>
-              <a href="#" data-bs-target="#createModal" data-bs-toggle="modal">
-                <i class="bi bi-plus"></i>
-              </a>
+            </p>
+            <div class="d-flex align-items-center title-1">
+              <!-- title -->
+              <p class="m-0" id="workspaceTitle"></p>
+              <i class="bi bi-dot mx-1 fs-2" style="color: #f0f0f0"></i>
+              <i class="bi bi-people-fill me-2"></i>
+              <p class="m-0 text-dark fw-medium" id="membersNo"></p>
             </div>
+            <!-- description -->
+            <p class="text-2 mb-5" id="workspaceDescription">
+            </p>
           </div>
-
-          <!-- php loop card start -->
-          <div class="card">
-            <div class="card-body">
-              <div class="d-flex justify-content-between align-items-center mb-3">
-                <!-- change class (high-prio/med-prio/low-prio) -->
-                <span class="badge rounded-pill low-prio">Low Priority</span>
-                <a href="#" data-bs-target="#viewModal" data-bs-toggle="modal"><i class="bi bi-three-dots-vertical fs-5 me-2"></i></a>
-              </div>
-              <p class="task-title m-0">Task Title</p>
-              <p class="text-1 mb-3">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
-                lobor eros ipsum vitae.
-              </p>
-            </div>
-          </div>
-          <!-- end loop -->
-
-          <!-- card repeat for test -->
-          <div class="card">
-            <div class="card-body">
-              <div class="d-flex justify-content-between align-items-center mb-3">
-                <span class="badge rounded-pill high-prio">High Priority</span>
-                <a href="#"><i class="bi bi-three-dots-vertical fs-5 me-2"></i></a>
-              </div>
-              <p class="task-title m-0">Task Title</p>
-              <p class="text-1 mb-4">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
-                lobor eros ipsum vitae.
-              </p>
-              <p class="mb-0" style="color: #3284ba; font-size: 0.75rem">
-                You are assigned to this task.
-              </p>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-body">
-              <div class="d-flex justify-content-between align-items-center mb-3">
-                <span class="badge rounded-pill med-prio">Medium Priority</span>
-                <a href="#"><i class="bi bi-three-dots-vertical fs-5 me-2"></i></a>
-              </div>
-              <p class="task-title m-0">Task Title</p>
-              <p class="text-1 mb-3">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
-                lobor eros ipsum vitae.
-              </p>
-            </div>
-          </div>
-          <!-- end test -->
+          <button class="manage-button" data-bs-target="#manageModal" data-bs-toggle="modal">
+            <i class="bi bi-gear me-2 fs-5"></i>Manage Workspace
+          </button>
         </div>
 
-        <div class="col-4">
-          <div class="card">
-            <div class="card-body d-flex justify-content-between align-items-center py-1">
-              <div class="d-flex">
-                <p class="progress-title">In Progress</p>
-                <p class="progress-title-number ms-2 my-auto">
-                  <!-- no. of in progress task -->
-                  10
-                </p>
-              </div>
-              <a href="#">
-                <i class="bi bi-plus"></i>
-              </a>
-            </div>
-          </div>
-        </div>
+        <!-- card -->
+        <div class="row justify-content-around">
 
-        <div class="col-4 text-center">
-          <div class="card">
-            <div class="card-body d-flex justify-content-between align-items-center py-1">
-              <div class="d-flex">
-                <p class="progress-title">Completed</p>
-                <p class="progress-title-number ms-2 my-auto">
-                  <!-- no. of completed task -->
-                  0
-                </p>
+          <!-- To-do -->
+          <div class="col-4 text-center">
+            <div class="card mb-4">
+              <div class="card-body d-flex justify-content-between align-items-center py-1">
+                <div class="d-flex">
+                  <p class="progress-title">To-dos</p>
+                  <p class="progress-title-number ms-2 my-auto">
+                    <!-- no. of to-dos task -->
+                    10
+                  </p>
+                </div>
+                <a href="#" class="createTask" create-type="To-Do" data-bs-target="#createModal" data-bs-toggle="modal">
+                  <i class="bi bi-plus"></i>
+                </a>
               </div>
-              <a href="#">
-                <i class="bi bi-plus"></i>
-              </a>
             </div>
           </div>
-          <!-- if no task -->
-          <p style="font-size: 0.875rem; color: #878787">No task.</p>
+
+          <!-- In Progress -->
+          <div class="col-4 text-center">
+            <div class="card mb-4">
+              <div class="card-body d-flex justify-content-between align-items-center py-1">
+                <div class="d-flex">
+                  <p class="progress-title">In Progress</p>
+                  <p class="progress-title-number ms-2 my-auto">
+                    <!-- no. of in progress task -->
+                    10
+                  </p>
+                </div>
+                <a href="#" class="createTask" create-type="In Progress" data-bs-target="#createModal" data-bs-toggle="modal">
+                  <i class="bi bi-plus"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Completed -->
+          <div class="col-4 text-center">
+            <div class="card mb-4">
+              <div class="card-body d-flex justify-content-between align-items-center py-1">
+                <div class="d-flex">
+                  <p class="progress-title">Completed</p>
+                  <p class="progress-title-number ms-2 my-auto">
+                    <!-- no. of completed task -->
+                    0
+                  </p>
+                </div>
+                <a href="#" class="createTask" create-type="Completed" data-bs-target="#createModal" data-bs-toggle="modal">
+                  <i class="bi bi-plus"></i>
+                </a>
+              </div>
+            </div>
+            <!-- if no task -->
+            <p style="font-size: 0.875rem; color: #878787">No task.</p>
+          </div>
         </div>
-      </div>
-    <?php } else { ?>
-      <div class="d-flex justify-content-center align-items-center h-100">
-        <p class="text-1">Select a workspace to view its content.</p>
-      </div>
-    <?php } ?>
+      <?php } else { ?>
+        <div class="d-flex justify-content-center align-items-center h-100">
+          <p class="text-1">Select a workspace to view its content.</p>
+        </div>
+      <?php } ?>
     </div>
   </div>
 
-  
+  <!-- modals -->
+  <?php include 'includes/modals/addTask.php'; ?>
 
   <script src="./scripts/sidebar.js"></script>
   <script src="scripts/workspace.js"></script>
