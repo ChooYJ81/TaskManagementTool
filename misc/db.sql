@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 20, 2024 at 11:51 AM
+-- Generation Time: Jun 20, 2024 at 03:06 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -104,7 +104,7 @@ CREATE TABLE `workspace` (
 --
 
 INSERT INTO `workspace` (`workspaceID`, `workspaceName`, `workspaceDesc`, `type`, `creationDate`, `owner`, `workspaceCode`) VALUES
-('W0001', 'a', 'a', 'Personal', '2024-06-20 11:50:23', 'A0001', '079U8');
+('W0001', 'Testing Workspace', 'This is a test workspace for demonstration purposes only.', 'Personal', '2024-06-20 11:50:23', 'A0001', '079U8');
 
 --
 -- Indexes for dumped tables
