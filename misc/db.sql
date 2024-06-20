@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 20, 2024 at 09:43 AM
+-- Generation Time: Jun 20, 2024 at 03:06 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -35,6 +35,13 @@ CREATE TABLE `account` (
   `pwd` varchar(255) DEFAULT NULL,
   `OTP` varchar(5) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `account`
+--
+
+INSERT INTO `account` (`accountID`, `username`, `phoneNo`, `email`, `pwd`, `OTP`) VALUES
+('A0001', 'Test', '0123456789', 'test@mail.com', '1234', NULL);
 
 -- --------------------------------------------------------
 
@@ -91,6 +98,13 @@ CREATE TABLE `workspace` (
   `owner` varchar(255) DEFAULT NULL,
   `workspaceCode` varchar(5) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `workspace`
+--
+
+INSERT INTO `workspace` (`workspaceID`, `workspaceName`, `workspaceDesc`, `type`, `creationDate`, `owner`, `workspaceCode`) VALUES
+('W0001', 'Testing Workspace', 'This is a test workspace for demonstration purposes only.', 'Personal', '2024-06-20 11:50:23', 'A0001', '079U8');
 
 --
 -- Indexes for dumped tables

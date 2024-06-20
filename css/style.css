@@ -4,6 +4,15 @@
     --light-blue: #3284ba;
 }
 
+::-webkit-scrollbar{
+    width: 8px;
+}
+
+::-webkit-scrollbar-thumb{
+    border-radius: 5px;
+    background-color: var(--blue);
+}
+
 body {
     font-family: "Inter", sans-serif;
     background-color: #f9f9f9;
@@ -11,10 +20,16 @@ body {
     overflow: auto;
 }
 
+/* font */
+.form-label {
+    font-size:0.875rem   !important;
+    color: var(--blue)  !important;
+}
+
 /* sidebar */
 .sidebar {
     background-color: var(--white);
-    width: 15rem;
+    width: 20rem;
     height: 100vh;
     box-shadow: 10px 0 20px -5px rgba(0, 0, 0, 0.1);
     position: fixed;
@@ -58,7 +73,7 @@ body {
     color: var(--blue);
     border-radius: 8px;
     padding: 0.5rem 1.25rem;
-    width: 13rem;
+    width: 15rem;
     font-size: 1rem;
     margin: 0 auto 0.625rem auto;
     transition: all 0.2s;
@@ -259,11 +274,47 @@ body {
     transform: translateX(20%);
 }
 
+.sidebarTitle {
+    color: var(--blue);
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-left: 8px;
+}
+
+.sidebarBorderLeft {
+    border-left: 5px solid var(--light-blue);
+}
+
+.workspaceList {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    max-height:250px;
+}
+
+.workspaceList .workspaceItems {
+    text-decoration: none;
+    color: var(--blue);
+    font-size: 0.75rem;
+    padding: 16px 10px 16px 30px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.workspaceList .workspaceItems .members{
+    color: black;
+}
+
+.workspaceList .workspaceItems .workspaceText{
+    font-size: 0.625rem;
+    color: #828282;
+    margin: 0;
+}
+
 /* main content */
 .main-content {
     padding: 20px 50px;
     width: 100%;
-    margin-left: 15rem;
+    margin-left: 20rem;
     transition: margin 0.2s;
 }
 

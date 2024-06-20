@@ -1,553 +1,518 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-            rel="stylesheet"
-            integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-            crossorigin="anonymous"
-        />
-        <script
-            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-            crossorigin="anonymous"
-        ></script>
-        <title>Workspace</title>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link
-            href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap"
-            rel="stylesheet"
-        />
-        <link
-            rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-        />
-        <link href="css/style.css" rel="stylesheet" />
-    </head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+    <title>Workspace</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+    <link href="css/style.css" rel="stylesheet" />
+  </head>
 
-    <body>
-        <div class="d-flex">
-            <!-- collapsed -->
-            <div class="sidebar collapsed" data-state="collapsed">
-                <nav class="nav flex-column justify-content-between h-100">
-                    <div class="d-flex flex-column">
-                        <a class="sidebarLogo toggleSidebar" href="#">
-                            <img src="./images/logo.png" />
-                        </a>
-                        <hr class="sidebarHr1 collapsed" />
-                        <a class="sidebarNavItems toggleSidebar border-bottom" href="dashboard.html">
-                            <i class="bi bi-speedometer2"></i>
-                            <span class="sidebarText d-none">Dashboard</span>
-                        </a>
-                        <a class="sidebarNavItems toggleSidebar border-bottom" href="tracker.html">
-                            <i class="bi bi-pencil-square"></i>
-                            <span class="sidebarText d-none">Personal Tracker</span>
-                        </a>
-                        <a
-                            class="sidebarNavItems toggleSidebar active border-bottom"
-                            href="#"
-                        >
-                            <i class="bi bi-diagram-3"></i>
-                            <span class="sidebarText d-none">Workspaces</span>
-                        </a>
-                    </div>
-                    <div class="d-flex flex-column">
-                        <hr class="sidebarHr2 collapsed" />
-                        <button class="sidebarNavItemButton collapsed">
-                            <i class="bi bi-arrow-bar-right"></i>
-                            <span class="sidebarText d-none">Join Workspace</span>
-                        </button>
-                        <hr class="m-0 sidebarHr" />
-                        <button class="sidebarNavItemButton collapsed">
-                            <i class="bi bi-plus-circle"></i>
-                            <span class="sidebarText d-none">Create Workspace</span>
-                        </button>
-                        <hr class="sidebarHr1 collapsed" />
-                        <a
-                            class="sidebarNavItems1 align-items-center d-flex"
-                            href="#"
-                        >
-                            <i class="bi bi-person-circle pe-1"></i>
-                            <span class="sidebarText d-none">User Name</span>
-                            <i
-                                class="bi bi-caret-down-fill ps-1"
-                                style="font-size: 0.8rem"
-                            ></i>
-                        </a>
-                    </div>
-                </nav>
+  <body>
+    <div class="d-flex">
+      <!-- collapsed -->
+      <div class="sidebar collapsed" data-state="collapsed">
+        <nav class="nav flex-column justify-content-between h-100">
+          <div class="d-flex flex-column">
+            <a class="sidebarLogo toggleSidebar" href="#">
+              <img src="./images/logo.png" />
+            </a>
+            <hr class="sidebarHr1 collapsed" />
+            <a
+              class="sidebarNavItems toggleSidebar border-bottom"
+              href="dashboard.html"
+            >
+              <i class="bi bi-speedometer2"></i>
+              <span class="sidebarText d-none">Dashboard</span>
+            </a>
+            <a
+              class="sidebarNavItems toggleSidebar border-bottom"
+              href="tracker.html"
+            >
+              <i class="bi bi-pencil-square"></i>
+              <span class="sidebarText d-none">Personal Tracker</span>
+            </a>
+            <a
+              class="sidebarNavItems toggleSidebar active border-bottom"
+              href="#"
+            >
+              <i class="bi bi-diagram-3"></i>
+              <span class="sidebarText d-none">Workspaces</span>
+            </a>
+          </div>
+          <div class="d-flex flex-column">
+            <hr class="sidebarHr2 collapsed" />
+            <button class="sidebarNavItemButton collapsed">
+              <i class="bi bi-arrow-bar-right"></i>
+              <span class="sidebarText d-none">Join Workspace</span>
+            </button>
+            <hr class="m-0 sidebarHr" />
+            <button class="sidebarNavItemButton collapsed">
+              <i class="bi bi-plus-circle"></i>
+              <span class="sidebarText d-none">Create Workspace</span>
+            </button>
+            <hr class="sidebarHr1 collapsed" />
+            <a class="sidebarNavItems1 align-items-center d-flex" href="#">
+              <i class="bi bi-person-circle pe-1"></i>
+              <span class="sidebarText d-none">User Name</span>
+              <i
+                class="bi bi-caret-down-fill ps-1"
+                style="font-size: 0.8rem"
+              ></i>
+            </a>
+          </div>
+        </nav>
+      </div>
+
+      <!-- add collapsed -->
+      <div class="main-content collapsed">
+        <!-- date -->
+        <p class="date">Tuesday, 4 June 2024</p>
+        <hr class="w-100" />
+        <!-- hosted -->
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <p class="text-1">
+              Hosted by Shaoren on Tuesday, 4 June 2024 at 9:30 p.m.
+            </p>
+            <div class="d-flex align-items-center title-1">
+              <!-- title -->
+              <p class="m-0">SWE3033 Software Processes</p>
+              <i class="bi bi-dot mx-1 fs-2" style="color: #f0f0f0"></i>
+              <i class="bi bi-people-fill me-2"></i>
+              <p class="m-0 text-dark fw-medium">10</p>
+            </div>
+            <!-- description -->
+            <p class="text-2 mb-5">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
+              lobortis eros ipsum vitae.
+            </p>
+          </div>
+          <button
+            class="manage-button"
+            data-bs-target="#manageModal"
+            data-bs-toggle="modal"
+          >
+            <i class="bi bi-gear me-2 fs-5"></i>Manage Workspace
+          </button>
+        </div>
+
+        <!-- card -->
+        <div class="row justify-content-around">
+          <div class="col-4">
+            <div class="card">
+              <div
+                class="card-body d-flex justify-content-between align-items-center py-1"
+              >
+                <div class="d-flex">
+                  <p class="progress-title">To-dos</p>
+                  <p class="progress-title-number ms-2 my-auto">
+                    <!-- no. of to-dos task -->
+                    10
+                  </p>
+                </div>
+                <a
+                  href="#"
+                  data-bs-target="#createModal"
+                  data-bs-toggle="modal"
+                >
+                  <i class="bi bi-plus"></i>
+                </a>
+              </div>
             </div>
 
-            <!-- add collapsed -->
-            <div class="main-content collapsed">
-                <!-- date -->
-                <p class="date">Tuesday, 4 June 2024</p>
-                <hr class="w-100" />
-                <!-- hosted -->
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <p class="text-1">
-                            Hosted by Shaoren on Tuesday, 4 June 2024 at 9:30
-                            p.m.
-                        </p>
-                        <div class="d-flex align-items-center title-1">
-                            <!-- title -->
-                            <p class="m-0">SWE3033 Software Processes</p>
-                            <i
-                                class="bi bi-dot mx-1 fs-2"
-                                style="color: #f0f0f0"
-                            ></i>
-                            <i class="bi bi-people-fill me-2"></i>
-                            <p class="m-0 text-dark fw-medium">10</p>
-                        </div>
-                        <!-- description -->
-                        <p class="text-2 mb-5">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit. Donec lobortis eros ipsum vitae.
-                        </p>
+            <!-- php loop card start -->
+            <div class="card">
+              <div class="card-body">
+                <div
+                  class="d-flex justify-content-between align-items-center mb-3"
+                >
+                  <!-- change class (high-prio/med-prio/low-prio) -->
+                  <span class="badge rounded-pill low-prio">Low Priority</span>
+                  <a href="#" data-bs-target="#viewModal" data-bs-toggle="modal"
+                    ><i class="bi bi-three-dots-vertical fs-5 me-2"></i
+                  ></a>
+                </div>
+                <p class="task-title m-0">Task Title</p>
+                <p class="text-1 mb-3">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
+                  lobor eros ipsum vitae.
+                </p>
+              </div>
+            </div>
+            <!-- end loop -->
+
+            <!-- card repeat for test -->
+            <div class="card">
+              <div class="card-body">
+                <div
+                  class="d-flex justify-content-between align-items-center mb-3"
+                >
+                  <span class="badge rounded-pill high-prio"
+                    >High Priority</span
+                  >
+                  <a href="#"
+                    ><i class="bi bi-three-dots-vertical fs-5 me-2"></i
+                  ></a>
+                </div>
+                <p class="task-title m-0">Task Title</p>
+                <p class="text-1 mb-4">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
+                  lobor eros ipsum vitae.
+                </p>
+                <p class="mb-0" style="color: #3284ba; font-size: 0.75rem">
+                  You are assigned to this task.
+                </p>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-body">
+                <div
+                  class="d-flex justify-content-between align-items-center mb-3"
+                >
+                  <span class="badge rounded-pill med-prio"
+                    >Medium Priority</span
+                  >
+                  <a href="#"
+                    ><i class="bi bi-three-dots-vertical fs-5 me-2"></i
+                  ></a>
+                </div>
+                <p class="task-title m-0">Task Title</p>
+                <p class="text-1 mb-3">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
+                  lobor eros ipsum vitae.
+                </p>
+              </div>
+            </div>
+            <!-- end test -->
+          </div>
+
+          <div class="col-4">
+            <div class="card">
+              <div
+                class="card-body d-flex justify-content-between align-items-center py-1"
+              >
+                <div class="d-flex">
+                  <p class="progress-title">In Progress</p>
+                  <p class="progress-title-number ms-2 my-auto">
+                    <!-- no. of in progress task -->
+                    10
+                  </p>
+                </div>
+                <a href="#">
+                  <i class="bi bi-plus"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-4 text-center">
+            <div class="card">
+              <div
+                class="card-body d-flex justify-content-between align-items-center py-1"
+              >
+                <div class="d-flex">
+                  <p class="progress-title">Completed</p>
+                  <p class="progress-title-number ms-2 my-auto">
+                    <!-- no. of completed task -->
+                    0
+                  </p>
+                </div>
+                <a href="#">
+                  <i class="bi bi-plus"></i>
+                </a>
+              </div>
+            </div>
+            <!-- if no task -->
+            <p style="font-size: 0.875rem; color: #878787">No task.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <!-- View Modal -->
+    <div class="modal fade" id="viewModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content p-4">
+          <div class="modal-header pt-0 d-block">
+            <div class="d-flex align-items-center">
+              <p class="title-1 m-0">Task Title</p>
+              <span class="badge rounded-pill low-prio ms-2">Low Priority</span>
+              <button class="button-fill ms-auto">
+                <i class="bi-pencil-square me-2"></i>Edit
+              </button>
+            </div>
+            <p class="text-1">
+              Created by Shaoren on Tuesday, 4 June 2024 at 9:30 p.m.
+            </p>
+          </div>
+          <div class="modal-body">
+            <p class="title-2">Description</p>
+            <p class="text-1 mb-4">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
+              lobortis eros ipsum, vitae porta ante volutpat quis. Sed aliquet
+              lectus eget quam elementum, ut hendrerit lorem rhoncus.
+            </p>
+            <p class="title-2">Due On</p>
+            <p class="text-1 mb-4">Tuesday, 4 June 2024 at 9:30 p.m.</p>
+            <p class="title-2">Assigned Members</p>
+            <div class="d-flex">
+              <span class="members-badge">Sean</span>
+              <span class="members-badge">Yan Jie</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Create Task Modal -->
+    <div class="modal fade" id="createModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" style="width: 500px">
+        <div class="modal-content p-3">
+          <div class="modal-body">
+            <div class="d-flex align-items-center">
+              <p class="title-1 m-0">Create a New Task</p>
+            </div>
+            <p class="text-1 mb-4">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            </p>
+
+            <div class="mb-3">
+              <label class="input-label">Task Name</label>
+              <input class="inputs" type="text" placeholder="Enter Task Name" />
+            </div>
+            <div class="mb-3">
+              <label class="input-label">Assign Members</label>
+              <input class="inputs" type="text" />
+            </div>
+            <div class="mb-3 row">
+              <div class="col">
+                <label class="input-label">Task Priority</label>
+                <select class="inputs">
+                  <option value="" disabled selected>
+                    Select Task Priority
+                  </option>
+                  <option>Low Priority</option>
+                  <option>Medium Priority</option>
+                  <option>High Priority</option>
+                </select>
+              </div>
+              <div class="col">
+                <label class="input-label">Due Date</label>
+                <input class="inputs" type="date" />
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="input-label">Description</label>
+              <textarea
+                class="inputs"
+                rows="5"
+                placeholder="Enter task description"
+              ></textarea>
+            </div>
+            <div class="w-100 text-center">
+              <button
+                class="button-fill px-5 mx-auto"
+                style="font-size: 0.875rem"
+              >
+                Create
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Manage Task Modal -->
+    <div class="modal fade" id="manageModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" style="width: 500px">
+        <div class="modal-content p-3">
+          <div class="modal-body">
+            <div class="d-flex align-items-center">
+              <p class="title-1 m-0">Manage Workspace</p>
+            </div>
+            <p class="text-1 mb-4">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            </p>
+
+            <div class="accordion" id="accordionExample">
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button
+                    class="accordion-button"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#collapseOne"
+                    aria-expanded="true"
+                    aria-controls="collapseOne"
+                  >
+                    <i class="bi bi-card-text me-2"></i>Workspace Details
+                  </button>
+                </h2>
+                <div
+                  id="collapseOne"
+                  class="accordion-collapse collapse show"
+                  data-bs-parent="#accordionExample"
+                >
+                  <div class="accordion-body d-flex flex-column">
+                    <div class="mb-3">
+                      <label class="input-label">Workspace Name</label>
+                      <!-- name (placeholder) -->
+                      <input
+                        type="text"
+                        class="inputs"
+                        placeholder="SWE3033 Software Process"
+                      />
                     </div>
-                    <button
-                        class="manage-button"
-                        data-bs-target="#manageModal"
-                        data-bs-toggle="modal"
-                    >
-                        <i class="bi bi-gear me-2 fs-5"></i>Manage Workspace
+                    <div class="mb-3">
+                      <label class="input-label">Workspace Description</label>
+                      <!-- description -->
+                      <textarea
+                        class="inputs"
+                        rows="4"
+                        placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec lobortis eros ipsum vitae."
+                      ></textarea>
+                    </div>
+                    <button class="button-fill mx-auto px-4">Edit</button>
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#collapseTwo"
+                    aria-expanded="false"
+                    aria-controls="collapseTwo"
+                  >
+                    <i class="bi bi-send-plus me-2"></i>Invitations
+                  </button>
+                </h2>
+                <div
+                  id="collapseTwo"
+                  class="accordion-collapse collapse"
+                  data-bs-parent="#accordionExample"
+                >
+                  <div class="accordion-body d-flex flex-column">
+                    <div class="text-center">
+                      <p class="workspace-code-title mb-1">Workspace Code</p>
+                      <p class="workspace-code">W8SDJ</p>
+                      <div class="d-flex justify-content-center">
+                        <button class="button-fill me-3">
+                          <i class="bi bi-x me-3"></i>Disable Code
+                        </button>
+                        <button class="button-fill ms-3">
+                          <i class="bi bi-arrow-repeat me-3"></i>Regenerate Code
+                        </button>
+                      </div>
+                    </div>
+                    <hr style="opacity: 1" />
+                    <div class="mb-3">
+                      <label class="input-label">Invite via Email</label>
+                      <input
+                        class="inputs"
+                        type="text"
+                        placeholder="Enter recipient email"
+                      />
+                    </div>
+                    <button class="button-fill mx-auto px-3">
+                      Send Invitation
                     </button>
+                  </div>
                 </div>
-
-                <!-- card -->
-                <div class="row justify-content-around">
-                    <div class="col-4">
-                        <div class="card">
-                            <div
-                                class="card-body d-flex justify-content-between align-items-center py-1"
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#collapseThree"
+                    aria-expanded="false"
+                    aria-controls="collapseThree"
+                  >
+                    <i class="bi bi-people me-2"></i>Members
+                    <!-- members number -->
+                    <span class="badge accordion-badge ms-2">10</span>
+                  </button>
+                </h2>
+                <div
+                  id="collapseThree"
+                  class="accordion-collapse collapse"
+                  data-bs-parent="#accordionExample"
+                >
+                  <div class="accordion-body">
+                    <table
+                      class="table table-borderless member-table align-middle"
+                    >
+                      <thead>
+                        <tr>
+                          <th class="text-start">No.</th>
+                          <th>Name</th>
+                          <th>Date Joined</th>
+                          <th>Manage</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>1</td>
+                          <td class="text-start">Kenneth</td>
+                          <td>5/6/2024</td>
+                          <td>
+                            <span class="badge accordion-member-badge"
+                              >Host</span
                             >
-                                <div class="d-flex">
-                                    <p class="progress-title">To-dos</p>
-                                    <p
-                                        class="progress-title-number ms-2 my-auto"
-                                    >
-                                        <!-- no. of to-dos task -->
-                                        10
-                                    </p>
-                                </div>
-                                <a
-                                    href="#"
-                                    data-bs-target="#createModal"
-                                    data-bs-toggle="modal"
-                                >
-                                    <i class="bi bi-plus"></i>
-                                </a>
-                            </div>
-                        </div>
-
-                        <!-- php loop card start -->
-                        <div class="card">
-                            <div class="card-body">
-                                <div
-                                    class="d-flex justify-content-between align-items-center mb-3"
-                                >
-                                    <!-- change class (high-prio/med-prio/low-prio) -->
-                                    <span class="badge rounded-pill low-prio"
-                                        >Low Priority</span
-                                    >
-                                    <a
-                                        href="#"
-                                        data-bs-target="#viewModal"
-                                        data-bs-toggle="modal"
-                                        ><i
-                                            class="bi bi-three-dots-vertical fs-5 me-2"
-                                        ></i
-                                    ></a>
-                                </div>
-                                <p class="task-title m-0">Task Title</p>
-                                <p class="text-1 mb-3">
-                                    Lorem ipsum dolor sit amet, consectetur
-                                    adipiscing elit. Donec lobor eros ipsum
-                                    vitae.
-                                </p>
-                            </div>
-                        </div>
-                        <!-- end loop -->
-
-                        <!-- card repeat for test -->
-                        <div class="card">
-                            <div class="card-body">
-                                <div
-                                    class="d-flex justify-content-between align-items-center mb-3"
-                                >
-                                    <span class="badge rounded-pill high-prio"
-                                        >High Priority</span
-                                    >
-                                    <a href="#"
-                                        ><i
-                                            class="bi bi-three-dots-vertical fs-5 me-2"
-                                        ></i
-                                    ></a>
-                                </div>
-                                <p class="task-title m-0">Task Title</p>
-                                <p class="text-1 mb-4">
-                                    Lorem ipsum dolor sit amet, consectetur
-                                    adipiscing elit. Donec lobor eros ipsum
-                                    vitae.
-                                </p>
-                                <p
-                                    class="mb-0"
-                                    style="color: #3284ba; font-size: 0.75rem"
-                                >
-                                    You are assigned to this task.
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="card">
-                            <div class="card-body">
-                                <div
-                                    class="d-flex justify-content-between align-items-center mb-3"
-                                >
-                                    <span class="badge rounded-pill med-prio"
-                                        >Medium Priority</span
-                                    >
-                                    <a href="#"
-                                        ><i
-                                            class="bi bi-three-dots-vertical fs-5 me-2"
-                                        ></i
-                                    ></a>
-                                </div>
-                                <p class="task-title m-0">Task Title</p>
-                                <p class="text-1 mb-3">
-                                    Lorem ipsum dolor sit amet, consectetur
-                                    adipiscing elit. Donec lobor eros ipsum
-                                    vitae.
-                                </p>
-                            </div>
-                        </div>
-                        <!-- end test -->
-                    </div>
-
-                    <div class="col-4">
-                        <div class="card">
-                            <div
-                                class="card-body d-flex justify-content-between align-items-center py-1"
-                            >
-                                <div class="d-flex">
-                                    <p class="progress-title">In Progress</p>
-                                    <p
-                                        class="progress-title-number ms-2 my-auto"
-                                    >
-                                        <!-- no. of in progress task -->
-                                        10
-                                    </p>
-                                </div>
-                                <a href="#">
-                                    <i class="bi bi-plus"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-4 text-center">
-                        <div class="card">
-                            <div
-                                class="card-body d-flex justify-content-between align-items-center py-1"
-                            >
-                                <div class="d-flex">
-                                    <p class="progress-title">Completed</p>
-                                    <p
-                                        class="progress-title-number ms-2 my-auto"
-                                    >
-                                        <!-- no. of completed task -->
-                                        0
-                                    </p>
-                                </div>
-                                <a href="#">
-                                    <i class="bi bi-plus"></i>
-                                </a>
-                            </div>
-                        </div>
-                        <!-- if no task -->
-                        <p style="font-size: 0.875rem; color: #878787">
-                            No task.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Modal -->
-        <!-- View Modal -->
-        <div class="modal fade" id="viewModal" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content p-4">
-                    <div class="modal-header pt-0 d-block">
-                        <div class="d-flex align-items-center">
-                            <p class="title-1 m-0">Task Title</p>
-                            <span class="badge rounded-pill low-prio ms-2"
-                                >Low Priority</span
-                            >
-                            <button class="button-fill ms-auto">
-                                <i class="bi-pencil-square me-2"></i>Edit
-                            </button>
-                        </div>
-                        <p class="text-1">
-                            Created by Shaoren on Tuesday, 4 June 2024 at 9:30
-                            p.m.
-                        </p>
-                    </div>
-                    <div class="modal-body">
-                        <p class="title-2">Description</p>
-                        <p class="text-1 mb-4">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit. Donec lobortis eros ipsum, vitae porta ante
-                            volutpat quis. Sed aliquet lectus eget quam
-                            elementum, ut hendrerit lorem rhoncus.
-                        </p>
-                        <p class="title-2">Due On</p>
-                        <p class="text-1 mb-4">
-                            Tuesday, 4 June 2024 at 9:30 p.m.
-                        </p>
-                        <p class="title-2">Assigned Members</p>
-                        <div class="d-flex">
-                            <span class="members-badge">Sean</span>
-                            <span class="members-badge">Yan Jie</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Create Task Modal -->
-        <div
-            class="modal fade"
-            id="createModal"
-            tabindex="-1"
-            aria-hidden="true"
-        >
-            <div
-                class="modal-dialog modal-dialog-centered"
-                style="width: 500px"
-            >
-                <div class="modal-content p-3">
-                    <div class="modal-body">
-                        <div class="d-flex align-items-center">
-                            <p class="title-1 m-0">Create a New Task</p>
-                        </div>
-                        <p class="text-1 mb-4">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit.
-                        </p>
-
-                        <div class="mb-3">
-                            <label class="input-label">Task Name</label>
-                            <input
-                                class="inputs"
-                                type="text"
-                                placeholder="Enter Task Name"
-                            />
-                        </div>
-                        <div class="mb-3">
-                            <label class="input-label">Assign Members</label>
-                            <input class="inputs" type="text" />
-                        </div>
-                        <div class="mb-3 row">
-                            <div class="col">
-                                <label class="input-label">Task Priority</label>
-                                <select class="inputs">
-                                    <option value="" disabled selected>
-                                        Select Task Priority
-                                    </option>
-                                    <option>Low Priority</option>
-                                    <option>Medium Priority</option>
-                                    <option>High Priority</option>
-                                </select>
-                            </div>
-                            <div class="col">
-                                <label class="input-label">Due Date</label>
-                                <input class="inputs" type="date" />
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label class="input-label">Description</label>
-                            <textarea
-                                class="inputs"
-                                rows="5"
-                                placeholder="Enter task description"
-                            ></textarea>
-                        </div>
-                        <div class="w-100 text-center">
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>2</td>
+                          <td class="text-start">John Marcus</td>
+                          <td>5/6/2024</td>
+                          <td>
                             <button
-                                class="button-fill px-5 mx-auto"
-                                style="font-size: 0.875rem"
+                              class="btn btn-danger"
+                              disabled
+                              style="padding: 0 5px"
                             >
-                                Create
+                              <i class="bi bi-x"></i>
                             </button>
-                        </div>
-                    </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
+    </div>
 
-        <!-- Manage Task Modal -->
-        <div
-            class="modal fade"
-            id="manageModal"
-            tabindex="-1"
-            aria-hidden="true"
-        >
-            <div
-                class="modal-dialog modal-dialog-centered"
-                style="width: 500px"
-            >
-                <div class="modal-content p-3">
-                    <div class="modal-body">
-                        <div class="d-flex align-items-center">
-                            <p class="title-1 m-0">Manage Workspace</p>
-                        </div>
-                        <p class="text-1 mb-4">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit.
-                        </p>
-
-                        <div class="accordion" id="accordionExample">
-                            <div class="accordion-item">
-                                <h2 class="accordion-header">
-                                    <button
-                                        class="accordion-button"
-                                        type="button"
-                                        data-bs-toggle="collapse"
-                                        data-bs-target="#collapseOne"
-                                        aria-expanded="true"
-                                        aria-controls="collapseOne"
-                                    >
-                                        <i class="bi bi-card-text me-2"></i>Workspace Details
-                                    </button>
-                                </h2>
-                                <div
-                                    id="collapseOne"
-                                    class="accordion-collapse collapse show"
-                                    data-bs-parent="#accordionExample"
-                                >
-                                    <div class="accordion-body d-flex flex-column">
-                                        <div class="mb-3">
-                                            <label class="input-label"
-                                                >Workspace Name</label
-                                            >
-                                            <!-- name (placeholder) -->
-                                            <input
-                                                type="text"
-                                                class="inputs"
-                                                placeholder="SWE3033 Software Process"
-                                            />
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="input-label"
-                                                >Workspace Description</label
-                                            >
-                                            <!-- description -->
-                                            <textarea
-                                                class="inputs"
-                                                rows="4"
-                                                placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec lobortis eros ipsum vitae."
-                                            ></textarea>
-                                        </div>
-                                        <button class="button-fill mx-auto px-4">Edit</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="accordion-item">
-                                <h2 class="accordion-header">
-                                    <button
-                                        class="accordion-button collapsed"
-                                        type="button"
-                                        data-bs-toggle="collapse"
-                                        data-bs-target="#collapseTwo"
-                                        aria-expanded="false"
-                                        aria-controls="collapseTwo"
-                                    >
-                                        <i class="bi bi-send-plus me-2"></i>Invitations
-                                    </button>
-                                </h2>
-                                <div
-                                    id="collapseTwo"
-                                    class="accordion-collapse collapse"
-                                    data-bs-parent="#accordionExample"
-                                >
-                                    <div class="accordion-body d-flex flex-column">
-                                        <div class="text-center">
-                                            <p class="workspace-code-title mb-1">Workspace Code</p>
-                                            <p class="workspace-code">W8SDJ</p>
-                                            <div class="d-flex justify-content-center">
-                                                <button class="button-fill me-3"><i class="bi bi-x me-3"></i>Disable Code</button>
-                                                <button class="button-fill ms-3"><i class="bi bi-arrow-repeat me-3"></i>Regenerate Code</button>
-                                            </div>
-                                        </div>
-                                        <hr style="opacity: 1;">
-                                        <div class="mb-3">
-                                            <label class="input-label">Invite via Email</label>
-                                            <input class="inputs" type="text" placeholder="Enter recipient email"/>
-                                        </div>
-                                        <button class="button-fill mx-auto px-3">Send Invitation</button>
-
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="accordion-item">
-                                <h2 class="accordion-header">
-                                    <button
-                                        class="accordion-button collapsed"
-                                        type="button"
-                                        data-bs-toggle="collapse"
-                                        data-bs-target="#collapseThree"
-                                        aria-expanded="false"
-                                        aria-controls="collapseThree"
-                                    >
-                                        <i class="bi bi-people me-2"></i>Members
-                                        <!-- members number -->
-                                        <span class="badge accordion-badge ms-2">10</span>
-                                    </button>
-                                </h2>
-                                <div
-                                    id="collapseThree"
-                                    class="accordion-collapse collapse"
-                                    data-bs-parent="#accordionExample"
-                                >
-                                    <div class="accordion-body">
-                                        <table class="table table-borderless member-table align-middle">
-                                            <thead>
-                                                <tr>
-                                                    <th class="text-start">No.</th>
-                                                    <th>Name</th>
-                                                    <th>Date Joined</th>
-                                                    <th>Manage</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td class="text-start">Kenneth</td>
-                                                    <td>5/6/2024</td>
-                                                    <td><span class="badge accordion-member-badge">Host</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>2</td>
-                                                    <td class="text-start">John Marcus</td>
-                                                    <td>5/6/2024</td>
-                                                    <td><button class="btn btn-danger" disabled style="padding: 0 5px;"><i class="bi bi-x"></i></button></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <script src="./scripts/sidebar.js"></script>
-    </body>
+    <script src="./scripts/sidebar.js"></script>
+  </body>
 </html>
