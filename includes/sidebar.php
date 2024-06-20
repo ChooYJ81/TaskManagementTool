@@ -1,4 +1,4 @@
-
+<?php session_start();?>
   <!-- collapsed -->
   <div class="sidebar collapsed toggleSidebar" data-state="collapsed" id="sidebar">
     <nav class="nav flex-column h-100">
@@ -87,7 +87,7 @@
         <hr class="sidebarHr1 collapsed" />
         <a class="sidebarNavItems1 align-items-center d-flex" href="#">
           <i class="bi bi-person-circle pe-1"></i>
-          <span class="sidebarText d-none">User Name</span>
+          <span class="sidebarText d-none"><?=$_SESSION['name'];?></span>
           <i class="bi bi-caret-down-fill ps-1" style="font-size: 0.8rem"></i>
         </a>
       </div>

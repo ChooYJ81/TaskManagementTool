@@ -43,21 +43,21 @@
             </form>
         </div>
         <div class="sign-in">
-            <form action="#" class="login-form">
+            <form action="./includes/account.inc.php" method="POST" class="login-form">
                 <p class="title-1 fw-normal mb-1">Sign In</p>
                 <p style="font-size: 0.75rem">Welcome back to SunCollab!</p>
                 <div class="mb-3">
                     <label class="input-label">Email</label>
-                    <input class="inputs" type="email" placeholder="Enter your email" required />
+                    <input class="inputs" type="email" placeholder="Enter your email" required id="email" name="email"/>
                 </div>
                 <div class="mb-1">
                     <label class="input-label">Password</label>
-                    <input class="inputs" type="password" placeholder="Enter your password" required />
+                    <input class="inputs" type="password" placeholder="Enter your password" required id="password" name="password"/>
                 </div>
                 <p class="m-0" style="font-size: 0.625rem">
                     Forgot your password? <a href="#">Reset it here</a>
                 </p>
-                <button class="button-fill mx-auto mt-3 px-3 py-2" type="submit" style="width: fit-content;">
+                <button class="button-fill mx-auto mt-3 px-3 py-2" type="submit" style="width: fit-content;" id="signin" name="signin">
                     Sign In
                 </button>
             </form>
