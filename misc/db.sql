@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 20, 2024 at 03:06 PM
--- Server version: 10.4.24-MariaDB
--- PHP Version: 8.1.6
+-- Generation Time: Jun 20, 2024 at 06:53 PM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -33,15 +33,16 @@ CREATE TABLE `account` (
   `phoneNo` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   `pwd` varchar(255) DEFAULT NULL,
-  `OTP` varchar(5) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `OTP` varchar(5) DEFAULT NULL,
+  `status` varchar(30) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `account`
 --
 
-INSERT INTO `account` (`accountID`, `username`, `phoneNo`, `email`, `pwd`, `OTP`) VALUES
-('A0001', 'Test', '0123456789', 'test@mail.com', '1234', NULL);
+INSERT INTO `account` (`accountID`, `username`, `phoneNo`, `email`, `pwd`, `OTP`, `status`) VALUES
+('A0001', 'Test', '0123456789', 'test@mail.com', '1234', NULL, '');
 
 -- --------------------------------------------------------
 
@@ -52,7 +53,7 @@ INSERT INTO `account` (`accountID`, `username`, `phoneNo`, `email`, `pwd`, `OTP`
 CREATE TABLE `assigned` (
   `taskID` varchar(255) NOT NULL,
   `assignedMember` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -63,7 +64,7 @@ CREATE TABLE `assigned` (
 CREATE TABLE `member` (
   `workspaceID` varchar(255) NOT NULL,
   `accountID` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -81,7 +82,7 @@ CREATE TABLE `task` (
   `priority` varchar(255) DEFAULT NULL,
   `creationDate` datetime DEFAULT NULL,
   `due` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -97,7 +98,7 @@ CREATE TABLE `workspace` (
   `creationDate` datetime DEFAULT NULL,
   `owner` varchar(255) DEFAULT NULL,
   `workspaceCode` varchar(5) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `workspace`
