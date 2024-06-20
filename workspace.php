@@ -50,12 +50,12 @@
         <div class="row justify-content-around">
 
           <!-- To-do -->
-          <div class="col-4 text-center">
-            <div class="card mb-4">
+          <div class="col-4 d-flex flex-column align-items-center pe-5" id="toDoColumn">
+            <div class="w-100 card mb-4">
               <div class="card-body d-flex justify-content-between align-items-center py-1">
                 <div class="d-flex">
                   <p class="progress-title">To-dos</p>
-                  <p class="progress-title-number ms-2 my-auto">
+                  <p class="progress-title-number ms-2 my-auto" id="toDoQty">
                     <!-- no. of to-dos task -->
                     10
                   </p>
@@ -65,17 +65,35 @@
                 </a>
               </div>
             </div>
+
+            <!-- Looping tasks
+            <div class="w-100 card mb-3">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <span class="badge rounded-pill low-prio">Low Priority</span>
+                  <a href="#" data-bs-target="#viewModal" data-bs-toggle="modal"
+                    ><i class="bi bi-three-dots-vertical fs-5 me-2"></i
+                  ></a>
+                </div>
+                <p class="task-title mb-2">Task Title</p>
+                <p class="text-1 mb-3">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
+                  lobor eros ipsum vitae.
+                </p>
+              </div>
+            </div> -->
+
           </div>
 
           <!-- In Progress -->
-          <div class="col-4 text-center">
-            <div class="card mb-4">
+          <div class="col-4 d-flex flex-column align-items-center px-2" id="inProgressColumn">
+            <div class="w-100 card mb-4">
               <div class="card-body d-flex justify-content-between align-items-center py-1">
                 <div class="d-flex">
                   <p class="progress-title">In Progress</p>
-                  <p class="progress-title-number ms-2 my-auto">
+                  <p class="progress-title-number ms-2 my-auto" id="inProgressQty">
                     <!-- no. of in progress task -->
-                    10
+
                   </p>
                 </div>
                 <a href="#" class="createTask" create-type="In Progress" data-bs-target="#createModal" data-bs-toggle="modal">
@@ -86,12 +104,12 @@
           </div>
 
           <!-- Completed -->
-          <div class="col-4 text-center">
-            <div class="card mb-4">
+          <div class="col-4 d-flex flex-column align-items-center ps-5" id="completedColumn">
+            <div class="w-100 card mb-4">
               <div class="card-body d-flex justify-content-between align-items-center py-1">
                 <div class="d-flex">
                   <p class="progress-title">Completed</p>
-                  <p class="progress-title-number ms-2 my-auto">
+                  <p class="progress-title-number ms-2 my-auto" id="completedQty">
                     <!-- no. of completed task -->
                     0
                   </p>
@@ -101,9 +119,8 @@
                 </a>
               </div>
             </div>
-            <!-- if no task -->
-            <p style="font-size: 0.875rem; color: #878787">No task.</p>
           </div>
+
         </div>
       <?php } else { ?>
         <div class="d-flex justify-content-center align-items-center h-100">
