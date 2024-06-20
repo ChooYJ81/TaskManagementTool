@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 20, 2024 at 07:00 PM
+-- Generation Time: Jun 20, 2024 at 07:08 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -42,8 +42,8 @@ CREATE TABLE `account` (
 --
 
 INSERT INTO `account` (`accountID`, `username`, `phoneNo`, `email`, `pwd`, `OTP`, `status`) VALUES
-('A0001', 'Test', '0123456789', 'test@mail.com', '1234', NULL, ''),
-('A0002', 'Jacob', '012345678', 'jacob@mail.com', '1234', NULL, '');
+('A0001', 'John Smith', NULL, 'test@mail.com', '$2y$10$DxC8bnloaERsfPG9aqThfu6.p6pRrxJsyFShXmw51nFIdkUyYpwIG', '123AB', 'Verified'),
+('A0002', 'Jacob', '012345678', 'jacob@mail.com', '12345', NULL, '');
 
 -- --------------------------------------------------------
 
