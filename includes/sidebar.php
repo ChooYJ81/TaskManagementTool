@@ -92,7 +92,7 @@
           <i class="bi bi-caret-down-fill ps-1" style="font-size: 0.8rem"></i>
         </a>
         <ul class="dropdown-menu ms-4" style="padding: 0;">
-          <li><a class="dropdown-item py-2" href="./includes/logout.php"><i class="bi bi-box-arrow-left me-2"></i>Logout</a></li>
+          <li><button class="dropdown-item py-2" type="submit" id="logoutButton"><i class="bi bi-box-arrow-left me-2"></i>Logout</button></li>
         </ul>
         </div>
       </div>
