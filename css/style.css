@@ -289,7 +289,6 @@ body {
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-  max-height: 250px;
 }
 
 .workspaceList .workspaceItems {
@@ -298,6 +297,10 @@ body {
   font-size: 0.75rem;
   padding: 16px 10px 16px 30px;
   border-bottom: 1px solid #dee2e6;
+}
+
+.workspaceList .workspaceItems.active {
+  border-left: 8px solid var(--light-blue);
 }
 
 .workspaceList .workspaceItems .members {
@@ -319,6 +322,14 @@ body {
 .dropdown-item:hover{
     background-color: var(--blue) !important;
     color: var(--white) !important;
+}
+
+#workspace-arrow{
+  transition: transform 0.2s ease;
+}
+
+.rotate-90{
+  transform: rotate(90deg);
 }
 
 /* main content */
