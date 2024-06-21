@@ -107,8 +107,7 @@ function otpVerification($pdo, $data)
         $stmt1->bindParam(":email", $_SESSION['email'], PDO::PARAM_STR);
         $stmt1->execute();
         $row = $stmt1->fetch(PDO::FETCH_ASSOC);
-        session_start();
-        $_SESSION["accountID"] = $row["accountId"];
+        $_SESSION["accountID"] = $row["accountID"];
         $_SESSION["email"] = $row['email'];
         $_SESSION["name"] = $row["username"];
         $_SESSION["phoneNo"] = $row["phoneNo"];
@@ -146,13 +145,13 @@ function signIn($pdo, $data)
         $pwdMatch = password_verify($data['loginPassword'], $row['pwd']);
         if ($pwdMatch === true) {
             if ($row['status'] === "Verified") {
-                session_start();
-                $_SESSION["accountID"] = $row["accountId"];
+                $_SESSION["accountID"] = $row["accountID"];
                 $_SESSION["email"] = $row['email'];
                 $_SESSION["name"] = $row["username"];
                 $_SESSION["phoneNo"] = $row["phoneNo"];
                 $message = "Login Successful!";
                 $status = "success";
+                $errorType = "none";
             } else {
                 $message = "Please verify before login";
                 $status = "error";
@@ -179,7 +178,6 @@ function signIn($pdo, $data)
 }
 
 function logout(){
-    session_start();
 
     session_unset();
     
