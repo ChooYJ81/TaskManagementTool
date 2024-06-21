@@ -67,15 +67,6 @@ document.addEventListener("DOMContentLoaded", function () {
         sidebar.setAttribute("data-state", "open");
     }
 
-    // function toggleSidebar() {
-    //     const state = sidebar.getAttribute("data-state");
-    //     if (state === "open") {
-    //         collapseSidebar();
-    //     } else {
-    //         openSidebar();
-    //     }
-    // }
-
     let sidebarOpened = false;
     let workspaceOpened = false;
 
@@ -83,6 +74,12 @@ document.addEventListener("DOMContentLoaded", function () {
         openSidebar();
         sidebarOpened = true;
     });
+    sidebar.addEventListener("mouseleave", function () {
+        setTimeout(() => {
+            collapseSidebar();
+            sidebarOpened = false;
+        }, 200);
+    })
 
     workspace.addEventListener("click", () => {
         if (!workspaceOpened) {
