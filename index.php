@@ -11,25 +11,27 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link href="css/style.css" rel="stylesheet" />
 </head>
 
 <body class="align-items-center d-flex justify-content-center flex-column">
+    <?php include "./includes/modals/otpModal.php";?>
     <div class="login-container" id="login-container">
         <div class="sign-up">
-            <form action="#" class="login-form">
+            <form class="login-form" id="signupForm">
                 <p class="title-1 fw-normal">Sign Up</p>
                 <div class="mb-3">
                     <label class="input-label">Name</label>
-                    <input class="inputs" type="text" placeholder="Enter your name" required />
+                    <input class="inputs" type="text" placeholder="Enter your name" required id="name" name="name"/>
                 </div>
                 <div class="mb-3">
                     <label class="input-label">Email</label>
-                    <input class="inputs" type="email" placeholder="Enter your email" required />
+                    <input class="inputs" type="email" placeholder="Enter your email" required id="email" name="email"/>
                 </div>
                 <div class="mb-2">
                     <label class="input-label">Password</label>
-                    <input class="inputs" type="password" placeholder="Enter your password" required />
+                    <input class="inputs" type="password" placeholder="Enter your password" required id="password" name="password"/>
                 </div>
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" required />
@@ -43,16 +45,16 @@
             </form>
         </div>
         <div class="sign-in">
-            <form action="./includes/account.inc.php" method="POST" class="login-form">
+            <form class="login-form" id="signinForm">
                 <p class="title-1 fw-normal mb-1">Sign In</p>
                 <p style="font-size: 0.75rem">Welcome back to SunCollab!</p>
                 <div class="mb-3">
                     <label class="input-label">Email</label>
-                    <input class="inputs" type="email" placeholder="Enter your email" required id="email" name="email"/>
+                    <input class="inputs" type="email" placeholder="Enter your email" required id="loginEmail" name="loginEmail"/>
                 </div>
                 <div class="mb-1">
                     <label class="input-label">Password</label>
-                    <input class="inputs" type="password" placeholder="Enter your password" required id="password" name="password"/>
+                    <input class="inputs" type="password" placeholder="Enter your password" required id="loginPassword" name="loginPassword"/>
                 </div>
                 <p class="m-0" style="font-size: 0.625rem">
                     Forgot your password? <a href="#">Reset it here</a>
