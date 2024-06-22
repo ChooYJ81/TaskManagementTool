@@ -723,3 +723,8 @@ body {
   left: 8%;
   height: 10%;
 }
+
+.collapsible-card-header-blue {
+  background-color: var(--blue);
+  color: white;
+}
