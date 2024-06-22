@@ -449,6 +449,13 @@ body {
   padding: 5px 10px;
 }
 
+.completed-task {
+  color: #364254;
+  background-color: #F2F4F7;
+  font-size: 0.625rem;
+  padding: 5px 10px;
+}
+
 .task-title {
   font-size: 1rem;
   font-weight: bold;
@@ -615,4 +622,104 @@ body {
 
 .otpInputs input:focus{
     outline: 2px solid #12172e;
+}
+
+/* dashboard */
+.progress-container {
+  position: relative;
+  width: 12rem; /* Adjust width and height as needed */
+  height: 12rem;
+}
+
+.progress-ring1, .progress-ring2 {
+  transform: rotate(90deg); /* Start from the bottom (270 degrees) */
+}
+
+.progress-ring2{
+  position:absolute;
+  top: 0;
+  left: 0;
+}
+
+.progress-ring__circle1, .progress-ring__circle2 {
+  stroke: #C0C0C0; /* Circle background color */
+}
+
+.progress-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
+.progress-percent {
+  display: block;
+  text-align: center;
+}
+
+/* Animation */
+.progress-ring__circle2.progress {
+  stroke: #9BC188; /* Progress color */
+  stroke-dasharray: 503; /* Circumference of the circle (2 * π * radius) */
+  stroke-dashoffset: 503; /* Hide the circle initially */
+}
+
+.progressArrowBtn {
+  color: var(--blue);
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 5%;
+  padding: 0;
+  text-align: center;
+}
+
+.progressArrowBtn.left {
+  border-radius: 5px 0 0 5px;
+  left:0;
+}
+
+.progressArrowBtn.right { 
+  border-radius: 0 5px 5px 0;
+  right: 0;
+}
+
+.progressArrowBtn:hover {
+  background-color: var(--blue);
+  color: var(--white);
+}
+
+.dashboard-line {
+  height: 100%;
+  background-color: var(--blue);
+  width: 5px;
+  border-radius: 10px;
+}
+
+.dashboard-table {
+  font-size: 0.875rem;
+}
+
+.dashboard-table td{
+  background-color: #f9f9f9;
+}
+
+.dashboard-table th{
+  background-color: var(--blue);
+  color: var(--white);
+  font-weight: normal;
+}
+
+.dashboard-progress-title {
+  position: absolute;
+  top: 5%;
+  left: 8%;
+  height: 10%;
 }
