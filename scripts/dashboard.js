@@ -1,16 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const progressCircle = document.querySelector(".progress-ring__circle2");
-
-    // Example: Set progress to 70%
-    function setProgress(percent) {
-        const offset = 503 - (percent / 100) * 503;
-        progressCircle.style.strokeDashoffset = offset;
-        document.querySelector(".progress-percent").textContent = `${percent}%`;
-        progressCircle.classList.add("progress");
-    }
-
-    // Call setProgress with desired percentage (0-100)
-    // setProgress(85); // Example: 70% progress
 
     var myCarousel = document.getElementById("progressCarousel");
     var carousel = new bootstrap.Carousel(myCarousel, {
@@ -24,15 +12,41 @@ document.addEventListener("DOMContentLoaded", function () {
 
     getWorkspace();
 
+    let currentPage = 1;
     // Event listener for slid.bs.carousel event
     myCarousel.addEventListener("slid.bs.carousel", function () {
         const activeItem = document.querySelector(".carousel-item.active");
         if (activeItem) {
             const workspaceID = atob(activeItem.getAttribute("id"));
-            getTaskDetails(workspaceID);
+    
+            getTaskDetails(workspaceID, currentPage);
             getTaskBreakdown(workspaceID);
+            getProgressPercentage(workspaceID);
+            getTotalPage(workspaceID);
         }
     });
+
+    function pageOnClick(){
+        const pageLink = document.querySelectorAll(".page-link");
+        pageLink.forEach(page => {
+            page.addEventListener("click", function (e){
+                e.preventDefault();
+                var pageClicked = e.target.id.split("-")[1];
+                currentPage = pageClicked;
+                // console.log(currentPage);
+                const activeItem = document.querySelector(".carousel-item.active");
+                const workspaceID = atob(activeItem.getAttribute("id"));
+
+                getTaskDetails(workspaceID, currentPage);
+                // displayPagination(data);
+                // getTotalPage(workspaceID);
+                pageLink.forEach(page => {
+                    page.classList.remove("active");
+                })
+                e.target.classList.add("active");
+            })
+        })
+    }
 
     //Fetch data from database
     async function getWorkspace() {
@@ -61,8 +75,11 @@ document.addEventListener("DOMContentLoaded", function () {
             );
             if (initialActiveItem) {
                 const workspaceID = atob(initialActiveItem.getAttribute("id"));
-                getTaskDetails(workspaceID);
+    
+                getTaskDetails(workspaceID, currentPage);
                 getTaskBreakdown(workspaceID);
+                getProgressPercentage(workspaceID);
+                getTotalPage(workspaceID);
             }
             // console.log(responseData);
         } catch (error) {
@@ -70,9 +87,10 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    async function getTaskDetails(workspaceID) {
+    async function getTaskDetails(workspaceID, currentPage) {
         const data = {
             workspaceID: workspaceID,
+            pageNo: currentPage,
             action: "getTaskDetails",
         };
 
@@ -124,6 +142,61 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
+    async function getProgressPercentage(workspaceID) {
+        const data = {
+            workspaceID: workspaceID,
+            action: "getProgressPercentage",
+        };
+
+        try {
+            const response = await fetch("./backend/dashboard.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const responseData = await response.json();
+            // console.log(responseData);
+            displayProgressPercentage(responseData, workspaceID);
+        } catch (error) {
+            console.error("Fetch error: " + error.message);
+        }
+    }
+
+    async function getTotalPage(workspaceID) {
+        const data = {
+            workspaceID: workspaceID,
+            action: "getTotalPage",
+        };
+
+        try {
+            const response = await fetch("./backend/dashboard.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const responseData = await response.json();
+            // console.log(responseData);
+            displayPagination(responseData);
+            pageOnClick();
+        } catch (error) {
+            console.error("Fetch error: " + error.message);
+        }
+    }
+
     function displayWorkspace(data) {
         const carouselInner = document.querySelector(".carousel-inner");
         var html = "";
@@ -141,11 +214,15 @@ document.addEventListener("DOMContentLoaded", function () {
                           <circle class="progress-ring__circle1" stroke-width="14" fill="transparent" r="80" cx="6rem" cy="6rem"></circle>
                         </svg>
                         <svg class="progress-ring2" width="12rem" height="12rem">
-                          <circle class="progress-ring__circle2" stroke-width="14" fill="transparent" r="80" cx="6rem" cy="6rem"></circle>
+                          <circle class="progress-ring__circle2" stroke-width="14" fill="transparent" r="80" cx="6rem" cy="6rem" id="progress-${btoa(
+                              element.workspace.workspaceID
+                          )}"></circle>
                         </svg>
                         <div class="progress-text">
                           <span style="color: #C7C7C7; font-size: 0.75rem;" class="text-nowrap fw-normal">Overall Progress</span>
-                          <span class="progress-percent">0%</span>
+                          <span class="progress-percent" id="percent-${btoa(
+                              element.workspace.workspaceID
+                          )}">0%</span>
                         </div>
                       </div>
                     </div>
@@ -185,18 +262,18 @@ document.addEventListener("DOMContentLoaded", function () {
     function displayTasks(data) {
         const tasks = document.getElementById("tasks");
         var html = "";
-        if(data && Array.isArray(data) && data.length > 0){
-            data.forEach(task => {
-                if(task.priority === 'Low Priority'){
-                    var priorityClass = 'low-prio';
+        if (data && Array.isArray(data) && data.length > 0) {
+            data.forEach((task) => {
+                if (task.priority === "Low Priority") {
+                    var priorityClass = "low-prio";
                     var priority = "Low";
                 }
-                if(task.priority === 'Medium Priority'){
-                    var priorityClass = 'med-prio';
+                if (task.priority === "Medium Priority") {
+                    var priorityClass = "med-prio";
                     var priority = "Medium";
                 }
-                if(task.priority === 'High Priority'){
-                    var priorityClass = 'high-prio';
+                if (task.priority === "High Priority") {
+                    var priorityClass = "high-prio";
                     var priority = "High";
                 }
                 html += `
@@ -210,24 +287,62 @@ document.addEventListener("DOMContentLoaded", function () {
                 </tr>
                 `;
             });
-    
         } else {
             html += `
             <tr>
                 <td colspan="6" class="text-center">No Tasks</td>
             </tr>
-            `; 
+            `;
         }
 
         tasks.innerHTML = html;
     }
 
-    function displayTaskBreakdown(data){
+    function displayTaskBreakdown(data) {
+        document.getElementById("breakdownRemaining").innerHTML =
+            data.remainingTask;
+        document.getElementById("breakdownLowPrio").innerHTML =
+            data["Low Priority"];
+        document.getElementById("breakdownMedPrio").innerHTML =
+            data["Medium Priority"];
+        document.getElementById("breakdownHighPrio").innerHTML =
+            data["High Priority"];
+    }
 
-        document.getElementById("breakdownRemaining").innerHTML = data.remainingTask;
-        document.getElementById("breakdownLowPrio").innerHTML = data["Low Priority"];
-        document.getElementById("breakdownMedPrio").innerHTML = data["Medium Priority"];
-        document.getElementById("breakdownHighPrio").innerHTML = data["High Priority"];
+    function displayProgressPercentage(percentage, workspaceID) {
+        const offset = 503 - (percentage / 100) * 503;
+        const progressCircle = document.getElementById(
+            `progress-${btoa(workspaceID)}`
+        );
+        // console.log(progressCircle);
+        progressCircle.style.strokeDashoffset = offset;
+        document.getElementById(
+            `percent-${btoa(workspaceID)}`
+        ).textContent = `${percentage}%`;
+        progressCircle.classList.add("progress");
+    }
 
+    function displayPagination(total_page) {
+        const pagination = document.getElementById("pagination");
+        var html = "";
+
+        for (i = 0; i < total_page; i++) {
+            // console.log(i);
+            // console.log(currentPage);
+            if (i + 1 === currentPage) {
+                html += `
+                <li class="page-item"><a class="page-link active" href="#" id="page-${
+                    i + 1
+                }">${i + 1}</a></li>
+            `;
+            }else {
+                html += `
+                    <li class="page-item"><a class="page-link" href="#" id="page-${
+                        i + 1
+                    }">${i + 1}</a></li>
+                `;
+            }
+        }
+        pagination.innerHTML = html;
     }
 });

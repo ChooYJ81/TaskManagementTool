@@ -2,7 +2,7 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 0);
 ini_set('log_errors', 1);
-ini_set('error_log', '/error.txt');
+ini_set('error_log', './error.txt');
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $jsonData = file_get_contents('php://input');
     $data = json_decode($jsonData, true);
@@ -19,10 +19,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $response = getWorkspace($pdo, $_SESSION['accountID']); // Hardcoded for testing
             break;
         case 'getTaskDetails':
-            $response = getTaskDetails($pdo, $data['workspaceID']);
+            $response = getTaskDetails($pdo, $data['workspaceID'], $data['pageNo']);
             break;
         case 'getTaskBreakdown':
             $response = getTaskBreakdown($pdo, $data['workspaceID']);
+            break;
+        case 'getProgressPercentage':
+            $response = getProgressPercentage($pdo, $data['workspaceID']);
+            break;
+        case 'getTotalPage':
+            $response = getTotalTaskPages($pdo, $data['workspaceID'], 7);
             break;
         default:
             $response = [
@@ -85,7 +91,8 @@ function getTasksQuantity($pdo, $workspaceID, $accountID)
     return $result;
 }
 
-function getTaskBreakdown($pdo, $workspaceID){
+function getTaskBreakdown($pdo, $workspaceID)
+{
     $priority = ['Low Priority', 'Medium Priority', 'High Priority'];
     $remainingTask = getRemainingTaskQuantity($pdo, $workspaceID);
     $result = [
@@ -95,7 +102,7 @@ function getTaskBreakdown($pdo, $workspaceID){
         'High Priority' => '',
     ];
 
-    foreach($priority as $p){
+    foreach ($priority as $p) {
         $taskQuantity = getTaskPriorityQuantity($pdo, $workspaceID, $p);
         $result[$p] = $taskQuantity;
     }
@@ -103,7 +110,8 @@ function getTaskBreakdown($pdo, $workspaceID){
     return $result;
 }
 
-function getTaskPriorityQuantity($pdo, $workspaceID, $priority){
+function getTaskPriorityQuantity($pdo, $workspaceID, $priority)
+{
     $query = "SELECT COUNT(*) FROM task WHERE workspaceID = :workspaceID AND priority = :priority";
     $stmt = $pdo->prepare($query);
     $stmt->bindParam(':workspaceID', $workspaceID, PDO::PARAM_STR);
@@ -148,9 +156,41 @@ function getYourTask($pdo, $workspaceID, $accountID)
     return $count;
 }
 
-function getTaskDetails($pdo, $workspaceID)
+function getTaskDetails($pdo, $workspaceID, $pageNo)
 {
+    $max_record = 7;
+    $offset = ($pageNo - 1) * $max_record;
+
     $query = "SELECT *, t.type as 'taskType'
+FROM Task t
+INNER JOIN Assigned a ON t.taskID = a.taskID
+INNER JOIN Member m ON t.workspaceID = m.workspaceID AND t.creator = m.accountID
+INNER JOIN Account b ON a.assignedMember = b.accountID
+INNER JOIN Workspace w ON t.workspaceID = w.workspaceID
+WHERE t.workspaceID = :workspaceID
+LIMIT $offset, $max_record";
+    $stmt = $pdo->prepare($query);
+    $stmt->bindParam(':workspaceID', $workspaceID, PDO::PARAM_STR);
+    $stmt->execute();
+    $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    return $tasks;
+}
+
+function getProgressPercentage($pdo, $workspaceID)
+{
+    $remainingTask = getRemainingTaskQuantity($pdo, $workspaceID);
+    $query = "SELECT COUNT(*) FROM task WHERE workspaceID = :workspaceID";
+    $stmt = $pdo->prepare($query);
+    $stmt->bindParam(':workspaceID', $workspaceID, PDO::PARAM_STR);
+    $stmt->execute();
+    $count = $stmt->fetchColumn();
+    $percentage = ceil(($count - $remainingTask) / $count * 100);
+    return $percentage;
+}
+
+function getTotalTaskPages($pdo, $workspaceID, $record)
+{
+    $query = "SELECT COUNT(*)
 FROM Task t
 INNER JOIN Assigned a ON t.taskID = a.taskID
 INNER JOIN Member m ON t.workspaceID = m.workspaceID AND t.creator = m.accountID
@@ -160,6 +200,6 @@ WHERE t.workspaceID = :workspaceID;";
     $stmt = $pdo->prepare($query);
     $stmt->bindParam(':workspaceID', $workspaceID, PDO::PARAM_STR);
     $stmt->execute();
-    $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    return $tasks;
+    $count = $stmt->fetchColumn();
+    return (ceil($count / $record));
 }

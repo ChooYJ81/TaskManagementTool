@@ -723,3 +723,18 @@ body {
   left: 8%;
   height: 10%;
 }
+
+.pagination .page-item .page-link{
+  color: var(--blue);
+}
+
+.pagination .page-item .page-link:focus{
+  box-shadow: none;
+}
+
+.pagination .page-item .page-link:hover,
+.pagination .page-item .page-link.active{
+  color: var(--white);
+  background-color: var(--blue);
+}
+
