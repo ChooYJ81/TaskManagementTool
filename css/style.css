@@ -728,3 +728,17 @@ body {
   background-color: var(--blue);
   color: white;
 }
+.pagination .page-item .page-link{
+  color: var(--blue);
+}
+
+.pagination .page-item .page-link:focus{
+  box-shadow: none;
+}
+
+.pagination .page-item .page-link:hover,
+.pagination .page-item .page-link.active{
+  color: var(--white);
+  background-color: var(--blue);
+}
+
