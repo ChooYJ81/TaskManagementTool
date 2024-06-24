@@ -15,6 +15,8 @@ document.addEventListener("DOMContentLoaded", function () {
   submitNewTask(); // Add event listener to create a task
 
   getTasks();
+
+  viewTask(); // Initialize the task modal
 });
 
 // Fetch data from database
@@ -272,46 +274,52 @@ function displayTasks(data) {
     var taskColumn = document.getElementById(`${className}Column`);
     if (quantity == 0) {
       let html = `<p class="noTasks">No tasks available.</p>`;
-      taskColumn.insertAdjacentHTML('beforeend', html);
+      taskColumn.insertAdjacentHTML("beforeend", html);
     } else {
       let html = "";
 
       // Display each task
       for (const task of data[key].tasks) {
         var assignedMember = "";
-        
+
         if (displayedTasks.has(task.taskID)) {
           // If this task has already been displayed, but the previous one was not assigned to the user
-          if(task.assignedMember == 'A0001'){ // Hardcoded for now
+          if (task.assignedMember == "A0001") {
+            // Hardcoded for now
             assignedMember = `<p class="text-1 mt-5" style="color:#3284BA">You are assigned to this task.</p>`;
           }
           var taskCard = document.getElementById(task.taskID);
-          var childDiv = taskCard.querySelector('.card-body');
-          childDiv.insertAdjacentHTML('beforeend', assignedMember);
+          var childDiv = taskCard.querySelector(".card-body");
+          childDiv.insertAdjacentHTML("beforeend", assignedMember);
           continue; // Skip this task if it has already been displayed
         }
 
         // If the task comes first and assigned to the user
-        if(task.assignedMember == 'A0001'){ // Hardcoded for now
+        if (task.assignedMember == "A0001") {
+          // Hardcoded for now
           assignedMember = `<p class="text-1 mt-5" style="color:#3284BA">You are assigned to this task.</p>`;
         }
 
         displayedTasks.add(task.taskID); // Mark this task as displayed
 
-        if(task.priority == "Low Priority"){
+        if (task.priority == "Low Priority") {
           priority = `<span class="badge rounded-pill low-prio">Low Priority</span>`;
-        }else if(task.priority == "Medium Priority"){
+        } else if (task.priority == "Medium Priority") {
           priority = `<span class="badge rounded-pill med-prio">Medium Priority</span>`;
-        }else if(task.priority == "High Priority"){
+        } else if (task.priority == "High Priority") {
           priority = `<span class="badge rounded-pill high-prio">High Priority</span>`;
         }
+
+
+        const taskJsonString = JSON.stringify(task);
+        const escapedTaskJsonString = taskJsonString.replace(/"/g, "&quot;");
 
         html = `
         <div class="w-100 card mb-3" id="${task.taskID}">
           <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mb-3">
               ${priority}
-              <a href="#" data-bs-target="#viewModal" data-bs-toggle="modal"
+              <a href="#" data-bs-target="#viewTaskModal" data-bs-toggle="modal" data-bs-task="${escapedTaskJsonString}" class="text-decoration-none"
                 ><i class="bi bi-three-dots-vertical fs-5 me-2"></i
               ></a>
             </div>
@@ -323,8 +331,29 @@ function displayTasks(data) {
           </div>
         </div>
         `;
-        taskColumn.insertAdjacentHTML('beforeend', html);
+        taskColumn.insertAdjacentHTML("beforeend", html);
       }
     }
+  }
+}
+
+function viewTask() {
+  const viewTaskModal = document.getElementById("viewTaskModal");
+  if (viewTaskModal) {
+    viewTaskModal.addEventListener("show.bs.modal", (event) => {
+      const button = event.relatedTarget;
+      const taskJson = button.getAttribute("data-bs-task");
+      const task = JSON.parse(taskJson.replace(/&quot;/g, '"')); // Parse it back into an object
+      // If necessary, you could initiate an Ajax request here
+      // and then do the updating in a callback.
+
+      // Update the modal's content.
+      // const modalTitle = exampleModal.querySelector(".modal-title");
+      // const modalBodyInput = exampleModal.querySelector(".modal-body input");
+
+      // modalTitle.textContent = `New message to ${recipient}`;
+      // modalBodyInput.value = recipient;
+      console.log(task);
+    });
   }
 }
