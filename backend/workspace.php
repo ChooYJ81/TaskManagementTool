@@ -26,6 +26,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     case 'getTasks':
       $response = getTasks($pdo, $data['workspace']);
       break;
+    case 'getViewTask':
+      $response = getViewTask($pdo, $data['task']);
+      break;
     default:
       $response = [
         'message' => 'Invalid action',
@@ -106,6 +109,16 @@ function createTask($pdo, $data){
     'message' => 'Task created successfully',
   ];
 
+  return $response;
+}
+
+function getViewTask($pdo, $taskID){
+  $creator = getTaskCreator($pdo, $taskID);
+  $members = getAssignedMembers($pdo, $taskID);
+  $response = [
+    'creator' => $creator,
+    'members' => $members,
+  ];
   return $response;
 }
 
@@ -199,3 +212,23 @@ function getTask($pdo, $workspaceID, $type){
   $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
   return $tasks;
 }
+
+function getTaskCreator($pdo, $taskID){
+  $query = "SELECT a.accountID, a.username FROM Account a, Task t WHERE t.taskID = :taskID AND t.creator = a.accountID";
+  $stmt = $pdo->prepare($query);
+  $stmt->bindParam(':taskID', $taskID, PDO::PARAM_STR);
+  $stmt->execute();
+  $creator = $stmt->fetch(PDO::FETCH_ASSOC);
+  return $creator;
+}
+
+function getAssignedMembers($pdo, $taskID){
+  $query = "SELECT ac.accountID, ac.username FROM Account ac, Assigned a WHERE a.taskID = :taskID AND a.assignedMember = ac.accountID";
+  $stmt = $pdo->prepare($query);
+  $stmt->bindParam(':taskID', $taskID, PDO::PARAM_STR);
+  $stmt->execute();
+  $members = $stmt->fetchAll(PDO::FETCH_ASSOC);
+  return $members;
+}
+
+

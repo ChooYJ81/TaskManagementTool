@@ -15,6 +15,8 @@ document.addEventListener("DOMContentLoaded", function () {
   submitNewTask(); // Add event listener to create a task
 
   getTasks();
+
+  viewTask(); // Initialize the task modal
 });
 
 // Fetch data from database
@@ -241,7 +243,6 @@ async function getTasks() {
     }
 
     const responseData = await response.json();
-    console.log(responseData);
     displayTasks(responseData);
   } catch (error) {
     console.error("Fetch error: " + error.message);
@@ -272,46 +273,51 @@ function displayTasks(data) {
     var taskColumn = document.getElementById(`${className}Column`);
     if (quantity == 0) {
       let html = `<p class="noTasks">No tasks available.</p>`;
-      taskColumn.insertAdjacentHTML('beforeend', html);
+      taskColumn.insertAdjacentHTML("beforeend", html);
     } else {
       let html = "";
 
       // Display each task
       for (const task of data[key].tasks) {
         var assignedMember = "";
-        
+
         if (displayedTasks.has(task.taskID)) {
           // If this task has already been displayed, but the previous one was not assigned to the user
-          if(task.assignedMember == 'A0001'){ // Hardcoded for now
+          if (task.assignedMember == "A0001") {
+            // Hardcoded for now
             assignedMember = `<p class="text-1 mt-5" style="color:#3284BA">You are assigned to this task.</p>`;
           }
           var taskCard = document.getElementById(task.taskID);
-          var childDiv = taskCard.querySelector('.card-body');
-          childDiv.insertAdjacentHTML('beforeend', assignedMember);
+          var childDiv = taskCard.querySelector(".card-body");
+          childDiv.insertAdjacentHTML("beforeend", assignedMember);
           continue; // Skip this task if it has already been displayed
         }
 
         // If the task comes first and assigned to the user
-        if(task.assignedMember == 'A0001'){ // Hardcoded for now
+        if (task.assignedMember == "A0001") {
+          // Hardcoded for now
           assignedMember = `<p class="text-1 mt-5" style="color:#3284BA">You are assigned to this task.</p>`;
         }
 
         displayedTasks.add(task.taskID); // Mark this task as displayed
 
-        if(task.priority == "Low Priority"){
+        if (task.priority == "Low Priority") {
           priority = `<span class="badge rounded-pill low-prio">Low Priority</span>`;
-        }else if(task.priority == "Medium Priority"){
+        } else if (task.priority == "Medium Priority") {
           priority = `<span class="badge rounded-pill med-prio">Medium Priority</span>`;
-        }else if(task.priority == "High Priority"){
+        } else if (task.priority == "High Priority") {
           priority = `<span class="badge rounded-pill high-prio">High Priority</span>`;
         }
+
+        const taskJsonString = JSON.stringify(task);
+        const escapedTaskJsonString = taskJsonString.replace(/"/g, "&quot;");
 
         html = `
         <div class="w-100 card mb-3" id="${task.taskID}">
           <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mb-3">
               ${priority}
-              <a href="#" data-bs-target="#viewModal" data-bs-toggle="modal"
+              <a href="#" data-bs-target="#viewTaskModal" data-bs-toggle="modal" data-bs-task="${escapedTaskJsonString}" class="text-decoration-none"
                 ><i class="bi bi-three-dots-vertical fs-5 me-2"></i
               ></a>
             </div>
@@ -323,8 +329,99 @@ function displayTasks(data) {
           </div>
         </div>
         `;
-        taskColumn.insertAdjacentHTML('beforeend', html);
+        taskColumn.insertAdjacentHTML("beforeend", html);
       }
     }
+  }
+}
+
+function viewTask() {
+  const viewTaskModal = document.getElementById("viewTaskModal");
+  const taskTitle = document.getElementById("viewTaskTitle");
+  const taskDesc = document.getElementById("viewTaskDesc");
+  const creatorTextEl = document.getElementById("creatorText");
+  const membersAssignedEl = document.getElementById("membersAssigned");
+
+  if (viewTaskModal) {
+    viewTaskModal.addEventListener("show.bs.modal", async (event) => {
+      const button = event.relatedTarget;
+      const taskJson = button.getAttribute("data-bs-task");
+      const task = JSON.parse(taskJson.replace(/&quot;/g, '"')); 
+
+      try {
+        var viewTask = await getViewTask(task.taskID); // Contains creator and members assigned
+        var creatorText = `Created by ${viewTask.creator.username} on ${dayjs(task.creationDate).format("dddd, D MMMM YYYY")} at ${dayjs(task.creationDate).format("h:mm A")}`;
+      
+        var membersAssigned = "";
+        viewTask.members.forEach((member) => {
+          membersAssigned += `<span class="members-badge">${member.username}</span>`;
+        });
+      } catch (error) {
+        console.error('Error fetching task details:', error);
+      }
+
+      console.log(viewTask);
+
+      var priorityClass = "";
+      var priorityText = "";
+
+      if (task.priority == "Low Priority") {
+        priorityClass = "low-prio";
+        priorityText = "Low Priority";
+      } else if (task.priority == "Medium Priority") {
+        priorityClass = "med-prio";
+        priorityText = "Medium Priority";
+      } else if (task.priority == "High Priority") {
+        priorityClass = "high-prio";
+        priorityText = "High Priority";
+      }
+
+
+
+      taskTitle.textContent = task.taskName;
+      taskDesc.textContent = task.taskDesc;
+      creatorTextEl.textContent = creatorText;
+      membersAssignedEl.innerHTML = membersAssigned;
+
+   
+      const prioritySpan = document.createElement("span"); 
+      prioritySpan.textContent = priorityText;
+      prioritySpan.classList.add(
+        "badge",
+        "rounded-pill",
+        "mx-2",
+        priorityClass
+      );
+      taskTitle.appendChild(prioritySpan);
+     
+      console.log(task);
+    });
+  }
+}
+
+async function getViewTask(taskID) {
+  const data = {
+    workspace: workspace,
+    task: taskID,
+    action: "getViewTask",
+  };
+
+  try {
+    const response = await fetch("./backend/workspace.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const responseData = await response.json();
+    return responseData;
+  } catch (error) {
+    console.error("Fetch error: " + error.message);
   }
 }

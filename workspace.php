@@ -133,6 +133,7 @@
   <!-- modals -->
   <?php include 'includes/modals/addTask.php'; ?>
   <?php include 'includes/modals/manageModal.php'; ?>
+  <?php include 'includes/modals/viewTask.php'; ?>
 
   <script src="./scripts/sidebar.js"></script>
   <script src="scripts/workspace.js"></script>
