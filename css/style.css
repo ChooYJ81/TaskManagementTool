@@ -521,6 +521,10 @@ body {
   background-image: url(/images/down-white.svg) !important;
 }
 
+.accordion-button:focus {
+  box-shadow: none;
+}
+
 .workspace-code-title {
   font-size: 0.75rem;
   color: var(--blue);
@@ -728,10 +732,6 @@ body {
   height: 10%;
 }
 
-.collapsible-card-header-blue {
-  background-color: var(--blue);
-  color: white;
-}
 .pagination .page-item .page-link{
   color: var(--blue);
 }
