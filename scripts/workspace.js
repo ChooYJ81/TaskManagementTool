@@ -243,7 +243,6 @@ async function getTasks() {
     }
 
     const responseData = await response.json();
-    console.log(responseData);
     displayTasks(responseData);
   } catch (error) {
     console.error("Fetch error: " + error.message);
@@ -310,7 +309,6 @@ function displayTasks(data) {
           priority = `<span class="badge rounded-pill high-prio">High Priority</span>`;
         }
 
-
         const taskJsonString = JSON.stringify(task);
         const escapedTaskJsonString = taskJsonString.replace(/"/g, "&quot;");
 
@@ -339,21 +337,91 @@ function displayTasks(data) {
 
 function viewTask() {
   const viewTaskModal = document.getElementById("viewTaskModal");
+  const taskTitle = document.getElementById("viewTaskTitle");
+  const taskDesc = document.getElementById("viewTaskDesc");
+  const creatorTextEl = document.getElementById("creatorText");
+  const membersAssignedEl = document.getElementById("membersAssigned");
+
   if (viewTaskModal) {
-    viewTaskModal.addEventListener("show.bs.modal", (event) => {
+    viewTaskModal.addEventListener("show.bs.modal", async (event) => {
       const button = event.relatedTarget;
       const taskJson = button.getAttribute("data-bs-task");
-      const task = JSON.parse(taskJson.replace(/&quot;/g, '"')); // Parse it back into an object
-      // If necessary, you could initiate an Ajax request here
-      // and then do the updating in a callback.
+      const task = JSON.parse(taskJson.replace(/&quot;/g, '"')); 
 
-      // Update the modal's content.
-      // const modalTitle = exampleModal.querySelector(".modal-title");
-      // const modalBodyInput = exampleModal.querySelector(".modal-body input");
+      try {
+        var viewTask = await getViewTask(task.taskID); // Contains creator and members assigned
+        var creatorText = `Created by ${viewTask.creator.username} on ${dayjs(task.creationDate).format("dddd, D MMMM YYYY")} at ${dayjs(task.creationDate).format("h:mm A")}`;
+      
+        var membersAssigned = "";
+        viewTask.members.forEach((member) => {
+          membersAssigned += `<span class="members-badge">${member.username}</span>`;
+        });
+      } catch (error) {
+        console.error('Error fetching task details:', error);
+      }
 
-      // modalTitle.textContent = `New message to ${recipient}`;
-      // modalBodyInput.value = recipient;
+      console.log(viewTask);
+
+      var priorityClass = "";
+      var priorityText = "";
+
+      if (task.priority == "Low Priority") {
+        priorityClass = "low-prio";
+        priorityText = "Low Priority";
+      } else if (task.priority == "Medium Priority") {
+        priorityClass = "med-prio";
+        priorityText = "Medium Priority";
+      } else if (task.priority == "High Priority") {
+        priorityClass = "high-prio";
+        priorityText = "High Priority";
+      }
+
+
+
+      taskTitle.textContent = task.taskName;
+      taskDesc.textContent = task.taskDesc;
+      creatorTextEl.textContent = creatorText;
+      membersAssignedEl.innerHTML = membersAssigned;
+
+   
+      const prioritySpan = document.createElement("span"); 
+      prioritySpan.textContent = priorityText;
+      prioritySpan.classList.add(
+        "badge",
+        "rounded-pill",
+        "mx-2",
+        priorityClass
+      );
+      taskTitle.appendChild(prioritySpan);
+     
       console.log(task);
     });
+  }
+}
+
+async function getViewTask(taskID) {
+  const data = {
+    workspace: workspace,
+    task: taskID,
+    action: "getViewTask",
+  };
+
+  try {
+    const response = await fetch("./backend/workspace.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const responseData = await response.json();
+    return responseData;
+  } catch (error) {
+    console.error("Fetch error: " + error.message);
   }
 }

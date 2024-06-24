@@ -466,8 +466,12 @@ body {
   border-radius: 15px;
 }
 
-.modal-dialog {
+.modal-dialog.forms-modal{
   max-width: 600px !important;
+}
+
+.modal-dialog.task-modal{
+  max-width: 800px !important;
 }
 
 .button-fill {
