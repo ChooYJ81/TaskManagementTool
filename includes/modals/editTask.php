@@ -1,5 +1,5 @@
 <div class="modal fade" id="editTaskModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" style="width: 500px">
+  <div class="modal-dialog modal-dialog-centered forms-modal">
     <div class="modal-content p-3">
       <div class="modal-body">
         <div class="d-flex align-items-center">
@@ -44,12 +44,13 @@
             <textarea class="form-control" rows="5" placeholder="Enter task description" name="taskDesc" required></textarea>
           </div>
 
-          <input type="hidden" id="taskType" name="type" value="<?php echo $workspaceId; ?>" />
-          <input type="hidden" id="taskWorkspaceID" name="workspaceID" value="<?php echo $workspaceId; ?>" />
+          <input type="hidden" id="taskType" name="type" value="" />
+          <input type="hidden" id="taskWorkspaceID" name="workspaceID" value="" />
           <input type="hidden" id="taskID" name="taskID" value="" />
 
           <div class="w-100 text-center">
-            <button type="submit" class="btn btn-primary mt-4 px-5 b-0" style="background-color:var(--blue)" id="addTaskButton">Create</button>
+            <button type="button" class="btn btn-outline-danger mt-4 px-5 b-0 w-100"><i class="bi bi-trash3 me-2"></i>Delete Task</button>
+            <button type="submit" class="btn btn-primary mt-2 px-5 b-0 w-100" style="background-color:var(--blue)" id="editTaskButton">Edit</button>
           </div>
         </form>
 

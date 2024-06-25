@@ -32,6 +32,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         'members' => getAssignedMembers($pdo, $data['task'])
       ];
       break;
+    case 'updateTask':
+      $response = updateTask($pdo, $data);
+      break;
     default:
       $response = [
         'message' => 'Invalid action',
@@ -110,6 +113,39 @@ function createTask($pdo, $data){
 
   $response = [
     'message' => 'Task created successfully',
+  ];
+
+  return $response;
+}
+
+function updateTask($pdo, $data){
+  // Delete all assigned members first
+  $query = "DELETE FROM Assigned WHERE taskID = :taskID";
+  $stmt = $pdo->prepare($query);
+  $stmt->bindParam(':taskID', $data['taskID'], PDO::PARAM_STR);
+  $stmt->execute();
+
+  // Update new task details
+  $query = "UPDATE Task SET taskName = :taskName, taskDesc = :taskDesc, priority = :priority, due = :due WHERE taskID = :taskID";
+  $stmt = $pdo->prepare($query);
+  $stmt->bindParam(':taskName', $data['taskName'], PDO::PARAM_STR);
+  $stmt->bindParam(':taskDesc', $data['taskDesc'], PDO::PARAM_STR);
+  $stmt->bindParam(':priority', $data['priority'], PDO::PARAM_STR);
+  $stmt->bindParam(':due', $data['due'], PDO::PARAM_STR);
+  $stmt->bindParam(':taskID', $data['taskID'], PDO::PARAM_STR);
+  $stmt->execute();
+
+  // Assign new members
+  foreach ($data['members'] as $member) {
+    $query = "INSERT INTO Assigned (taskID, assignedMember) VALUES (:taskID, :assignedMember)";
+    $stmt = $pdo->prepare($query);
+    $stmt->bindParam(':taskID', $data['taskID'], PDO::PARAM_STR);
+    $stmt->bindParam(':assignedMember', $member, PDO::PARAM_STR);
+    $stmt->execute();
+  }
+
+  $response = [
+    'message' => 'Task updated successfully',
   ];
 
   return $response;

@@ -18,6 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   viewTask(); // Initialize the task modal
   editTask(); // Initialize the edit task modal
+  updateTask(); // Add event listener to update a task
 });
 
 // Fetch data from database
@@ -389,7 +390,7 @@ function viewTask() {
         console.error("Error fetching task details:", error);
       }
 
-      console.log(viewTask);
+      // console.log(viewTask);
 
       var priorityClass = "";
       var priorityText = "";
@@ -421,7 +422,7 @@ function viewTask() {
       );
       taskTitle.appendChild(prioritySpan);
 
-      // console.log(task);
+      //  console.log(task);
     });
   }
 }
@@ -467,7 +468,9 @@ function editTask() {
       const taskName = task.taskName;
       const taskDesc = task.taskDesc;
       const taskPriority = task.priority;
-      const taskType = task.taskType;
+      const taskType = task.type;
+      const taskDue = task.due;
+      const workspaceID = task.workspaceID;
 
       // Get members assigned to the task
       try {
@@ -487,7 +490,9 @@ function editTask() {
         editTaskForm.taskName.value = taskName;
         editTaskForm.taskDesc.value = taskDesc;
         editTaskForm.priority.value = taskPriority;
-        editTaskForm.taskType.value = taskType;
+        editTaskForm.type.value = taskType;
+        editTaskForm.due.value = taskDue;
+        editTaskForm.workspaceID.value = workspaceID;
 
       } catch (error) {
         console.error("Failed to initialize multiple select:", error);
@@ -495,4 +500,56 @@ function editTask() {
       }
     });
   }
+}
+
+function updateTask() {
+  document
+    .getElementById("editTaskForm")
+    .addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      // Initialize an object to hold form data
+      const formDataObj = {
+        action: "updateTask",
+        members: [],
+      };
+
+      // Collect checked members
+      document
+        .querySelectorAll('input[name="members[]"]:checked')
+        .forEach((checkbox) => {
+          formDataObj.members.push(checkbox.value);
+        });
+
+      // Collect other form data
+      const formData = new FormData(e.target);
+      for (let [key, value] of formData.entries()) {
+        if (key !== "members[]") {
+          // Skip members[] as it's already handled
+          formDataObj[key] = value;
+        }
+      }
+
+      try {
+        console.log(formDataObj);
+        const response = await fetch("./backend/workspace.php", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formDataObj),
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        // Handle the response data
+        alert(data.message);
+        location.reload();
+      } catch (error) {
+        console.error("Fetch error: " + error);
+      }
+    });
 }
