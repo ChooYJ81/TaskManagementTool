@@ -26,8 +26,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     case 'getTasks':
       $response = getTasks($pdo, $data['workspace']);
       break;
-    case 'getViewTask':
-      $response = getViewTask($pdo, $data['task']);
+    case 'getCreatorAndAssigned':
+      $response = [
+        'creator' => getTaskCreator($pdo, $data['task']),
+        'members' => getAssignedMembers($pdo, $data['task'])
+      ];
       break;
     default:
       $response = [
@@ -109,16 +112,6 @@ function createTask($pdo, $data){
     'message' => 'Task created successfully',
   ];
 
-  return $response;
-}
-
-function getViewTask($pdo, $taskID){
-  $creator = getTaskCreator($pdo, $taskID);
-  $members = getAssignedMembers($pdo, $taskID);
-  $response = [
-    'creator' => $creator,
-    'members' => $members,
-  ];
   return $response;
 }
 

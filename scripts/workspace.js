@@ -11,12 +11,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
   getWorkspace();
   initializeCreateTask(); // Add event listener to get the task type
-  initializeMultipleSelect(); // Add event listener to enable multi-select for the select element
+  initializeMultipleSelect("createDropdownDisplay", "createDropdownOptions"); // Add event listener to enable multi-select for the select element
   submitNewTask(); // Add event listener to create a task
 
   getTasks();
 
   viewTask(); // Initialize the task modal
+  editTask(); // Initialize the edit task modal
 });
 
 // Fetch data from database
@@ -86,38 +87,46 @@ function initializeCreateTask() {
   });
 }
 
-function initializeMultipleSelect() {
-  const dropdownDisplay = document.getElementById("dropdownDisplay");
-  const dropdownOptions = document.getElementById("dropdownOptions");
+function initializeMultipleSelect(
+  dropdownDisplayID,
+  dropdownOptionsID,
+  preSelectedMembers = []
+) {
+  const dropdownDisplay = document.getElementById(dropdownDisplayID);
+  const dropdownOptions = document.getElementById(dropdownOptionsID);
 
   // Toggle dropdown visibility
   dropdownDisplay.addEventListener("click", function () {
     dropdownOptions.classList.toggle("show");
   });
 
-  getWorkspaceMembers();
+  // Pre-select members and update display
+  const updateSelectedDisplay = () => {
+    dropdownDisplay.innerHTML = ""; // Clear current selections
+    const selectedOptions = [
+      ...dropdownOptions.querySelectorAll('input[type="checkbox"]:checked'),
+    ];
 
-  // Handle assign members selection
-  dropdownOptions.addEventListener("change", function (e) {
-    if (e.target.type === "checkbox") {
-      // Clear current selections
-      dropdownDisplay.innerHTML = "";
-
-      const selectedOptions = [
-        ...dropdownOptions.querySelectorAll('input[type="checkbox"]:checked'),
-      ];
-
+    if (selectedOptions.length === 0) {
+      // If no options are selected, show placeholder text
+      dropdownDisplay.textContent = "Select members"; // Placeholder text
+    } else {
       selectedOptions.forEach((option) => {
+        // Create and append the span for the selected option
         const optionSpan = document.createElement("span");
         optionSpan.textContent = option.parentElement.textContent.trim();
         optionSpan.classList.add("selected-option");
         dropdownDisplay.appendChild(optionSpan);
       });
+    }
+  };
 
-      // If no options are selected, show placeholder text
-      if (selectedOptions.length === 0) {
-        dropdownDisplay.textContent = "Select Members";
-      }
+  getWorkspaceMembers(dropdownOptionsID, preSelectedMembers, updateSelectedDisplay);
+
+  // Handle assign members selection
+  dropdownOptions.addEventListener("change", function (e) {
+    if (e.target.type === "checkbox") {
+      updateSelectedDisplay();
     }
   });
 
@@ -132,7 +141,7 @@ function initializeMultipleSelect() {
   });
 }
 
-async function getWorkspaceMembers() {
+async function getWorkspaceMembers(dropdownOptionsID, preSelectedMembers, callback) {
   const data = {
     workspace: workspace,
     action: "getWorkspaceMembers",
@@ -152,24 +161,39 @@ async function getWorkspaceMembers() {
     }
 
     const responseData = await response.json();
-    displayWorkspaceMembers(responseData);
+    displayWorkspaceMembers(
+      responseData,
+      dropdownOptionsID,
+      preSelectedMembers,
+      callback
+    );
   } catch (error) {
     console.error("Fetch error: " + error.message);
   }
 }
 
-function displayWorkspaceMembers(data) {
-  const dropdownOptions = document.getElementById("dropdownOptions");
+function displayWorkspaceMembers(data, dropdownOptionsID, preSelectedMembers, callback) {
+  const dropdownOptions = document.getElementById(`${dropdownOptionsID}`);
   var html = "";
   data.forEach((element) => {
     html += `
       <label class="dropdown-option">
-        <input type="checkbox" name="members[]" value="${element.accountID}">
+        <input type="checkbox" name="members[]" value="${element.accountID}"
+    `;
+    if (preSelectedMembers.includes(element.accountID)) {
+      html += ` checked`;
+    }
+
+    html += `
+    >
         <span>${element.username}</span>
       </label>
     `;
   });
   dropdownOptions.innerHTML = html;
+  if(callback){
+    callback();
+  }
 }
 
 async function submitNewTask() {
@@ -341,23 +365,28 @@ function viewTask() {
   const taskDesc = document.getElementById("viewTaskDesc");
   const creatorTextEl = document.getElementById("creatorText");
   const membersAssignedEl = document.getElementById("membersAssigned");
+  const editTaskModalBtn = document.getElementById("editTaskModalBtn");
 
   if (viewTaskModal) {
     viewTaskModal.addEventListener("show.bs.modal", async (event) => {
       const button = event.relatedTarget;
       const taskJson = button.getAttribute("data-bs-task");
-      const task = JSON.parse(taskJson.replace(/&quot;/g, '"')); 
+      const task = JSON.parse(taskJson.replace(/&quot;/g, '"'));
 
       try {
-        var viewTask = await getViewTask(task.taskID); // Contains creator and members assigned
-        var creatorText = `Created by ${viewTask.creator.username} on ${dayjs(task.creationDate).format("dddd, D MMMM YYYY")} at ${dayjs(task.creationDate).format("h:mm A")}`;
-      
+        var viewTask = await getCreatorAndAssigned(task.taskID); // Contains creator and members assigned
+        var creatorText = `Created by ${viewTask.creator.username} on ${dayjs(
+          task.creationDate
+        ).format("dddd, D MMMM YYYY")} at ${dayjs(task.creationDate).format(
+          "h:mm A"
+        )}`;
+
         var membersAssigned = "";
         viewTask.members.forEach((member) => {
           membersAssigned += `<span class="members-badge">${member.username}</span>`;
         });
       } catch (error) {
-        console.error('Error fetching task details:', error);
+        console.error("Error fetching task details:", error);
       }
 
       console.log(viewTask);
@@ -376,15 +405,13 @@ function viewTask() {
         priorityText = "High Priority";
       }
 
-
-
       taskTitle.textContent = task.taskName;
       taskDesc.textContent = task.taskDesc;
       creatorTextEl.textContent = creatorText;
       membersAssignedEl.innerHTML = membersAssigned;
+      editTaskModalBtn.setAttribute("data-bs-task", taskJson);
 
-   
-      const prioritySpan = document.createElement("span"); 
+      const prioritySpan = document.createElement("span");
       prioritySpan.textContent = priorityText;
       prioritySpan.classList.add(
         "badge",
@@ -393,17 +420,17 @@ function viewTask() {
         priorityClass
       );
       taskTitle.appendChild(prioritySpan);
-     
-      console.log(task);
+
+      // console.log(task);
     });
   }
 }
 
-async function getViewTask(taskID) {
+async function getCreatorAndAssigned(taskID) {
   const data = {
     workspace: workspace,
     task: taskID,
-    action: "getViewTask",
+    action: "getCreatorAndAssigned",
   };
 
   try {
@@ -423,5 +450,49 @@ async function getViewTask(taskID) {
     return responseData;
   } catch (error) {
     console.error("Fetch error: " + error.message);
+  }
+}
+
+function editTask() {
+  const editTaskModal = document.getElementById("editTaskModal");
+  const editTaskForm = document.getElementById("editTaskForm");
+
+  if (editTaskModal) {
+    editTaskModal.addEventListener("show.bs.modal", async (event) => {
+      const button = event.relatedTarget;
+      const taskJson = button.getAttribute("data-bs-task");
+      const task = JSON.parse(taskJson.replace(/&quot;/g, '"'));
+
+      const taskID = task.taskID;
+      const taskName = task.taskName;
+      const taskDesc = task.taskDesc;
+      const taskPriority = task.priority;
+      const taskType = task.taskType;
+
+      // Get members assigned to the task
+      try {
+        const response = await getCreatorAndAssigned(taskID);
+        var members = [];
+        for (const member of response.members) {
+          members.push(member.accountID);
+        }
+        initializeMultipleSelect(
+          "editDropdownDisplay",
+          "editDropdownOptions",
+          members
+        );
+
+        // Set the form values
+        editTaskForm.taskID.value = taskID;
+        editTaskForm.taskName.value = taskName;
+        editTaskForm.taskDesc.value = taskDesc;
+        editTaskForm.priority.value = taskPriority;
+        editTaskForm.taskType.value = taskType;
+
+      } catch (error) {
+        console.error("Failed to initialize multiple select:", error);
+        // Handle the error appropriately
+      }
+    });
   }
 }

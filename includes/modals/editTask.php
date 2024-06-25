@@ -1,24 +1,24 @@
-<div class="modal fade" id="createModal" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="editTaskModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" style="width: 500px">
     <div class="modal-content p-3">
       <div class="modal-body">
         <div class="d-flex align-items-center">
-          <p class="title-1 m-0">Create a New Task</p>
+          <p class="title-1 m-0">Edit Task</p>
         </div>
         <p class="text-1 mb-4">
-          Fill in the details below to create a new task.
+          Fill in the details below to edit the task.
         </p>
 
-        <form id="createTaskForm" class="row">
+        <form id="editTaskForm" class="row">
           <div class="col-12 mb-3">
             <label class="form-label">Task Name</label>
-            <input class="form-control" type="text" name="taskName" placeholder="Enter Task Name" required />
+            <input class="form-control" type="text" name="taskName" placeholder="Enter Task Name" id="editTaskName" required />
           </div>
 
           <div class="custom-dropdown col-12 mb-3 d-flex flex-column">
             <label class="form-label">Assign Members</label>
-            <div class="dropdown-display form-select w-100" id="createDropdownDisplay" tabindex="0">Select Members</div>
-            <div class="dropdown-options w-100 mt-2" id="createDropdownOptions">
+            <div class="dropdown-display form-select w-100" id="editDropdownDisplay" tabindex="0">Select Members</div>
+            <div class="dropdown-options w-100 mt-2" id="editDropdownOptions">
               <!-- <label class="dropdown-option"><input type="checkbox" name="members[]" value="1" /> Member 1</label> -->
             </div>
           </div>
@@ -46,6 +46,7 @@
 
           <input type="hidden" id="taskType" name="type" value="<?php echo $workspaceId; ?>" />
           <input type="hidden" id="taskWorkspaceID" name="workspaceID" value="<?php echo $workspaceId; ?>" />
+          <input type="hidden" id="taskID" name="taskID" value="" />
 
           <div class="w-100 text-center">
             <button type="submit" class="btn btn-primary mt-4 px-5 b-0" style="background-color:var(--blue)" id="addTaskButton">Create</button>

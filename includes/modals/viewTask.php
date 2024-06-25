@@ -7,7 +7,7 @@
             <p class="title-1 mb-1 text-wrap" id="viewTaskTitle">Task Title</p>
           </div>
           <div class="col-2 d-flex justify-content-end">
-            <button class="button-fill ms-auto">
+            <button class="button-fill ms-auto " data-bs-target="#editTaskModal" data-bs-toggle="modal" id="editTaskModalBtn">
               <i class="bi-pencil-square me-2"></i>Edit
             </button>
           </div>
