@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
   initializeMultipleSelect("createDropdownDisplay", "createDropdownOptions"); // Add event listener to enable multi-select for the select element
   submitNewTask(); // Add event listener to create a task
 
-  getTasks();
+  getTasks(); // Fetch tasks from database
 
   viewTask(); // Initialize the task modal
   editTask(); // Initialize the edit task modal
@@ -122,7 +122,11 @@ function initializeMultipleSelect(
     }
   };
 
-  getWorkspaceMembers(dropdownOptionsID, preSelectedMembers, updateSelectedDisplay);
+  getWorkspaceMembers(
+    dropdownOptionsID,
+    preSelectedMembers,
+    updateSelectedDisplay
+  );
 
   // Handle assign members selection
   dropdownOptions.addEventListener("change", function (e) {
@@ -142,7 +146,11 @@ function initializeMultipleSelect(
   });
 }
 
-async function getWorkspaceMembers(dropdownOptionsID, preSelectedMembers, callback) {
+async function getWorkspaceMembers(
+  dropdownOptionsID,
+  preSelectedMembers,
+  callback
+) {
   const data = {
     workspace: workspace,
     action: "getWorkspaceMembers",
@@ -173,7 +181,12 @@ async function getWorkspaceMembers(dropdownOptionsID, preSelectedMembers, callba
   }
 }
 
-function displayWorkspaceMembers(data, dropdownOptionsID, preSelectedMembers, callback) {
+function displayWorkspaceMembers(
+  data,
+  dropdownOptionsID,
+  preSelectedMembers,
+  callback
+) {
   const dropdownOptions = document.getElementById(`${dropdownOptionsID}`);
   var html = "";
   data.forEach((element) => {
@@ -192,7 +205,7 @@ function displayWorkspaceMembers(data, dropdownOptionsID, preSelectedMembers, ca
     `;
   });
   dropdownOptions.innerHTML = html;
-  if(callback){
+  if (callback) {
     callback();
   }
 }
@@ -268,13 +281,14 @@ async function getTasks() {
     }
 
     const responseData = await response.json();
-    displayTasks(responseData);
+    displayTasks(responseData, initializeDraggable);
   } catch (error) {
     console.error("Fetch error: " + error.message);
   }
 }
 
-function displayTasks(data) {
+function displayTasks(data, callback) {
+  
   for (const key in data) {
     let className = "";
 
@@ -338,7 +352,7 @@ function displayTasks(data) {
         const escapedTaskJsonString = taskJsonString.replace(/"/g, "&quot;");
 
         html = `
-        <div class="w-100 card mb-3" id="${task.taskID}">
+        <div class="w-100 card mb-3 draggable" draggable="true" id="${task.taskID}" task-type="${key}">
           <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mb-3">
               ${priority}
@@ -357,6 +371,9 @@ function displayTasks(data) {
         taskColumn.insertAdjacentHTML("beforeend", html);
       }
     }
+  }
+  if (callback) {
+    callback();
   }
 }
 
@@ -493,7 +510,6 @@ function editTask() {
         editTaskForm.type.value = taskType;
         editTaskForm.due.value = taskDue;
         editTaskForm.workspaceID.value = workspaceID;
-
       } catch (error) {
         console.error("Failed to initialize multiple select:", error);
         // Handle the error appropriately
@@ -553,3 +569,120 @@ function updateTask() {
       }
     });
 }
+
+// Draggable functions
+function initializeDraggable() {
+  const draggables = document.querySelectorAll(".draggable");
+  const containers = document.querySelectorAll(".container-draggable");
+
+  draggables.forEach((draggable) => {
+    draggable.addEventListener("dragstart", () => {
+      draggable.classList.add("dragging");
+    });
+
+    draggable.addEventListener("dragend", () => {
+      draggable.classList.remove("dragging");
+      // New: Update task type based on the column it was dropped into
+      updateTaskType(draggable);
+    });
+  });
+
+  containers.forEach((container) => {
+    container.addEventListener("dragover", (e) => {
+      e.preventDefault();
+      const afterElement = getDragAfterElement(container, e.clientY);
+      const draggable = document.querySelector(".dragging");
+      if (afterElement == null) {
+        container.appendChild(draggable);
+      } else {
+        container.insertBefore(draggable, afterElement);
+      }
+    });
+  });
+}
+
+function getDragAfterElement(container, y) {
+  const draggableElements = [
+    ...container.querySelectorAll(".draggable:not(.dragging)"),
+  ];
+
+  return draggableElements.reduce(
+    (closest, child) => {
+      const box = child.getBoundingClientRect();
+      const offset = y - box.top - box.height / 2;
+      if (offset < 0 && offset > closest.offset) {
+        return { offset: offset, element: child };
+      } else {
+        return closest;
+      }
+    },
+    { offset: Number.NEGATIVE_INFINITY }
+  ).element;
+}
+
+// New function to update task type based on the column it was dropped into
+function updateTaskType(draggable) {
+  const parentColumnID = draggable.parentElement.id;
+
+  let newType;
+  switch (parentColumnID) {
+    case "completedColumn":
+      newType = "Completed";
+      break;
+    case "inProgressColumn":
+      newType = "In Progress";
+      break;
+    case "toDoColumn":
+      newType = "To-Do";
+      break;
+    default:
+      console.log("Unknown column");
+      return; // Unknown column, no action taken
+  }
+
+  let taskID = draggable.id;
+
+  const data = {
+    taskID: taskID,
+    oldType: draggable.getAttribute("task-type"),
+    newType: newType,
+    action: "updateTaskType",
+  };
+
+  fetch("./backend/workspace.php", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then((data) => {
+      // Handle the response data
+      window.alert(data.message);
+      displayNewTasks();
+    })
+    .catch((error) => {
+      console.error("Fetch error: " + error);
+    });
+}
+
+function displayNewTasks() {
+ 
+  const toDoColumn = document.getElementById('toDoColumn');
+  const inProgressColumn = document.getElementById('inProgressColumn');
+  const completedColumn = document.getElementById('completedColumn');
+
+  // Empty the columns
+  toDoColumn.innerHTML = "";
+  inProgressColumn.innerHTML = "";
+  completedColumn.innerHTML = "";
+
+  getTasks();
+}
+

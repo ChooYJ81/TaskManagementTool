@@ -50,7 +50,7 @@
         <div class="row justify-content-around">
 
           <!-- To-do -->
-          <div class="col-4 d-flex flex-column align-items-center pe-5" id="toDoColumn">
+          <div class="col-4 d-flex flex-column align-items-center pe-5">
             <div class="w-100 card mb-4">
               <div class="card-body d-flex justify-content-between align-items-center py-1">
                 <div class="d-flex">
@@ -64,6 +64,8 @@
                   <i class="bi bi-plus"></i>
                 </a>
               </div>
+            </div>
+            <div class="w-100 container-draggable d-flex flex-column" id="toDoColumn">
             </div>
 
             <!-- Looping tasks
@@ -86,7 +88,7 @@
           </div>
 
           <!-- In Progress -->
-          <div class="col-4 d-flex flex-column align-items-center px-2" id="inProgressColumn">
+          <div class="col-4 d-flex flex-column align-items-center px-2">
             <div class="w-100 card mb-4">
               <div class="card-body d-flex justify-content-between align-items-center py-1">
                 <div class="d-flex">
@@ -101,10 +103,12 @@
                 </a>
               </div>
             </div>
+            <div class="w-100 container-draggable d-flex flex-column" id="inProgressColumn">
+            </div>
           </div>
 
           <!-- Completed -->
-          <div class="col-4 d-flex flex-column align-items-center ps-5" id="completedColumn">
+          <div class="col-4 d-flex flex-column align-items-center ps-5">
             <div class="w-100 card mb-4">
               <div class="card-body d-flex justify-content-between align-items-center py-1">
                 <div class="d-flex">
@@ -119,6 +123,9 @@
                 </a>
               </div>
             </div>
+            <div class="w-100 container-draggable d-flex flex-column" id="completedColumn">
+            </div>
+            
           </div>
 
         </div>

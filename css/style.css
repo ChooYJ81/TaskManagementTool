@@ -746,3 +746,12 @@ body {
   background-color: var(--blue);
 }
 
+/* draggable */
+.draggable {
+  cursor: move;
+}
+
+.draggable.dragging {
+  opacity: .5;
+}
+

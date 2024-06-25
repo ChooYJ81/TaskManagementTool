@@ -35,6 +35,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     case 'updateTask':
       $response = updateTask($pdo, $data);
       break;
+    case 'updateTaskType':
+      $response = updateTaskType($pdo, $data); 
+      break;
     default:
       $response = [
         'message' => 'Invalid action',
@@ -146,6 +149,20 @@ function updateTask($pdo, $data){
 
   $response = [
     'message' => 'Task updated successfully',
+  ];
+
+  return $response;
+}
+
+function updateTaskType($pdo, $data){
+  $query = "UPDATE Task SET type = :type WHERE taskID = :taskID";
+  $stmt = $pdo->prepare($query);
+  $stmt->bindParam(':type', $data['newType'], PDO::PARAM_STR);
+  $stmt->bindParam(':taskID', $data['taskID'], PDO::PARAM_STR);
+  $stmt->execute();
+
+  $response = [
+    'message' => 'Task type updated successfully from ' . $data['oldType'] . ' to ' . $data['newType'] . '.'
   ];
 
   return $response;
