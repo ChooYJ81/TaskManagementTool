@@ -318,6 +318,7 @@ function displayTasks(data, callback) {
 
       // Display each task
       for (const task of data[key].tasks) {
+      
         var assignedMember = "";
 
         if (displayedTasks.has(task.taskID)) {
@@ -400,9 +401,13 @@ function viewTask() {
         )}`;
 
         var membersAssigned = "";
-        viewTask.members.forEach((member) => {
-          membersAssigned += `<span class="members-badge">${member.username}</span>`;
-        });
+        if(viewTask.members.length > 0){
+          viewTask.members.forEach((member) => {
+            membersAssigned += `<span class="members-badge">${member.username}</span>`;
+          });
+        } else {
+          membersAssigned = `<p class="text-1">No members assigned</p>`;
+        }
       } catch (error) {
         console.error("Error fetching task details:", error);
       }
@@ -439,7 +444,7 @@ function viewTask() {
       );
       taskTitle.appendChild(prioritySpan);
 
-      //  console.log(task);
+       console.log(task);
     });
   }
 }
@@ -474,12 +479,16 @@ async function getCreatorAndAssigned(taskID) {
 function editTask() {
   const editTaskModal = document.getElementById("editTaskModal");
   const editTaskForm = document.getElementById("editTaskForm");
+  const deleteTaskBtn = document.getElementById("deleteTaskBtn");
+
+
 
   if (editTaskModal) {
     editTaskModal.addEventListener("show.bs.modal", async (event) => {
       const button = event.relatedTarget;
       const taskJson = button.getAttribute("data-bs-task");
       const task = JSON.parse(taskJson.replace(/&quot;/g, '"'));
+      
 
       const taskID = task.taskID;
       const taskName = task.taskName;
@@ -510,6 +519,42 @@ function editTask() {
         editTaskForm.type.value = taskType;
         editTaskForm.due.value = taskDue;
         editTaskForm.workspaceID.value = workspaceID;
+
+        // Add event listener to delete task
+        deleteTaskBtn.setAttribute("task-id", taskID);
+
+        deleteTaskBtn.addEventListener("click", async () => {
+          const taskID = deleteTaskBtn.getAttribute("task-id"); // Get the task-id attribute
+          console.log(taskID)
+          const confirmDelete = confirm("Are you sure you want to delete this task?");
+          if (confirmDelete) {
+            const data = {
+              taskID: taskID,
+              action: "deleteTask",
+            };
+
+            try {
+              const response = await fetch("./backend/workspace.php", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+              });
+
+              if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+              }
+
+              const responseData = await response.json();
+              alert(responseData.message);
+              location.reload();
+            } catch (error) {
+              console.error("Fetch error: " + error.message);
+            }
+          }
+        });
+
       } catch (error) {
         console.error("Failed to initialize multiple select:", error);
         // Handle the error appropriately

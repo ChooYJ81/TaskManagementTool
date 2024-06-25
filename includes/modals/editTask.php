@@ -49,8 +49,8 @@
           <input type="hidden" id="taskID" name="taskID" value="" />
 
           <div class="w-100 text-center">
-            <button type="button" class="btn btn-outline-danger mt-4 px-5 b-0 w-100"><i class="bi bi-trash3 me-2"></i>Delete Task</button>
-            <button type="submit" class="btn btn-primary mt-2 px-5 b-0 w-100" style="background-color:var(--blue)" id="editTaskButton">Edit</button>
+            <button type="button" class="btn btn-outline-danger mt-4 px-5 b-0 w-100" task-id="" id="deleteTaskBtn"><i class="bi bi-trash3 me-2"></i>Delete Task</button>
+            <button type="submit" class="btn btn-primary mt-2 px-5 b-0 w-100" style="background-color:var(--blue)" id="editTaskBtn">Edit</button>
           </div>
         </form>
 

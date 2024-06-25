@@ -36,7 +36,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       $response = updateTask($pdo, $data);
       break;
     case 'updateTaskType':
-      $response = updateTaskType($pdo, $data); 
+      $response = updateTaskType($pdo, $data);
+      break;
+    case 'deleteTask':
+      $response = deleteTask($pdo, $data['taskID']);
       break;
     default:
       $response = [
@@ -88,10 +91,11 @@ function getWorkspace($pdo, $workspaceID)
   return $workspace;
 }
 
-function createTask($pdo, $data){
+function createTask($pdo, $data)
+{
   $taskID = generateTaskID($pdo);
   $date = date('Y-m-d H:i:s');
-  
+
   $query = "INSERT INTO Task (taskID, workspaceID, creator, taskName, taskDesc, type, priority, creationDate, due) VALUES (:taskID, :workspaceID, :creator, :taskName, :taskDesc, :type, :priority, :creationDate, :due)";
   $stmt = $pdo->prepare($query);
   $stmt->bindParam(':taskID', $taskID, PDO::PARAM_STR);
@@ -106,12 +110,14 @@ function createTask($pdo, $data){
   $stmt->bindParam(':due', $data['due'], PDO::PARAM_STR);
   $stmt->execute();
 
-  foreach ($data['members'] as $member) {
-    $query = "INSERT INTO Assigned (taskID, assignedMember) VALUES (:taskID, :assignedMember)";
-    $stmt = $pdo->prepare($query);
-    $stmt->bindParam(':taskID', $taskID, PDO::PARAM_STR);
-    $stmt->bindParam(':assignedMember', $member, PDO::PARAM_STR);
-    $stmt->execute();
+  if ($data['members'] != null) {
+    foreach ($data['members'] as $member) {
+      $query = "INSERT INTO Assigned (taskID, assignedMember) VALUES (:taskID, :assignedMember)";
+      $stmt = $pdo->prepare($query);
+      $stmt->bindParam(':taskID', $taskID, PDO::PARAM_STR);
+      $stmt->bindParam(':assignedMember', $member, PDO::PARAM_STR);
+      $stmt->execute();
+    }
   }
 
   $response = [
@@ -121,7 +127,8 @@ function createTask($pdo, $data){
   return $response;
 }
 
-function updateTask($pdo, $data){
+function updateTask($pdo, $data)
+{
   // Delete all assigned members first
   $query = "DELETE FROM Assigned WHERE taskID = :taskID";
   $stmt = $pdo->prepare($query);
@@ -154,7 +161,8 @@ function updateTask($pdo, $data){
   return $response;
 }
 
-function updateTaskType($pdo, $data){
+function updateTaskType($pdo, $data)
+{
   $query = "UPDATE Task SET type = :type WHERE taskID = :taskID";
   $stmt = $pdo->prepare($query);
   $stmt->bindParam(':type', $data['newType'], PDO::PARAM_STR);
@@ -163,6 +171,37 @@ function updateTaskType($pdo, $data){
 
   $response = [
     'message' => 'Task type updated successfully from ' . $data['oldType'] . ' to ' . $data['newType'] . '.'
+  ];
+
+  return $response;
+}
+
+function deleteTask($pdo, $taskID)
+{
+  $query = "SELECT * FROM Assigned WHERE taskID = :taskID";
+  $stmt = $pdo->prepare($query);
+  $stmt->bindParam(':taskID', $taskID, PDO::PARAM_STR);
+  $stmt->execute();
+  $assigned = $stmt->fetchAll(PDO::FETCH_COLUMN);
+
+  if ($assigned != null) {
+    foreach ($assigned as $member) {
+      $query = "DELETE FROM Assigned WHERE taskID = :taskID AND assignedMember = :assignedMember";
+      $stmt = $pdo->prepare($query);
+      $stmt->bindParam(':taskID', $taskID, PDO::PARAM_STR);
+      $stmt->bindParam(':assignedMember', $member, PDO::PARAM_STR);
+      $stmt->execute();
+    }
+  }
+
+  // Delete the task from the Task Table
+  $query = "DELETE FROM Task WHERE taskID = :taskID";
+  $stmt = $pdo->prepare($query);
+  $stmt->bindParam(':taskID', $taskID, PDO::PARAM_STR);
+  $stmt->execute();
+
+  $response = [
+    'message' => 'Task deleted successfully',
   ];
 
   return $response;
@@ -211,24 +250,35 @@ function getWorkspaceMembers($pdo, $workspaceID)
 }
 
 // Generate a unique task ID
-function generateTaskID($pdo){
-  $query = "SELECT COUNT(*) FROM Task";
+function generateTaskID($pdo)
+{
+  // Select the highest taskID from the Task table
+  $query = "SELECT taskID FROM Task ORDER BY taskID DESC LIMIT 1";
   $stmt = $pdo->prepare($query);
   $stmt->execute();
-  $count = $stmt->fetchColumn();
-  $taskID = "T" . str_pad($count + 1, 4, "0", STR_PAD_LEFT);
+  $lastTaskID = $stmt->fetchColumn();
+
+  // Extract the numeric part of the taskID
+  $number = substr($lastTaskID, 1);
+
+  // Increment the number by 1
+  $newNumber = intval($number) + 1;
+
+  // Generate a new taskID
+  $taskID = "T" . str_pad($newNumber, 4, "0", STR_PAD_LEFT);
   return $taskID;
 }
 
 // Get tasks for a workspace
-function getTasks($pdo, $workspaceID){
+function getTasks($pdo, $workspaceID)
+{
   $types = ['To-Do', 'In Progress', 'Completed'];
   $result = [
     'To-Do' => [],
     'In Progress' => [],
     'Completed' => []
   ];
-  foreach($types as $type){
+  foreach ($types as $type) {
     $taskQuantity = getTaskQuantity($pdo, $workspaceID, $type);
     $tasks = getTask($pdo, $workspaceID, $type);
     $result[$type] = [
@@ -239,7 +289,8 @@ function getTasks($pdo, $workspaceID){
   return $result;
 }
 
-function getTaskQuantity($pdo, $workspaceID, $type){
+function getTaskQuantity($pdo, $workspaceID, $type)
+{
   $query = "SELECT COUNT(*) FROM Task WHERE workspaceID = :workspaceID AND type = :type";
   $stmt = $pdo->prepare($query);
   $stmt->bindParam(':workspaceID', $workspaceID, PDO::PARAM_STR);
@@ -249,17 +300,23 @@ function getTaskQuantity($pdo, $workspaceID, $type){
   return $count;
 }
 
-function getTask($pdo, $workspaceID, $type){
-  $query = "SELECT * FROM Task t, Assigned a WHERE workspaceID = :workspaceID AND type = :type AND t.taskID = a.taskID";
+function getTask($pdo, $workspaceID, $type)
+{
+
+  $query = "SELECT t.*, a.taskID as assignedTaskID, a.assignedMember FROM Task t
+            LEFT JOIN Assigned a ON t.taskID = a.taskID
+            WHERE t.workspaceID = :workspaceID AND t.type = :type";
   $stmt = $pdo->prepare($query);
   $stmt->bindParam(':workspaceID', $workspaceID, PDO::PARAM_STR);
   $stmt->bindParam(':type', $type, PDO::PARAM_STR);
   $stmt->execute();
   $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
   return $tasks;
 }
 
-function getTaskCreator($pdo, $taskID){
+function getTaskCreator($pdo, $taskID)
+{
   $query = "SELECT a.accountID, a.username FROM Account a, Task t WHERE t.taskID = :taskID AND t.creator = a.accountID";
   $stmt = $pdo->prepare($query);
   $stmt->bindParam(':taskID', $taskID, PDO::PARAM_STR);
@@ -268,7 +325,8 @@ function getTaskCreator($pdo, $taskID){
   return $creator;
 }
 
-function getAssignedMembers($pdo, $taskID){
+function getAssignedMembers($pdo, $taskID)
+{
   $query = "SELECT ac.accountID, ac.username FROM Account ac, Assigned a WHERE a.taskID = :taskID AND a.assignedMember = ac.accountID";
   $stmt = $pdo->prepare($query);
   $stmt->bindParam(':taskID', $taskID, PDO::PARAM_STR);
@@ -276,5 +334,3 @@ function getAssignedMembers($pdo, $taskID){
   $members = $stmt->fetchAll(PDO::FETCH_ASSOC);
   return $members;
 }
-
-
