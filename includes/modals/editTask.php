@@ -41,7 +41,7 @@
 
           <div class="col mb-3">
             <label class="form-label">Description</label>
-            <textarea class="form-control" rows="5" placeholder="Enter task description" name="taskDesc" required></textarea>
+            <textarea class="form-control" rows="3" placeholder="Enter task description" name="taskDesc" required></textarea>
           </div>
 
           <input type="hidden" id="taskType" name="type" value="" />

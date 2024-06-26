@@ -54,28 +54,28 @@
               <p class="title-1 mb-2">Task Breakdown</p>
               <div class="text-center">
                 <p style="font-size: 0.875rem;" class="mb-0 mt-4">Remaining Tasks</p>
-                <p style="font-size: 3rem;" class="fw-bold" id="breakdownRemaining">8</p>
+                <p style="font-size: 3rem;" class="fw-bold" id="breakdownRemaining">0</p>
               </div>
               <div class="d-flex justify-content-around">
                 <div class="d-flex flex-row">
                   <div class="dashboard-line low"></div>
                   <div class="d-flex flex-column text-center p-2">
                     <span class="badge rounded-pill low-prio">Low Priority</span>
-                    <p style="font-size: 2rem;" class="mb-0 mt-2" id="breakdownLowPrio">3</p>
+                    <p style="font-size: 2rem;" class="mb-0 mt-2" id="breakdownLowPrio">0</p>
                   </div>
                 </div>
                 <div class="d-flex flex-row">
                   <div class="dashboard-line medium"></div>
                   <div class="d-flex flex-column text-center p-2">
                     <span class="badge rounded-pill med-prio">Medium Priority</span>
-                    <p style="font-size: 2rem;" class="mb-0 mt-2" id="breakdownMedPrio">3</p>
+                    <p style="font-size: 2rem;" class="mb-0 mt-2" id="breakdownMedPrio">0</p>
                   </div>
                 </div>
                 <div class="d-flex flex-row">
                   <div class="dashboard-line high"></div>
                   <div class="d-flex flex-column text-center p-2">
                     <span class="badge rounded-pill high-prio">High Priority</span>
-                    <p style="font-size: 2rem;" class="mb-0 mt-2" id="breakdownHighPrio">3</p>
+                    <p style="font-size: 2rem;" class="mb-0 mt-2" id="breakdownHighPrio">0</p>
                   </div>
                 </div>
               </div>

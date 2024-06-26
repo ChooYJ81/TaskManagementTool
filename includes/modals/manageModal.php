@@ -20,17 +20,21 @@
             </h2>
             <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
               <div class="accordion-body d-flex flex-column">
-                <div class="mb-3">
-                  <label class="input-label">Workspace Name</label>
-                  <!-- name (placeholder) -->
-                  <input type="text" class="inputs" placeholder="SWE3033 Software Process" />
-                </div>
-                <div class="mb-3">
-                  <label class="input-label">Workspace Description</label>
-                  <!-- description -->
-                  <textarea class="inputs" rows="4" placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec lobortis eros ipsum vitae."></textarea>
-                </div>
-                <button class="button-fill mx-auto px-4">Edit</button>
+                <form id="editWorkspace">
+                  <div class="mb-3">
+                    <label class="input-label">Workspace Name</label>
+                    <!-- name (placeholder) -->
+                    <input type="text" class="inputs" placeholder="SWE3033 Software Process" />
+                  </div>
+                  <div class="mb-3">
+                    <label class="input-label">Workspace Description</label>
+                    <!-- description -->
+                    <textarea class="inputs" rows="4" placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec lobortis eros ipsum vitae."></textarea>
+                  </div>
+                  <div class="d-flex justify-content-center">
+                    <button class="button-fill px-4" type="submit">Edit</button>
+                  </div>
+                </form>
               </div>
             </div>
           </div>
