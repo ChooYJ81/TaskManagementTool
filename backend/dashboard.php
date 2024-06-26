@@ -1,8 +1,4 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 0);
-ini_set('log_errors', 1);
-ini_set('error_log', './error.log');
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $jsonData = file_get_contents('php://input');
     $data = json_decode($jsonData, true);
@@ -184,12 +180,8 @@ function getProgressPercentage($pdo, $workspaceID)
     $stmt->bindParam(':workspaceID', $workspaceID, PDO::PARAM_STR);
     $stmt->execute();
     $count = $stmt->fetchColumn();
-    if ($count == 0){
-        return 0;
-    } else {
-        $percentage = ceil(($count - $remainingTask) / $count * 100);
-        return $percentage;
-    }
+    $percentage = ceil(($count - $remainingTask) / $count * 100);
+    return $percentage;
 }
 
 function getTotalTaskPages($pdo, $workspaceID, $record)
