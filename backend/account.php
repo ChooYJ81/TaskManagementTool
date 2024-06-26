@@ -57,12 +57,53 @@ function register($pdo, $data)
 
     $stmt->execute();
 
+    addWorkspace($pdo, $accountID);
     $response = [
         'message' => 'Account created successfully',
     ];
 
     return $response;
 }
+
+function addWorkspace($pdo, $accountID){
+    $workspaceCode = generateRandomOTP();
+    $workspaceID = generateWorkspaceID($pdo);
+    $workspaceName = "Your Personal Workspace";
+    $workspaceDesc = "This is your personal workspace, start adding tasks now!";
+    $type = "Personal";
+    $currentDateTime = date('Y-m-d H:i:s');
+
+    $query = "INSERT INTO workspace (workspaceID, workspaceName, workspaceDesc, type, creationDate, owner, workspaceCode) VALUES (:workspaceID, :workspaceName, :workspaceDesc, :type, :creationDate, :accountID, :workspaceCode)";
+    $stmt = $pdo->prepare($query);
+    $stmt->bindParam(':workspaceID', $workspaceID, PDO::PARAM_STR);
+    $stmt->bindParam(':workspaceName', $workspaceName, PDO::PARAM_STR);
+    $stmt->bindParam(':workspaceDesc', $workspaceDesc, PDO::PARAM_STR);
+    $stmt->bindParam(':type', $type, PDO::PARAM_STR);
+    $stmt->bindParam(':creationDate', $currentDateTime, PDO::PARAM_STR);
+    $stmt->bindParam(':accountID', $accountID, PDO::PARAM_STR);
+    $stmt->bindParam(':workspaceCode', $workspaceCode, PDO::PARAM_STR);
+    $stmt->execute();
+ 
+    $role = "Owner";
+    $query = "INSERT INTO member (workspaceID, accountID, role) VALUES (:workspaceID, :accountID, :role)";
+    $stmt = $pdo->prepare($query);
+    $stmt->bindParam(':workspaceID', $workspaceID, PDO::PARAM_STR);
+    $stmt->bindParam(':accountID', $accountID, PDO::PARAM_STR);
+    $stmt->bindParam(':role', $role, PDO::PARAM_STR);
+    $stmt->execute();
+}
+
+// Generate Workspace ID
+function generateWorkspaceID($pdo){
+    $query = "SELECT COUNT(*) FROM Workspace";
+    $stmt = $pdo->prepare($query);
+    $stmt->execute();
+    $count = $stmt->fetchColumn();
+    $workspaceID = "W" . str_pad($count + 1, 4, "0", STR_PAD_LEFT);
+    return $workspaceID;
+  }
+  
+
 
 function generateRandomOTP()
 {
