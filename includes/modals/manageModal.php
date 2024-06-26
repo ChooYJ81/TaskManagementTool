@@ -7,8 +7,7 @@
           <p class="title-1 m-0">Manage Workspace</p>
         </div>
         <p class="text-1 mb-4">
-          Lorem ipsum dolor sit amet, consectetur adipiscing
-          elit.
+          Manage your workspace
         </p>
 
         <div class="accordion" id="accordionExample">
@@ -24,12 +23,12 @@
                   <div class="mb-3">
                     <label class="input-label">Workspace Name</label>
                     <!-- name (placeholder) -->
-                    <input type="text" class="inputs" placeholder="SWE3033 Software Process" />
+                    <input type="text" class="inputs" placeholder="Enter workspace name" name="editWorkspaceName" id="editWorkspaceName" />
                   </div>
                   <div class="mb-3">
                     <label class="input-label">Workspace Description</label>
                     <!-- description -->
-                    <textarea class="inputs" rows="4" placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec lobortis eros ipsum vitae."></textarea>
+                    <textarea class="inputs" rows="4" placeholder="Enter workspace details." name="editWorkspaceDesc" id="editWorkspaceDesc"></textarea>
                   </div>
                   <div class="d-flex justify-content-center">
                     <button class="button-fill px-4" type="submit">Edit</button>
@@ -48,10 +47,10 @@
               <div class="accordion-body d-flex flex-column">
                 <div class="text-center">
                   <p class="workspace-code-title mb-1">Workspace Code</p>
-                  <p class="workspace-code">W8SDJ</p>
+                  <p class="workspace-code" id="modalWorkspaceCode">Disabled</p>
                   <div class="d-flex justify-content-center">
-                    <button class="button-fill me-3"><i class="bi bi-x me-3"></i>Disable Code</button>
-                    <button class="button-fill ms-3"><i class="bi bi-arrow-repeat me-3"></i>Regenerate Code</button>
+                    <button class="button-fill me-3" id="disableCodeBtn"><i class="bi bi-x me-3"></i>Disable Code</button>
+                    <button class="button-fill ms-3" id="regenerateCodeBtn"><i class="bi bi-arrow-repeat me-3"></i>Regenerate Code</button>
                   </div>
                 </div>
                 <hr style="opacity: 1;">
@@ -69,7 +68,7 @@
               <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                 <i class="bi bi-people me-2"></i>Members
                 <!-- members number -->
-                <span class="badge accordion-badge ms-2">10</span>
+                <span class="badge accordion-badge ms-2" id="memberNoBadge">0</span>
               </button>
             </h2>
             <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
@@ -78,24 +77,11 @@
                   <thead>
                     <tr>
                       <th class="text-start">No.</th>
-                      <th>Name</th>
-                      <th>Date Joined</th>
+                      <th class="text-start">Name</th>
                       <th>Manage</th>
                     </tr>
                   </thead>
-                  <tbody>
-                    <tr>
-                      <td>1</td>
-                      <td class="text-start">Kenneth</td>
-                      <td>5/6/2024</td>
-                      <td><span class="badge accordion-member-badge">Host</span></td>
-                    </tr>
-                    <tr>
-                      <td>2</td>
-                      <td class="text-start">John Marcus</td>
-                      <td>5/6/2024</td>
-                      <td><button class="btn btn-danger" disabled style="padding: 0 5px;"><i class="bi bi-x"></i></button></td>
-                    </tr>
+                  <tbody id="manageMemberList">
                   </tbody>
                 </table>
               </div>
@@ -106,3 +92,5 @@
     </div>
   </div>
 </div>
+
+<script src="./scripts/manageWorkspace.js"></script>

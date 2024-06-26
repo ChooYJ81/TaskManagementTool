@@ -39,7 +39,7 @@ function register($pdo, $data)
     if (session_status() == PHP_SESSION_NONE) {
         session_start();
     }
-    $otp = generateRandomOTP();
+    $otp = generateRandomOTP(5, $pdo);
     $accountID = getLatestUserID($pdo);
     $status = "Pending";
     $_SESSION['otp'] = $otp;
@@ -66,7 +66,7 @@ function register($pdo, $data)
 }
 
 function addWorkspace($pdo, $accountID){
-    $workspaceCode = generateRandomOTP();
+    $workspaceCode = generateWorkspaceCode(5, $pdo);
     $workspaceID = generateWorkspaceID($pdo);
     $workspaceName = "Your Personal Workspace";
     $workspaceDesc = "This is your personal workspace, start adding tasks now!";
@@ -103,22 +103,52 @@ function generateWorkspaceID($pdo){
     return $workspaceID;
   }
   
-
-
-function generateRandomOTP()
-{
-    $length = 5;
-    $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    $charactersLength = strlen($characters);
-    $randomOTP = '';
-
-    for ($i = 0; $i < $length; $i++) {
-        $randomOTP .= $characters[rand(0, $charactersLength - 1)];
+// Generate unique OTP code
+function generateRandomOTP($length,$pdo) {
+    while(true) {
+      $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      $charactersLength = strlen($characters);
+      $code = '';
+      for ($i = 0; $i < $length; $i++) {
+          $code .= $characters[rand(0, $charactersLength - 1)];
+      }
+  
+      // Check if unique
+      $query = "SELECT COUNT(*) FROM account WHERE OTP = :code";
+      $stmt = $pdo->prepare($query);
+      $stmt->bindParam(':code', $code, PDO::PARAM_STR);
+      $stmt->execute();
+      $count = $stmt->fetchColumn();
+      if ($count == 0) {
+        break;
+      }
     }
-
-    return $randomOTP;
-}
-
+    return $code;
+  }
+  
+  // Generate unique Workspace code
+function generateWorkspaceCode($length,$pdo) {
+    while(true) {
+      $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      $charactersLength = strlen($characters);
+      $code = '';
+      for ($i = 0; $i < $length; $i++) {
+          $code .= $characters[rand(0, $charactersLength - 1)];
+      }
+  
+      // Check if unique
+      $query = "SELECT COUNT(*) FROM Workspace WHERE workspaceCode = :code";
+      $stmt = $pdo->prepare($query);
+      $stmt->bindParam(':code', $code, PDO::PARAM_STR);
+      $stmt->execute();
+      $count = $stmt->fetchColumn();
+      if ($count == 0) {
+        break;
+      }
+    }
+    return $code;
+  }
+  
 function getLatestUserID($pdo)
 {
     $query = "SELECT COUNT(*) FROM account";

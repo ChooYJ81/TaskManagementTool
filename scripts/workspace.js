@@ -43,6 +43,7 @@ async function getWorkspace() {
 
     const responseData = await response.json();
     displayWorkspace(responseData);
+    displayManageWorkspace(responseData);
   } catch (error) {
     console.error("Fetch error: " + error.message);
   }
@@ -50,6 +51,7 @@ async function getWorkspace() {
 
 // Display the workspace details
 function displayWorkspace(data) {
+  console.log(data);
   const workspaceHistory = document.getElementById("workspaceHistory");
   var historyText =
     "Hosted by " +
@@ -72,6 +74,14 @@ function displayWorkspace(data) {
   // Input for create task form
   const taskWorkspaceID = document.getElementById("taskWorkspaceID");
   taskWorkspaceID.value = data.workspace.workspaceID;
+  
+  const workspaceCode = document.getElementById("modalWorkspaceCode");
+  if(data.workspace.workspaceCode === null){
+    workspaceCode.classList.add("text-secondary");
+    workspaceCode.innerHTML = "Disabled";
+  } else {
+    workspaceCode.innerHTML = data.workspace.workspaceCode;
+  }
 }
 
 function initializeCreateTask() {
@@ -731,3 +741,10 @@ function displayNewTasks() {
   getTasks();
 }
 
+function displayManageWorkspace(data){
+  const workspaceName = document.getElementById('editWorkspaceName');
+  const workspaceDesc = document.getElementById('editWorkspaceDesc');
+
+  workspaceName.value = data.workspace.workspaceName;
+  workspaceDesc.value = data.workspace.workspaceDesc;
+}
