@@ -45,5 +45,3 @@
     </div>
   </div>
 </div>
-
-<script src="./scripts/createWorkspace.js"></script>

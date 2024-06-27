@@ -40,7 +40,7 @@
 
     <div class="d-flex flex-column mt-auto">
       <hr class="sidebarHr2 collapsed" />
-      <button class="sidebarNavItemButton collapsed">
+      <button type="button" class="sidebarNavItemButton collapsed" data-bs-toggle="modal" data-bs-target="#joinWorkspaceModal">
         <i class="bi bi-arrow-bar-right"></i>
         <span class="sidebarText d-none">Join Workspace</span>
       </button>
@@ -67,3 +67,4 @@
 
 <!-- Modals -->
 <?php include 'includes/modals/createWorkspaceModal.php'; ?>
+<?php include 'includes/modals/joinWorkspace.php'; ?>

@@ -43,7 +43,6 @@ async function getWorkspace() {
 
     const responseData = await response.json();
     displayWorkspace(responseData);
-    displayManageWorkspace(responseData);
   } catch (error) {
     console.error("Fetch error: " + error.message);
   }
