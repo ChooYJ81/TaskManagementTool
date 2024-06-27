@@ -12,21 +12,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
     <link href="css/style.css" rel="stylesheet" />
 </head>
 
-<body class="d-flex flex-column overflow-hidden">
+<body class="d-flex justify-content-between overflow-hidden w-100">
     <?php include "./includes/modals/otpModal.php"; ?>
-    <div class="position-absolute top-0" style="left: -5px">
-        <img src="./images/wave.png" style="height: 100vh;"/>
+    <div class="waves-left">
     </div>
-    <div class="position-absolute top-0" style="right: -5px">
-        <img src="./images/wave.png" style="height: 100vh; transform: rotate(180deg);">
-    </div>
-    <div class="align-items-center d-flex my-auto flex-column">
-        <img src="./images/logo3.png" height="80px;" class="mb-4"/>
-        <div class="login-container" id="login-container">
+    <div class="align-items-center d-flex mt-4 mb-5 flex-column">
+        <img src="./images/logo3.png" height="80px;" class="mb-4" />
+        <div class="login-container mb-3" id="login-container">
             <div class="sign-up">
                 <form class="login-form" id="signupForm">
                     <p class="title-1 fw-normal">Sign Up</p>
@@ -94,9 +90,9 @@
                 </div>
             </div>
         </div>
+        <p style="font-size: 0.75rem; color: #B3B3B3;" class="text-nowrap mt-5">Copyright © 2024 SunCollab. All rights reserved.</p>
     </div>
-    <div class="position-absolute w-100 text-center" style="bottom: 5px;">
-        <p style="font-size: 0.75rem; color: #B3B3B3;" class="text-nowrap m-0">Copyright © 2024 SunCollab. All rights reserved.</p>
+    <div class="waves-right">
     </div>
     <script type="text/javascript">
         const signUpButton = document.getElementById('signUp');
