@@ -51,7 +51,7 @@ async function getWorkspace() {
 
 // Display the workspace details
 function displayWorkspace(data) {
-  console.log(data);
+  // console.log(data);
   const workspaceHistory = document.getElementById("workspaceHistory");
   var historyText =
     "Hosted by " +
@@ -720,31 +720,9 @@ function updateTaskType(draggable) {
     .then((data) => {
       // Handle the response data
       window.alert(data.message);
-      displayNewTasks();
+      location.reload();
     })
     .catch((error) => {
       console.error("Fetch error: " + error);
     });
-}
-
-function displayNewTasks() {
- 
-  const toDoColumn = document.getElementById('toDoColumn');
-  const inProgressColumn = document.getElementById('inProgressColumn');
-  const completedColumn = document.getElementById('completedColumn');
-
-  // Empty the columns
-  toDoColumn.innerHTML = "";
-  inProgressColumn.innerHTML = "";
-  completedColumn.innerHTML = "";
-
-  getTasks();
-}
-
-function displayManageWorkspace(data){
-  const workspaceName = document.getElementById('editWorkspaceName');
-  const workspaceDesc = document.getElementById('editWorkspaceDesc');
-
-  workspaceName.value = data.workspace.workspaceName;
-  workspaceDesc.value = data.workspace.workspaceDesc;
 }

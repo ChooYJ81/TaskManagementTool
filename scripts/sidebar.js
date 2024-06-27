@@ -175,7 +175,7 @@ function getWorkspaceList() {
     })
         .then((response) => response.json())
         .then((data) => {
-            // console.log(data);
+            console.log(data);
             displayWorkspaceList(data);
         });
 }
@@ -198,7 +198,7 @@ function displayWorkspaceList(data) {
             <i class="bi bi-caret-right-fill me-2"></i>
             <div>
             <p class="mb-1">${element.workspace.workspaceName}<span class="members"><i class="bi bi-people-fill ms-2 me-1"></i>${element.members}</span></p>
-            <p class="workspaceText">0 Assigned Pending Tasks</p>
+            <p class="workspaceText">${element.taskAssigned} Assigned Pending Tasks</p>
             </div>
         </div>
     </a>`;
@@ -209,7 +209,7 @@ function displayWorkspaceList(data) {
             <i class="bi bi-caret-right-fill me-2"></i>
             <div>
             <p class="mb-1">${element.workspace.workspaceName}<span class="members"><i class="bi bi-people-fill ms-2 me-1"></i>${element.members}</span></p>
-            <p class="workspaceText">0 Assigned Pending Tasks</p>
+            <p class="workspaceText">${element.taskAssigned} Assigned Pending Tasks</p>
             </div>
         </div>
     </a>`;

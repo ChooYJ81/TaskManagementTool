@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   switch ($action) {
     case 'getWorkspaceList':
       // $workspaces = getWorkspaceList($pdo, $_SESSION['accountID']);
-      $response = getWorkspaceList($pdo, 'A0001'); // Hardcoded for testing
+      $response = getWorkspaceList($pdo, $_SESSION['accountID']); // Hardcoded for testing
       break;
     case 'getWorkspace':
       $response = getWorkspace($pdo, $data['workspace']);
@@ -53,44 +53,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 // Main functions
-function getWorkspaceList($pdo, $accountID)
-{
-  $query = "SELECT * FROM Member WHERE accountID = :accountID";
-  $stmt = $pdo->prepare($query);
-  $stmt->bindParam(':accountID', $accountID, PDO::PARAM_STR);
-  $stmt->execute();
-  $members = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-  $workspaces = [];
-  foreach ($members as $member) {
-    $workspace = getWorkspaceDetail($pdo, $member['workspaceID']);
-    $owner = getWorkspaceOwner($pdo, $workspace['owner']);
-    $membersCount = getMembersQuantity($pdo, $workspace['workspaceID']);
-
-    $workspaces[] = [
-      'workspace' => $workspace,
-      'owner' => $owner,
-      'members' => $membersCount,
-    ];
-  }
-  return $workspaces;
-}
-
-function getWorkspace($pdo, $workspaceID)
-{
-  $workspace = getWorkspaceDetail($pdo, $workspaceID);
-  $owner = getWorkspaceOwner($pdo, $workspace['owner']);
-  $members = getMembersQuantity($pdo, $workspaceID);
-
-  $workspace = [
-    'workspace' => $workspace,
-    'owner' => $owner,
-    'members' => $members,
-  ];
-
-  return $workspace;
-}
-
 function createTask($pdo, $data)
 {
   $taskID = generateTaskID($pdo);
@@ -208,6 +170,46 @@ function deleteTask($pdo, $taskID)
 }
 
 // Helper functions 
+function getWorkspaceList($pdo, $accountID)
+{
+  $query = "SELECT * FROM Member WHERE accountID = :accountID";
+  $stmt = $pdo->prepare($query);
+  $stmt->bindParam(':accountID', $accountID, PDO::PARAM_STR);
+  $stmt->execute();
+  $members = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+  $workspaces = [];
+  foreach ($members as $member) {
+    $workspace = getWorkspaceDetail($pdo, $member['workspaceID']);
+    $owner = getWorkspaceOwner($pdo, $workspace['owner']);
+    $membersCount = getMembersQuantity($pdo, $workspace['workspaceID']);
+    $taskAssigned = getAssignedTasks($pdo, $workspace['workspaceID'], $accountID);
+
+    $workspaces[] = [
+      'workspace' => $workspace,
+      'owner' => $owner,
+      'members' => $membersCount,
+      'taskAssigned' => $taskAssigned
+    ];
+  }
+  return $workspaces;
+}
+
+function getWorkspace($pdo, $workspaceID)
+{
+  $workspace = getWorkspaceDetail($pdo, $workspaceID);
+  $owner = getWorkspaceOwner($pdo, $workspace['owner']);
+  $members = getMembersQuantity($pdo, $workspaceID);
+
+  $workspace = [
+    'workspace' => $workspace,
+    'owner' => $owner,
+    'members' => $members,
+  ];
+
+  return $workspace;
+}
+
 function getWorkspaceDetail($pdo, $workspaceID)
 {
   $query = "SELECT * FROM Workspace WHERE workspaceID = :workspaceID";
@@ -236,6 +238,17 @@ function getMembersQuantity($pdo, $workspaceID)
   $stmt->execute();
   $membersCount = $stmt->fetchColumn(); // Fetches the count directly
   return $membersCount;
+}
+
+function getAssignedTasks($pdo, $workspaceID, $accountID)
+{
+  $query = "SELECT COUNT(*) FROM Assigned a, Task t WHERE a.assignedMember = :accountID AND a.taskID = t.taskID AND t.workspaceID = :workspaceID AND t.type != 'Completed'";
+  $stmt = $pdo->prepare($query);
+  $stmt->bindParam(':accountID', $accountID, PDO::PARAM_STR);
+  $stmt->bindParam(':workspaceID', $workspaceID, PDO::PARAM_STR);
+  $stmt->execute();
+  $taskAssigned = $stmt->fetchColumn();
+  return $taskAssigned;
 }
 
 // Get list of workspace members
