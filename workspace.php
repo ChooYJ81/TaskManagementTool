@@ -143,7 +143,6 @@
   <?php include 'includes/modals/viewTask.php'; ?>
   <?php include 'includes/modals/editTask.php'; ?>
 
-  <script src="./scripts/sidebar.js"></script>
   <script src="scripts/workspace.js"></script>
 </body>
 

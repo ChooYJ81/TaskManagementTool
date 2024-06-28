@@ -2,19 +2,19 @@
   <div class="modal-dialog modal-dialog-centered" style="width:33rem">
     <div class="modal-content">
       <div class="modal-body d-flex flex-column align-items-center my-3">
-        <h4 class="fw-semibold">Create a New Workspace</h4>
+        <h4 class="fw-semibold" style="color:#2A386E">Create a New Workspace</h4>
         <p class="fw-light text-muted mb-4" style="font-size:0.75rem">Describe the workspace you are hosting</p>
 
         <!-- Create workspace form section -->
         <form class="w-100 px-5 d-flex flex-column" id="createWorkspaceForm">
           <div class="mb-4">
             <label for="workspaceName" class="form-label">Workspace Name</label>
-            <input type="text" class="form-control" id="workspaceName" name="workspaceName" placeholder="Enter workspace name" required />
+            <input type="text" class="form-control" id="workspaceName" name="workspaceName" placeholder="Enter workspace name" required autocomplete="off"/>
           </div>
 
           <div class="mb-4">
             <label for="workspaceType" class="form-label">Workspace Type</label>
-            <select class="form-select" aria-label="Small select example" id="workspaceType" name="workspaceType" required>
+            <select class="form-select" aria-label="Small select example" id="workspaceType" name="workspaceType" required autocomplete="off">
               <option value="" selected disabled>Select workspace type</option>
               <option value="Personal">Personal</option>
               <option value="Collaboration">Collaboration</option>
@@ -23,7 +23,7 @@
 
           <div class="mb-4">
             <label for="workspaceDesc" class="form-label">Workspace Description</label>
-            <textarea class="form-control" id="workspaceDesc" name="workspaceDesc" maxlength="100" rows="5" placeholder="Enter workspace description" required></textarea>
+            <textarea class="form-control" id="workspaceDesc" name="workspaceDesc" maxlength="100" rows="5" placeholder="Enter workspace description" required autocomplete="off"></textarea>
           </div>
 
           <!-- The two pagination circle -->
@@ -37,7 +37,7 @@
           </div>
 
           <div class="d-flex justify-content-center">
-            <button type="submit" class="btn btn-primary mt-4 px-5" style="background-color:var(--blue)" id="createWorkspaceButton">Create</button>
+            <button type="submit" class="btn btn-primary mt-4 px-5" style="background-color:var(--blue)" data-bs-target="#postCreationModal" id="postCreationModalToggle">Create</button>
           </div>
           
         </form>
@@ -45,5 +45,3 @@
     </div>
   </div>
 </div>
-
-<script src="./scripts/createWorkspace.js"></script>

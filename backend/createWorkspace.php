@@ -1,23 +1,23 @@
 <?php
 require_once './connection.php';
 
-// session_start();
-// $accountID = $_SESSION['user']['accountID'];
-
-$accountID = 'A0001'; // Dummy accountID
+$accountID = $_SESSION['accountID']; 
 
 $name = $_POST['workspaceName'];
 $type = $_POST['workspaceType'];
 $desc = $_POST['workspaceDesc'];
 
 try {
+  $flag = true;
+  $status = "";
+  $message = "";
   // Generate workspaceID
   $workspaceID = generateWorkspaceID($pdo);
 
   $currentDateTime = date('Y-m-d H:i:s');
 
   // Generate unique workspace code
-  $code = generateCode(5,$pdo);
+  $code = generateCode(5, $pdo);
 
 
   // Insert workspace details
@@ -32,20 +32,37 @@ try {
   $stmt->bindParam(':workspaceCode', $code, PDO::PARAM_STR);
   $stmt->execute();
 
-  // Insert member details
-  $query = "INSERT INTO Member (workspaceID, accountID, role) VALUES (:workspaceID, :accountID, 'Owner')";
-  $stmt = $pdo->prepare($query);
-  $stmt->bindParam(':workspaceID', $workspaceID, PDO::PARAM_STR);
-  $stmt->bindParam(':accountID', $accountID, PDO::PARAM_STR);
-  $stmt->execute();
-  
-  $message = 'Workspace created successfully';
+  if ($stmt->rowCount() == 0) {
+    $flag = false;
+  } else {
+    // Insert member details
+    $query = "INSERT INTO Member (workspaceID, accountID, role) VALUES (:workspaceID, :accountID, 'Owner')";
+    $stmt = $pdo->prepare($query);
+    $stmt->bindParam(':workspaceID', $workspaceID, PDO::PARAM_STR);
+    $stmt->bindParam(':accountID', $accountID, PDO::PARAM_STR);
+    $stmt->execute();
+    if ($stmt->rowCount() == 0) {
+      $flag = false;
+    }
+  }
+
+  if($flag){
+    $status = "success";
+    $message = 'Workspace created successfully';
+  } else {
+    $status = "fail";
+    $message = 'Error processing the request';
+  }
+
 } catch (Exception $e) {
   $message = 'Error processing the request: ' . $e->getMessage();
 }
 
 $response = [
   'message' => $message,
+  'code' => $code,
+  'status' => $status,
+  'workspaceID' => $workspaceID
 ];
 
 header('Content-Type: application/json');
@@ -53,7 +70,8 @@ echo json_encode($response);
 exit;
 
 // Generate Workspace ID
-function generateWorkspaceID($pdo){
+function generateWorkspaceID($pdo)
+{
   $query = "SELECT COUNT(*) FROM Workspace";
   $stmt = $pdo->prepare($query);
   $stmt->execute();
@@ -63,13 +81,14 @@ function generateWorkspaceID($pdo){
 }
 
 // Generate unique Workspace code
-function generateCode($length,$pdo) {
-  while(true) {
+function generateCode($length, $pdo)
+{
+  while (true) {
     $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $charactersLength = strlen($characters);
     $code = '';
     for ($i = 0; $i < $length; $i++) {
-        $code .= $characters[rand(0, $charactersLength - 1)];
+      $code .= $characters[rand(0, $charactersLength - 1)];
     }
 
     // Check if unique

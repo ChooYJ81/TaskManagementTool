@@ -26,6 +26,25 @@ body {
   color: var(--blue) !important;
 }
 
+/* lottie */
+.waves-left,
+.waves-right {
+  background-position: center;
+  background-size: cover;
+  overflow: hidden;
+  width:140px;
+}
+
+.waves-left {
+  background-image: url("/TaskManagementTool/images/waves-left.gif");
+
+}
+
+.waves-right{
+  background-image: url("/TaskManagementTool/images/waves-right.gif");
+}
+
+
 /* sidebar */
 .sidebar {
   background-color: var(--white);
