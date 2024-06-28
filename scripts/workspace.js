@@ -2,8 +2,20 @@
 const queryParams = new URLSearchParams(window.location.search);
 var workspace = queryParams.get("workspace");
 workspace = atob(workspace);
+var sessionAccountID = null;
 
 document.addEventListener("DOMContentLoaded", function () {
+  fetch("./backend/getSessionData.php")
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.accountID) {
+        sessionAccountID = data.accountID;
+      } else {
+        console.error("Error fetching session data:", data.error);
+      }
+    })
+    .catch((error) => console.error("Error:", error));
+
   const date = document.getElementById("today");
   var today = dayjs().format("dddd, D MMMM YYYY");
   // console.log(today);
@@ -73,9 +85,9 @@ function displayWorkspace(data) {
   // Input for create task form
   const taskWorkspaceID = document.getElementById("taskWorkspaceID");
   taskWorkspaceID.value = data.workspace.workspaceID;
-  
+
   const workspaceCode = document.getElementById("modalWorkspaceCode");
-  if(data.workspace.workspaceCode === null){
+  if (data.workspace.workspaceCode === null) {
     workspaceCode.classList.add("text-secondary");
     workspaceCode.innerHTML = "Disabled";
   } else {
@@ -297,7 +309,6 @@ async function getTasks() {
 }
 
 function displayTasks(data, callback) {
-  
   for (const key in data) {
     let className = "";
 
@@ -327,13 +338,11 @@ function displayTasks(data, callback) {
 
       // Display each task
       for (const task of data[key].tasks) {
-      
         var assignedMember = "";
 
         if (displayedTasks.has(task.taskID)) {
           // If this task has already been displayed, but the previous one was not assigned to the user
-          if (task.assignedMember == "A0001") {
-            // Hardcoded for now
+          if (task.assignedMember == sessionAccountID) {
             assignedMember = `<p class="text-1 mt-5" style="color:#3284BA">You are assigned to this task.</p>`;
           }
           var taskCard = document.getElementById(task.taskID);
@@ -343,7 +352,7 @@ function displayTasks(data, callback) {
         }
 
         // If the task comes first and assigned to the user
-        if (task.assignedMember == "A0001") {
+        if (task.assignedMember == sessionAccountID) {
           // Hardcoded for now
           assignedMember = `<p class="text-1 mt-5" style="color:#3284BA">You are assigned to this task.</p>`;
         }
@@ -410,7 +419,7 @@ function viewTask() {
         )}`;
 
         var membersAssigned = "";
-        if(viewTask.members.length > 0){
+        if (viewTask.members.length > 0) {
           viewTask.members.forEach((member) => {
             membersAssigned += `<span class="members-badge">${member.username}</span>`;
           });
@@ -453,7 +462,7 @@ function viewTask() {
       );
       taskTitle.appendChild(prioritySpan);
 
-       console.log(task);
+      console.log(task);
     });
   }
 }
@@ -490,14 +499,11 @@ function editTask() {
   const editTaskForm = document.getElementById("editTaskForm");
   const deleteTaskBtn = document.getElementById("deleteTaskBtn");
 
-
-
   if (editTaskModal) {
     editTaskModal.addEventListener("show.bs.modal", async (event) => {
       const button = event.relatedTarget;
       const taskJson = button.getAttribute("data-bs-task");
       const task = JSON.parse(taskJson.replace(/&quot;/g, '"'));
-      
 
       const taskID = task.taskID;
       const taskName = task.taskName;
@@ -534,8 +540,10 @@ function editTask() {
 
         deleteTaskBtn.addEventListener("click", async () => {
           const taskID = deleteTaskBtn.getAttribute("task-id"); // Get the task-id attribute
-          console.log(taskID)
-          const confirmDelete = confirm("Are you sure you want to delete this task?");
+          console.log(taskID);
+          const confirmDelete = confirm(
+            "Are you sure you want to delete this task?"
+          );
           if (confirmDelete) {
             const data = {
               taskID: taskID,
@@ -563,7 +571,6 @@ function editTask() {
             }
           }
         });
-
       } catch (error) {
         console.error("Failed to initialize multiple select:", error);
         // Handle the error appropriately

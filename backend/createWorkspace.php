@@ -1,10 +1,7 @@
 <?php
 require_once './connection.php';
 
-// session_start();
-// $accountID = $_SESSION['user']['accountID'];
-
-$accountID = 'A0001'; // Dummy accountID
+$accountID = $_SESSION['accountID']; 
 
 $name = $_POST['workspaceName'];
 $type = $_POST['workspaceType'];

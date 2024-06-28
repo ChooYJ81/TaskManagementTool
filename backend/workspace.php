@@ -11,7 +11,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
   switch ($action) {
     case 'getWorkspaceList':
-      // $workspaces = getWorkspaceList($pdo, $_SESSION['accountID']);
       $response = getWorkspaceList($pdo, $_SESSION['accountID']); // Hardcoded for testing
       break;
     case 'getWorkspace':
