@@ -41,7 +41,7 @@
             <p class="text-2 mb-5" id="workspaceDescription">
             </p>
           </div>
-          <button class="manage-button" data-bs-target="#manageModal" data-bs-toggle="modal">
+          <button class="manage-button" data-bs-target="#manageModal" data-bs-toggle="modal" id="manageWorkspaceBtn">
             <i class="bi bi-gear me-2 fs-5"></i>Manage Workspace
           </button>
         </div>

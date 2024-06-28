@@ -55,6 +55,7 @@ async function getWorkspace() {
 
     const responseData = await response.json();
     displayWorkspace(responseData);
+    displayManageWorkspace(responseData);
   } catch (error) {
     console.error("Fetch error: " + error.message);
   }
@@ -62,7 +63,7 @@ async function getWorkspace() {
 
 // Display the workspace details
 function displayWorkspace(data) {
-  // console.log(data);
+  console.log(data);
   const workspaceHistory = document.getElementById("workspaceHistory");
   var historyText =
     "Hosted by " +
@@ -93,6 +94,19 @@ function displayWorkspace(data) {
   } else {
     workspaceCode.innerHTML = data.workspace.workspaceCode;
   }
+
+  const manageWorkspaceBtn = document.getElementById("manageWorkspaceBtn");
+  if (sessionAccountID !== data.workspace.owner){
+    manageWorkspaceBtn.classList.add("d-none");
+  }
+}
+
+function displayManageWorkspace(data){
+  const workspaceName = document.getElementById('editWorkspaceName');
+  const workspaceDesc = document.getElementById('editWorkspaceDesc');
+
+  workspaceName.value = data.workspace.workspaceName;
+  workspaceDesc.value = data.workspace.workspaceDesc;
 }
 
 function initializeCreateTask() {
