@@ -12,10 +12,6 @@
         <i class="bi bi-speedometer2"></i>
         <span class="sidebarText d-none">Dashboard</span>
       </a>
-      <a class="sidebarNavItems border-bottom" href="tracker.php" id="tracker">
-        <i class="bi bi-pencil-square"></i>
-        <span class="sidebarText d-none">Personal Tracker</span>
-      </a>
       <a class="sidebarNavItems border-bottom workspace" href="#" id="workspace">
         <i class="bi bi-diagram-3"></i>
         <span class="sidebarText d-none">Workspaces

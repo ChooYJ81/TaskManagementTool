@@ -81,6 +81,23 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 200);
   });
 
+    const currentPath = window.location.pathname.split("/").pop(); // Get the current file name from the URL
+
+    const dashboard = document.getElementById("dashboard");
+
+    switch (currentPath) {
+        case "dashboard.php":
+            dashboard.classList.add("active");
+            workspace.classList.remove("active");
+            break;
+        case "workspace.php":
+            dashboard.classList.remove("active");
+            workspace.classList.add("active");
+            break;
+        default:
+            break;
+    }
+
   workspace.addEventListener("click", () => {
     if (!workspaceOpened) {
       workspaceList.classList.remove("d-none");
