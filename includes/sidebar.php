@@ -45,7 +45,7 @@
         <span class="sidebarText d-none">Join Workspace</span>
       </button>
       <hr class="m-0 sidebarHr" />
-      <button type="button" class="sidebarNavItemButton collapsed" data-bs-toggle="modal" data-bs-target="#createWorkspaceModal">
+      <button type="button" class="sidebarNavItemButton collapsed" data-bs-target="#createWorkspaceModal" id="createWorkspaceBtn">
         <i class="bi bi-plus-circle"></i>
         <span class="sidebarText d-none">Create Workspace</span>
       </button>
@@ -68,3 +68,4 @@
 <!-- Modals -->
 <?php include 'includes/modals/createWorkspaceModal.php'; ?>
 <?php include 'includes/modals/joinWorkspace.php'; ?>
+<?php include 'includes/modals/postCreation.php'; ?>

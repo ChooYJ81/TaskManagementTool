@@ -2,7 +2,7 @@
   <div class="modal-dialog modal-dialog-centered" style="width:33rem">
     <div class="modal-content">
       <div class="modal-body d-flex flex-column align-items-center my-3">
-        <h4 class="fw-semibold">Join Workspace</h4>
+        <h4 class="fw-semibold" style="color:#2A386E">Join Workspace</h4>
         <p class="fw-light text-muted mb-4" style="font-size:0.75rem">Enter the workspace code provided by the owner to join</p>
         <img src="./images/joinWorkspace.png" class="mb-4" style="width: 12rem" />
         <form class="w-100 px-5 d-flex  justify-content-center align-items-center" id="joinWorkspaceForm">
