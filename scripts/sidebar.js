@@ -110,31 +110,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  const currentPath = window.location.pathname.split("/").pop(); // Get the current file name from the URL
-
-  const dashboard = document.getElementById("dashboard");
-  const tracker = document.getElementById("tracker");
-
-  switch (currentPath) {
-    case "dashboard.php":
-      dashboard.classList.add("active");
-      tracker.classList.remove("active");
-      workspace.classList.remove("active");
-      break;
-    case "tracker.php":
-      dashboard.classList.remove("active");
-      tracker.classList.add("active");
-      workspace.classList.remove("active");
-      break;
-    case "workspace.php":
-      dashboard.classList.remove("active");
-      tracker.classList.remove("active");
-      workspace.classList.add("active");
-      break;
-    default:
-      break;
-  }
-
   getWorkspaceList();
   logout();
 
