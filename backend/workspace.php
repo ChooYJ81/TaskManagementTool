@@ -60,9 +60,10 @@ function validateWorkspaceAccess($pdo, $workspaceID){
   $stmt = $pdo->prepare($query);
   $stmt->bindParam(':workspaceID', $workspaceID, PDO::PARAM_STR);
   $stmt->bindParam(':accountID', $_SESSION['accountID'], PDO::PARAM_STR);
+  $stmt->execute(); 
   $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-  if ($row > 0) {
+  if ($row) {
     return array('status' => 'success', 'message' => 'Workspace access granted');
   } else {
     return array('status' => 'error', 'message' => 'You do not have access to this workspace.');

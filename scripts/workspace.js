@@ -26,33 +26,36 @@ async function initializeWorkspace() {
       alert(validateData.message);
       window.location.href = "./dashboard.php";
       return; // Stop execution if workspace validation fails
-    }
-
-    // Fetch session data
-    const sessionResponse = await fetch("./backend/getSessionData.php");
-    const sessionData = await sessionResponse.json();
-    if (sessionData.accountID) {
-      sessionAccountID = sessionData.accountID;
     } else {
-      console.error("Error fetching session data:", sessionData.error);
+      // Fetch session data
+      const sessionResponse = await fetch("./backend/getSessionData.php");
+      const sessionData = await sessionResponse.json();
+      if (sessionData.accountID) {
+        sessionAccountID = sessionData.accountID;
+      } else {
+        console.error("Error fetching session data:", sessionData.error);
+      }
+
+      // Set today's date
+      const date = document.getElementById("today");
+      var today = dayjs().format("dddd, D MMMM YYYY");
+      date.innerHTML = today;
+
+      // Initialize workspace functionalities
+      getWorkspace();
+      initializeCreateTask(); // Add event listener to get the task type
+      initializeMultipleSelect(
+        "createDropdownDisplay",
+        "createDropdownOptions"
+      ); // Add event listener to enable multi-select for the select element
+      submitNewTask(); // Add event listener to create a task
+
+      getTasks(); // Fetch tasks from database
+
+      viewTask(); // Initialize the task modal
+      editTask(); // Initialize the edit task modal
+      updateTask(); // Add event listener to update a task
     }
-
-    // Set today's date
-    const date = document.getElementById("today");
-    var today = dayjs().format("dddd, D MMMM YYYY");
-    date.innerHTML = today;
-
-    // Initialize workspace functionalities
-    getWorkspace();
-    initializeCreateTask(); // Add event listener to get the task type
-    initializeMultipleSelect("createDropdownDisplay", "createDropdownOptions"); // Add event listener to enable multi-select for the select element
-    submitNewTask(); // Add event listener to create a task
-
-    getTasks(); // Fetch tasks from database
-
-    viewTask(); // Initialize the task modal
-    editTask(); // Initialize the edit task modal
-    updateTask(); // Add event listener to update a task
   } catch (error) {
     console.error("Error:", error);
   }
