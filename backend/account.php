@@ -39,6 +39,14 @@ function register($pdo, $data)
     if (session_status() == PHP_SESSION_NONE) {
         session_start();
     }
+
+    if (checkEmail($pdo, $data['email'])) {
+    $response = [
+        'status' => 'error',
+        'message' => 'Email already exists',
+    ];
+    return $response;
+    } else {
     $otp = generateRandomOTP(5, $pdo);
     $accountID = getLatestUserID($pdo);
     $status = "Pending";
@@ -57,15 +65,41 @@ function register($pdo, $data)
 
     $stmt->execute();
 
-    addWorkspace($pdo, $accountID);
     $response = [
-        'message' => 'Account created successfully',
+        'status' => 'success',
+        'email' => $data['email'],
+        'otp' => $otp,
+        'message' => 'Your account has been created successfully. Please wait a moment for the OTP to be sent to your email.',
     ];
 
     return $response;
+    }
 }
 
-function addWorkspace($pdo, $accountID){
+function checkEmail($pdo, $email)
+{
+    $query = "SELECT COUNT(*) FROM account WHERE email = :email";
+    $stmt = $pdo->prepare($query);
+    $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+    $stmt->execute();
+    $count = $stmt->fetchColumn();
+    if ($count > 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function addWorkspace($pdo)
+{
+    if(isset($_SESSION['email'])){
+        $email = $_SESSION['email'];
+    } else {
+        // $email = $_SESSION['email'];
+    }
+
+    $accountID = getAccountID($pdo,$email);
+
     $workspaceCode = generateWorkspaceCode(5, $pdo);
     $workspaceID = generateWorkspaceID($pdo);
     $workspaceName = "Your Personal Workspace";
@@ -83,7 +117,7 @@ function addWorkspace($pdo, $accountID){
     $stmt->bindParam(':accountID', $accountID, PDO::PARAM_STR);
     $stmt->bindParam(':workspaceCode', $workspaceCode, PDO::PARAM_STR);
     $stmt->execute();
- 
+
     $role = "Owner";
     $query = "INSERT INTO member (workspaceID, accountID, role) VALUES (:workspaceID, :accountID, :role)";
     $stmt = $pdo->prepare($query);
@@ -93,69 +127,91 @@ function addWorkspace($pdo, $accountID){
     $stmt->execute();
 }
 
+function getAccountID($pdo,$email)
+{
+    $query = "SELECT accountID FROM account WHERE email = :email";
+    $stmt = $pdo->prepare($query);
+    $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+    $stmt->execute();
+    $accountID = $stmt->fetchColumn();
+    return $accountID;
+}
+
 // Generate Workspace ID
-function generateWorkspaceID($pdo){
-    $query = "SELECT COUNT(*) FROM Workspace";
+function generateWorkspaceID($pdo)
+{
+    $query = "SELECT workspaceID FROM Workspace ORDER BY workspaceID DESC LIMIT 1";
     $stmt = $pdo->prepare($query);
     $stmt->execute();
-    $count = $stmt->fetchColumn();
-    $workspaceID = "W" . str_pad($count + 1, 4, "0", STR_PAD_LEFT);
+    $lastWorkspaceID = $stmt->fetchColumn();
+
+    $number = substr($lastWorkspaceID, 1);
+    $newNumber = intval($number) + 1;
+    $workspaceID = "W" . str_pad($newNumber, 4, "0", STR_PAD_LEFT);
+    
     return $workspaceID;
-  }
-  
+}
+
 // Generate unique OTP code
-function generateRandomOTP($length,$pdo) {
-    while(true) {
-      $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-      $charactersLength = strlen($characters);
-      $code = '';
-      for ($i = 0; $i < $length; $i++) {
-          $code .= $characters[rand(0, $charactersLength - 1)];
-      }
-  
-      // Check if unique
-      $query = "SELECT COUNT(*) FROM account WHERE OTP = :code";
-      $stmt = $pdo->prepare($query);
-      $stmt->bindParam(':code', $code, PDO::PARAM_STR);
-      $stmt->execute();
-      $count = $stmt->fetchColumn();
-      if ($count == 0) {
-        break;
-      }
+function generateRandomOTP($length, $pdo)
+{
+    while (true) {
+        $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $code = '';
+        for ($i = 0; $i < $length; $i++) {
+            $code .= $characters[rand(0, $charactersLength - 1)];
+        }
+
+        // Check if unique
+        $query = "SELECT COUNT(*) FROM account WHERE OTP = :code";
+        $stmt = $pdo->prepare($query);
+        $stmt->bindParam(':code', $code, PDO::PARAM_STR);
+        $stmt->execute();
+        $count = $stmt->fetchColumn();
+        if ($count == 0) {
+            break;
+        }
     }
     return $code;
-  }
-  
-  // Generate unique Workspace code
-function generateWorkspaceCode($length,$pdo) {
-    while(true) {
-      $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-      $charactersLength = strlen($characters);
-      $code = '';
-      for ($i = 0; $i < $length; $i++) {
-          $code .= $characters[rand(0, $charactersLength - 1)];
-      }
-  
-      // Check if unique
-      $query = "SELECT COUNT(*) FROM Workspace WHERE workspaceCode = :code";
-      $stmt = $pdo->prepare($query);
-      $stmt->bindParam(':code', $code, PDO::PARAM_STR);
-      $stmt->execute();
-      $count = $stmt->fetchColumn();
-      if ($count == 0) {
-        break;
-      }
+}
+
+// Generate unique Workspace code
+function generateWorkspaceCode($length, $pdo)
+{
+    while (true) {
+        $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $code = '';
+        for ($i = 0; $i < $length; $i++) {
+            $code .= $characters[rand(0, $charactersLength - 1)];
+        }
+
+        // Check if unique
+        $query = "SELECT COUNT(*) FROM Workspace WHERE workspaceCode = :code";
+        $stmt = $pdo->prepare($query);
+        $stmt->bindParam(':code', $code, PDO::PARAM_STR);
+        $stmt->execute();
+        $count = $stmt->fetchColumn();
+        if ($count == 0) {
+            break;
+        }
     }
     return $code;
-  }
-  
+}
+
 function getLatestUserID($pdo)
 {
-    $query = "SELECT COUNT(*) FROM account";
+    $query = "SELECT accountID FROM Account ORDER BY accountID DESC LIMIT 1";
     $stmt = $pdo->prepare($query);
     $stmt->execute();
-    $count = $stmt->fetchColumn();
-    $accountID = "A" . str_pad($count + 1, 4, "0", STR_PAD_LEFT);
+    $lastAccountID = $stmt->fetchColumn();
+
+
+    $number = substr($lastAccountID, 1);
+    $newNumber = intval($number) + 1;
+    $accountID = "A" . str_pad($newNumber, 4, "0", STR_PAD_LEFT);
+    
     return $accountID;
 }
 
@@ -166,6 +222,7 @@ function otpVerification($pdo, $data)
     }
 
     if ($data['otp'] == $_SESSION['otp']) {
+        addWorkspace($pdo);
         $status = "Verified";
         $query = "UPDATE account SET status = :status WHERE email = :email";
         $stmt = $pdo->prepare($query);
@@ -196,7 +253,6 @@ function otpVerification($pdo, $data)
     ];
 
     return $response;
-
 }
 
 function signIn($pdo, $data)
@@ -248,10 +304,11 @@ function signIn($pdo, $data)
     return $response;
 }
 
-function logout(){
+function logout()
+{
 
     session_unset();
-    
+
     session_destroy();
 
     $message = "Logout Successful!";

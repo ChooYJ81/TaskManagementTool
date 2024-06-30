@@ -65,13 +65,55 @@ document.addEventListener("DOMContentLoaded", function () {
           }
 
           const data = await response.json();
+
           alert(data.message);
-          $("#otpModal").modal("show");
+          if (data.status === "success") {
+            sendOTP("sendOTP");
+          }
         } catch (error) {
           console.error("Fetch error: " + error);
           console.log(formDataObj);
         }
       });
+  }
+
+  var resendOtp = document.getElementById("resendOtp");
+
+  resendOtp.addEventListener("click", function () {
+    sendOTP("resendOTP");
+  });
+
+  async function sendOTP(action) {
+    var sessionData = await getSessionData();
+    const formDataObj = {
+      action: action,
+      email: sessionData.email,
+      otp: sessionData.otp,
+    };
+
+    try {
+      const response = await fetch("./backend/sendMail.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formDataObj),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      alert(data.message);
+
+      if (data.status) {
+        $("#otpModal").modal("show");
+      }
+    } catch (error) {
+      console.error("Fetch error: " + error);
+    }
   }
 
   async function verifyOTP() {
@@ -165,5 +207,15 @@ document.addEventListener("DOMContentLoaded", function () {
           console.error("Fetch error: " + error);
         }
       });
+  }
+
+  async function getSessionData() {
+    const sessionResponse = await fetch("./backend/getSessionData.php");
+    const sessionData = await sessionResponse.json();
+    if (sessionData.email && sessionData.otp) {
+      return sessionData;
+    } else {
+      console.error("Error fetching session data:", sessionData.error);
+    }
   }
 });

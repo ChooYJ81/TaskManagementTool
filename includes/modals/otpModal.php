@@ -17,7 +17,7 @@
                     <button class="button-fill mb-3 px-3 py-2" type="submit">Verify Now</button>
                 </form>
                 <br>
-                <a href="#" style="font-size: 0.875rem;">Resend OTP?</a>
+                <a href="#" style="font-size: 0.875rem;" id="resendOtp">Resend OTP?</a>
             </div>
         </div>
     </div>

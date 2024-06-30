@@ -1,29 +1,106 @@
 <?php
-session_start();
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+  $jsonData = file_get_contents('php://input');
+  $data = json_decode($jsonData, true);
 
-// Generate OTP
-$otp = rand(100000, 999999);
+  require_once 'connection.php';
 
-// Store OTP in session for later verification
-$_SESSION['otp'] = $otp;
+  session_start();
 
-// Email subject and recipient
-$subject = "Your SunCollab OTP Code";
-$email = "shaorencheah@gmail.com";
+  $action = $data['action'];
 
-// Boundary
-$boundary = md5(uniqid(time()));
+  switch ($action) {
+    case 'sendOTP':
+      $content = sendOTP($data['otp']);
+      break;
+    case 'resendOTP':
+      $otp = generateOTP(5,$pdo);
+      $content = sendOTP($otp);
+      break;
+    default:
+      $response = [
+        'message' => 'Invalid action',
+      ];
+  }
 
-// Headers
-$headers = "From: SunCollab <suncollab@outlook.com>\r\n";
-$headers .= "MIME-Version: 1.0\r\n";
-$headers .= "Content-Type: multipart/related; boundary=\"{$boundary}\"\r\n";
+  $response = sendMail($content, $_SESSION['email']);
 
-// Image path
-$imagePath = '../images/logoWhite.png';
 
-// Check if the image file exists
-if (file_exists($imagePath)) {
+  header('Content-Type: application/json');
+  echo json_encode($response);
+  exit;
+}
+
+// Generate unique OTP code
+function generateOTP($length, $pdo)
+{
+  while (true) {
+    $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $charactersLength = strlen($characters);
+    $code = '';
+    for ($i = 0; $i < $length; $i++) {
+      $code .= $characters[rand(0, $charactersLength - 1)];
+    }
+
+    // Check if unique
+    $query = "SELECT COUNT(*) FROM account WHERE OTP = :code AND email = :email";
+    $stmt = $pdo->prepare($query);
+    $stmt->bindParam(':code', $code, PDO::PARAM_STR);
+    $stmt->bindParam(':email', $_SESSION['email'], PDO::PARAM_STR);
+    $stmt->execute();
+    $count = $stmt->fetchColumn();
+    if ($count == 0) {
+      break;
+    }
+  }
+
+  // Update the OTP code in the database
+  $query = "UPDATE account SET OTP = :code WHERE email = :email";
+  $stmt = $pdo->prepare($query);
+  $stmt->bindParam(':code', $code, PDO::PARAM_STR);
+  $stmt->bindParam(':email', $_SESSION['email'], PDO::PARAM_STR);
+  $stmt->execute();
+  
+  return $code;
+}
+
+
+function sendOTP($otp)
+{
+  $html = "
+    <p>Hello,</p>
+    <p>Thank you for using SunCollab. Your OTP code is:</p>
+    <p class=\"otp\">{$otp}</p>
+    <p>Please enter this code to proceed with your account registration.</p>
+  ";
+  $content = [
+    'subject' => "Your SunCollab OTP Code",
+    'html' => $html
+  ];
+  return $content;
+}
+
+function sendMail($content, $email)
+{
+  // Subject
+  $subject = $content['subject'];
+
+  // Boundary
+  $boundary = md5(uniqid(time()));
+
+  // Headers
+  $headers = "From: SunCollab <suncollab@outlook.com>\r\n";
+  $headers .= "MIME-Version: 1.0\r\n";
+  $headers .= "Content-Type: multipart/related; boundary=\"{$boundary}\"\r\n";
+
+  // Image path
+  $imagePath = '../images/logoWhite.png';
+
+  // Body content
+  $html = $content['html'];
+
+  // Check if the image file exists
+  if (file_exists($imagePath)) {
     // Read and encode the image
     $imageData = chunk_split(base64_encode(file_get_contents($imagePath)));
 
@@ -98,11 +175,9 @@ Content-Transfer-Encoding: 7bit
                 </td>
             </tr>
             <tr>
-                <td class=\"content\">
-                    <p>Hello,</p>
-                    <p>Thank you for using SunCollab. Your OTP code is:</p>
-                    <p class=\"otp\">{$otp}</p>
-                    <p>Please enter this code to proceed with your account registration.</p>
+                <td class=\"content\">";
+    $message .= $html; // Append the HTML content
+    $message .= "
                 </td>
             </tr>
             <tr>
@@ -122,22 +197,29 @@ Content-ID: <logo>
 
 {$imageData}
 
---{$boundary}--";
+--{$boundary}--
+    ";
 
-// Send email
-if (mail($email, $subject, $message, $headers)) {
-    $success = true;
-} else {
-    $success = false;
+    // Send email
+    if (mail($email, $subject, $message, $headers)) {
+      $status = true;
+      $message = 'An OTP has been sent to your email for verification.';
+    } else {
+      $status = false;
+      $message = 'Failed to send email.';
+    }
+
+    // Send a JSON response indicating success or failure
+    $response = [
+      'status' => $status,
+      'message' => $message
+    ];
+  } else {
+    $response = [
+      'status' => false,
+      'message' => 'Image file not found'
+    ];
+  }
+
+  return $response;
 }
-
-// Send a JSON response indicating success or failure
-$response = [
-    'success' => $success
-];
-
-echo json_encode($response);
-} else {
-    echo json_encode(['success' => false, 'message' => 'Image file not found.']);
-}
-?>

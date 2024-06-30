@@ -21,11 +21,12 @@ async function initializeWorkspace() {
         workspace: workspace,
       }),
     });
+
     const validateData = await validateResponse.json();
     if (validateData.status == "error") {
       alert(validateData.message);
       window.location.href = "./dashboard.php";
-      return; // Stop execution if workspace validation fails
+      return;
     } else {
       // Fetch session data
       const sessionResponse = await fetch("./backend/getSessionData.php");
