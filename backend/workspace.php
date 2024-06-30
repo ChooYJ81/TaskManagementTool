@@ -10,6 +10,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   $action = $data['action'];
 
   switch ($action) {
+    case 'validateWorkspaceAccess':
+      $response = validateWorkspaceAccess($pdo, $data['workspace']);
+      break;
     case 'getWorkspaceList':
       $response = getWorkspaceList($pdo, $_SESSION['accountID']); // Hardcoded for testing
       break;
@@ -52,6 +55,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 // Main functions
+function validateWorkspaceAccess($pdo, $workspaceID){
+  $query = "SELECT * FROM Member WHERE workspaceID = :workspaceID AND accountID = :accountID";
+  $stmt = $pdo->prepare($query);
+  $stmt->bindParam(':workspaceID', $workspaceID, PDO::PARAM_STR);
+  $stmt->bindParam(':accountID', $_SESSION['accountID'], PDO::PARAM_STR);
+  $stmt->execute(); 
+  $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+  if ($row) {
+    return array('status' => 'success', 'message' => 'Workspace access granted');
+  } else {
+    return array('status' => 'error', 'message' => 'You do not have access to this workspace.');
+  }
+}
+
 function createTask($pdo, $data)
 {
   $taskID = generateTaskID($pdo);
@@ -61,7 +79,7 @@ function createTask($pdo, $data)
   $stmt = $pdo->prepare($query);
   $stmt->bindParam(':taskID', $taskID, PDO::PARAM_STR);
   $stmt->bindParam(':workspaceID', $data['workspaceID'], PDO::PARAM_STR);
-  $accountID = 'A0001'; // Hardcoded for testing
+  $accountID = $_SESSION['accountID']; // Hardcoded for testing
   $stmt->bindParam(':creator', $accountID, PDO::PARAM_STR);
   $stmt->bindParam(':taskName', $data['taskName'], PDO::PARAM_STR);
   $stmt->bindParam(':taskDesc', $data['taskDesc'], PDO::PARAM_STR);
@@ -143,14 +161,14 @@ function deleteTask($pdo, $taskID)
   $stmt = $pdo->prepare($query);
   $stmt->bindParam(':taskID', $taskID, PDO::PARAM_STR);
   $stmt->execute();
-  $assigned = $stmt->fetchAll(PDO::FETCH_COLUMN);
+  $assigned = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
   if ($assigned != null) {
     foreach ($assigned as $member) {
       $query = "DELETE FROM Assigned WHERE taskID = :taskID AND assignedMember = :assignedMember";
       $stmt = $pdo->prepare($query);
       $stmt->bindParam(':taskID', $taskID, PDO::PARAM_STR);
-      $stmt->bindParam(':assignedMember', $member, PDO::PARAM_STR);
+      $stmt->bindParam(':assignedMember', $member['assignedMember'], PDO::PARAM_STR);
       $stmt->execute();
     }
   }

@@ -1,6 +1,6 @@
 <?php
 require_once './connection.php';
-
+session_start();
 $accountID = $_SESSION['accountID']; 
 
 $name = $_POST['workspaceName'];
@@ -62,7 +62,8 @@ $response = [
   'message' => $message,
   'code' => $code,
   'status' => $status,
-  'workspaceID' => $workspaceID
+  'workspaceID' => $workspaceID,
+  'type' => $type
 ];
 
 header('Content-Type: application/json');

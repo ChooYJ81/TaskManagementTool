@@ -5,33 +5,61 @@ workspace = atob(workspace);
 var sessionAccountID = null;
 
 document.addEventListener("DOMContentLoaded", function () {
-  fetch("./backend/getSessionData.php")
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.accountID) {
-        sessionAccountID = data.accountID;
-      } else {
-        console.error("Error fetching session data:", data.error);
-      }
-    })
-    .catch((error) => console.error("Error:", error));
-
-  const date = document.getElementById("today");
-  var today = dayjs().format("dddd, D MMMM YYYY");
-  // console.log(today);
-  date.innerHTML = today;
-
-  getWorkspace();
-  initializeCreateTask(); // Add event listener to get the task type
-  initializeMultipleSelect("createDropdownDisplay", "createDropdownOptions"); // Add event listener to enable multi-select for the select element
-  submitNewTask(); // Add event listener to create a task
-
-  getTasks(); // Fetch tasks from database
-
-  viewTask(); // Initialize the task modal
-  editTask(); // Initialize the edit task modal
-  updateTask(); // Add event listener to update a task
+  initializeWorkspace();
 });
+
+async function initializeWorkspace() {
+  try {
+    // Validate workspace access
+    const validateResponse = await fetch("./backend/workspace.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        action: "validateWorkspaceAccess",
+        workspace: workspace,
+      }),
+    });
+    const validateData = await validateResponse.json();
+    if (validateData.status == "error") {
+      alert(validateData.message);
+      window.location.href = "./dashboard.php";
+      return; // Stop execution if workspace validation fails
+    } else {
+      // Fetch session data
+      const sessionResponse = await fetch("./backend/getSessionData.php");
+      const sessionData = await sessionResponse.json();
+      if (sessionData.accountID) {
+        sessionAccountID = sessionData.accountID;
+      } else {
+        console.error("Error fetching session data:", sessionData.error);
+      }
+
+      // Set today's date
+      const date = document.getElementById("today");
+      var today = dayjs().format("dddd, D MMMM YYYY");
+      date.innerHTML = today;
+
+      // Initialize workspace functionalities
+      getWorkspace();
+      initializeCreateTask(); // Add event listener to get the task type
+      initializeMultipleSelect(
+        "createDropdownDisplay",
+        "createDropdownOptions"
+      ); // Add event listener to enable multi-select for the select element
+      submitNewTask(); // Add event listener to create a task
+
+      getTasks(); // Fetch tasks from database
+
+      viewTask(); // Initialize the task modal
+      editTask(); // Initialize the edit task modal
+      updateTask(); // Add event listener to update a task
+    }
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
 
 // Fetch data from database
 async function getWorkspace() {
@@ -65,13 +93,24 @@ async function getWorkspace() {
 function displayWorkspace(data) {
   console.log(data);
   const workspaceHistory = document.getElementById("workspaceHistory");
-  var historyText =
+  var historyText = "";
+  if(data.workspace.type == "Personal"){
+  historyText =
+    "Your own personal workspace, hosted on " +
+    dayjs(data.workspace.creationDate).format("dddd, D MMMM YYYY") +
+    " at " +
+    dayjs(data.workspace.creationDate).format("h:mm A");
+  }else{
+    historyText =
     "Hosted by " +
     data.owner.username +
     " on " +
     dayjs(data.workspace.creationDate).format("dddd, D MMMM YYYY") +
     " at " +
     dayjs(data.workspace.creationDate).format("h:mm A");
+  }
+
+
   workspaceHistory.innerHTML = historyText;
 
   const workspaceTitle = document.getElementById("workspaceTitle");
@@ -96,14 +135,15 @@ function displayWorkspace(data) {
   }
 
   const manageWorkspaceBtn = document.getElementById("manageWorkspaceBtn");
-  if (sessionAccountID !== data.workspace.owner){
+
+  if((data.workspace.type == "Personal") ||  (sessionAccountID !== data.workspace.owner) ){
     manageWorkspaceBtn.classList.add("d-none");
-  }
+  } 
 }
 
-function displayManageWorkspace(data){
-  const workspaceName = document.getElementById('editWorkspaceName');
-  const workspaceDesc = document.getElementById('editWorkspaceDesc');
+function displayManageWorkspace(data) {
+  const workspaceName = document.getElementById("editWorkspaceName");
+  const workspaceDesc = document.getElementById("editWorkspaceDesc");
 
   workspaceName.value = data.workspace.workspaceName;
   workspaceDesc.value = data.workspace.workspaceDesc;
@@ -423,6 +463,7 @@ function viewTask() {
       const button = event.relatedTarget;
       const taskJson = button.getAttribute("data-bs-task");
       const task = JSON.parse(taskJson.replace(/&quot;/g, '"'));
+      const editTaskBtn = document.getElementById("editTaskModalBtn");
 
       try {
         var viewTask = await getCreatorAndAssigned(task.taskID); // Contains creator and members assigned
@@ -439,6 +480,12 @@ function viewTask() {
           });
         } else {
           membersAssigned = `<p class="text-1">No members assigned</p>`;
+        }
+
+        if (viewTask.creator.accountID == sessionAccountID) {
+          editTaskBtn.style.display = "block";
+        } else {
+          editTaskBtn.style.display = "none";
         }
       } catch (error) {
         console.error("Error fetching task details:", error);
@@ -554,7 +601,7 @@ function editTask() {
 
         deleteTaskBtn.addEventListener("click", async () => {
           const taskID = deleteTaskBtn.getAttribute("task-id"); // Get the task-id attribute
-          console.log(taskID);
+          // console.log(taskID);
           const confirmDelete = confirm(
             "Are you sure you want to delete this task?"
           );
