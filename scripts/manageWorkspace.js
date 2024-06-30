@@ -4,13 +4,47 @@ document.addEventListener("DOMContentLoaded", function () {
   disableCode();
   regenerateCode();
 
+  var sendCodeBtn = document.getElementById("sendCodeBtn");
+
+  sendCodeBtn.addEventListener("click", async (e) => {
+    e.preventDefault();
+    alert("Your action is being processed. Please wait a moment.");
+    var email = document.getElementById("recipient").value;
+
+    const data = {
+      workspace: workspace,
+      action: "sendInvitation",
+      email: email
+    };
+
+    fetch("./backend/sendMail.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data)
+    })
+      .then((response) => {
+        console.log(response);
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+        if (data.status) {
+          alert("Invitation code sent successfully");
+        } else {
+          alert("Error sending email");
+        }
+      });
+  });
+
   async function editWorkspace() {
     document
       .getElementById("editWorkspace")
       .addEventListener("submit", async (e) => {
         e.preventDefault();
-
         // Initialize an object to hold form data
+        console.log("Test",  workspace)
         const formDataObj = {
           workspace: workspace,
           action: "editWorkspace",

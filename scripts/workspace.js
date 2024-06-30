@@ -128,9 +128,12 @@ function displayWorkspace(data) {
   taskWorkspaceID.value = data.workspace.workspaceID;
 
   const workspaceCode = document.getElementById("modalWorkspaceCode");
+  var sendCodeBtn = document.getElementById("sendCodeBtn");
+
   if (data.workspace.workspaceCode === null) {
     workspaceCode.classList.add("text-secondary");
     workspaceCode.innerHTML = "Disabled";
+    sendCodeBtn.setAttribute("disabled", true);
   } else {
     workspaceCode.innerHTML = data.workspace.workspaceCode;
   }

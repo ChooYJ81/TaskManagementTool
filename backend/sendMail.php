@@ -12,10 +12,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   switch ($action) {
     case 'sendOTP':
       $content = sendOTP($data['otp']);
+      $email = $_SESSION['email'];
       break;
     case 'resendOTP':
       $otp = generateOTP(5,$pdo);
       $content = sendOTP($otp);
+      $email = $_SESSION['email'];
+      break;
+    case 'sendInvitation':
+      $content = sendInvitation($pdo, $data['workspace']);
+      $email = $data['email'];
       break;
     default:
       $response = [
@@ -23,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       ];
   }
 
-  $response = sendMail($content, $_SESSION['email']);
+  $response = sendMail($content, $email);
 
 
   header('Content-Type: application/json');
@@ -78,6 +84,52 @@ function sendOTP($otp)
     'html' => $html
   ];
   return $content;
+}
+
+function sendInvitation($pdo, $workspaceID){
+  $owner = getOwner($pdo, $workspaceID);
+  $workspace = getWorkspace($pdo, $workspaceID);
+  $name = $workspace['workspaceName'];
+  $code = $workspace['workspaceCode'];
+  
+  $html = "
+    <p>Hello,</p>
+    <p><b>{$owner}</b> is inviting you to join their workspace.</p>
+    <p class=\"ownerName\">{$name}</p>
+     <p class=\"otp\">{$code}</p>
+    <p>Please enter the workspace code above <br> at the sidebar after login to join.</p>
+  ";
+  $content = [
+    'subject' => "SunCollab Workspace Invitation",
+    'html' => $html
+  ];
+  return $content;
+}
+
+function getOwner($pdo,$workspaceID){
+  $query = "SELECT owner FROM workspace WHERE workspaceID = :workspaceID";
+  $stmt = $pdo->prepare($query);
+  $stmt->bindParam(':workspaceID', $workspaceID, PDO::PARAM_STR);
+  $stmt->execute();
+  $owner = $stmt->fetchColumn();
+  
+  $query = "SELECT username FROM account WHERE accountID = :owner";
+  $stmt = $pdo->prepare($query);
+  $stmt->bindParam(':owner', $owner, PDO::PARAM_STR);
+  $stmt->execute();
+  $owner = $stmt->fetchColumn();
+
+  return $owner;
+}
+
+function getWorkspace($pdo,$workspaceID){
+  $query = "SELECT workspaceName, workspaceCode FROM workspace WHERE workspaceID = :workspaceID";
+  $stmt = $pdo->prepare($query);
+  $stmt->bindParam(':workspaceID', $workspaceID, PDO::PARAM_STR);
+  $stmt->execute();
+  $workspaceDetails = $stmt->fetch(PDO::FETCH_ASSOC);
+
+  return $workspaceDetails;
 }
 
 function sendMail($content, $email)
@@ -149,10 +201,15 @@ Content-Transfer-Encoding: 7bit
         .content {
             padding: 20px;
         }
+        .ownerName{
+          color:#2A386E;
+          font-size: 18px;
+          font-weight: bold;
+        }
         .otp {
             font-size: 48px;
             font-weight: bold;
-            margin: 20px 0;
+            margin: 5px 0;
             color: #3284ba;
         }
         .footer {

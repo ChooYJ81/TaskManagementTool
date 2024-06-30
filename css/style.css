@@ -502,6 +502,16 @@ body {
   font-size: 0.75rem;
 }
 
+.button-fill:disabled{
+  color: var(--white);
+  background-color: #b0b0b0;
+  border-radius: 10px;
+  padding: 5px 10px;
+  border: none;
+  font-size: 0.75rem;
+
+}
+
 .members-badge {
   font-size: 0.75rem;
   background-color: var(--light-blue);
