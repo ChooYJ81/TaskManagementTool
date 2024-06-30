@@ -1,3 +1,5 @@
+<?php include 'includes/validateUser.php'; ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,7 +17,7 @@
   <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
 </head>
 
-<body>
+<body id="workspaceBody">
   <div class="d-flex">
     <?php include 'includes/sidebar.php'; ?>
 
@@ -35,7 +37,7 @@
               <p class="m-0" id="workspaceTitle"></p>
               <i class="bi bi-dot mx-1 fs-2" style="color: #f0f0f0"></i>
               <i class="bi bi-people-fill me-2"></i>
-              <p class="m-0 text-dark fw-medium" id="membersNo"></p>
+              <p class="m-0 text-dark fw-medium" id="membersNo">0</p>
             </div>
             <!-- description -->
             <p class="text-2 mb-5" id="workspaceDescription">
@@ -57,7 +59,7 @@
                   <p class="progress-title">To-dos</p>
                   <p class="progress-title-number ms-2 my-auto" id="toDoQty">
                     <!-- no. of to-dos task -->
-                    10
+                    0
                   </p>
                 </div>
                 <a href="#" class="createTask" create-type="To-Do" data-bs-target="#createModal" data-bs-toggle="modal">
@@ -65,7 +67,7 @@
                 </a>
               </div>
             </div>
-            <div class="w-100 container-draggable d-flex flex-column" id="toDoColumn">
+            <div class="w-100 container-draggable d-flex flex-column flex-grow-1" id="toDoColumn">
             </div>
 
             <!-- Looping tasks
@@ -95,7 +97,7 @@
                   <p class="progress-title">In Progress</p>
                   <p class="progress-title-number ms-2 my-auto" id="inProgressQty">
                     <!-- no. of in progress task -->
-
+                    0
                   </p>
                 </div>
                 <a href="#" class="createTask" create-type="In Progress" data-bs-target="#createModal" data-bs-toggle="modal">
@@ -103,7 +105,7 @@
                 </a>
               </div>
             </div>
-            <div class="w-100 container-draggable d-flex flex-column" id="inProgressColumn">
+            <div class="w-100 container-draggable d-flex flex-column flex-grow-1" id="inProgressColumn">
             </div>
           </div>
 
@@ -123,9 +125,9 @@
                 </a>
               </div>
             </div>
-            <div class="w-100 container-draggable d-flex flex-column" id="completedColumn">
+            <div class="w-100 container-draggable d-flex flex-column flex-grow-1" id="completedColumn">
             </div>
-            
+
           </div>
 
         </div>

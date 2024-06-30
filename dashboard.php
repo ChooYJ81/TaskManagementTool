@@ -1,3 +1,4 @@
+<?php include 'includes/validateUser.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 

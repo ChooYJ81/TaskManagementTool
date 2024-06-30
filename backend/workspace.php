@@ -10,6 +10,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   $action = $data['action'];
 
   switch ($action) {
+    case 'validateWorkspaceAccess':
+      $response = validateWorkspaceAccess($pdo, $data['workspace']);
+      break;
     case 'getWorkspaceList':
       $response = getWorkspaceList($pdo, $_SESSION['accountID']); // Hardcoded for testing
       break;
@@ -52,6 +55,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 // Main functions
+function validateWorkspaceAccess($pdo, $workspaceID){
+  $query = "SELECT * FROM Member WHERE workspaceID = :workspaceID AND accountID = :accountID";
+  $stmt = $pdo->prepare($query);
+  $stmt->bindParam(':workspaceID', $workspaceID, PDO::PARAM_STR);
+  $stmt->bindParam(':accountID', $_SESSION['accountID'], PDO::PARAM_STR);
+  $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+  if ($row > 0) {
+    return array('status' => 'success', 'message' => 'Workspace access granted');
+  } else {
+    return array('status' => 'error', 'message' => 'You do not have access to this workspace.');
+  }
+}
+
 function createTask($pdo, $data)
 {
   $taskID = generateTaskID($pdo);
