@@ -93,13 +93,24 @@ async function getWorkspace() {
 function displayWorkspace(data) {
   console.log(data);
   const workspaceHistory = document.getElementById("workspaceHistory");
-  var historyText =
+  var historyText = "";
+  if(data.workspace.type == "Personal"){
+  historyText =
+    "Your own personal workspace, hosted on " +
+    dayjs(data.workspace.creationDate).format("dddd, D MMMM YYYY") +
+    " at " +
+    dayjs(data.workspace.creationDate).format("h:mm A");
+  }else{
+    historyText =
     "Hosted by " +
     data.owner.username +
     " on " +
     dayjs(data.workspace.creationDate).format("dddd, D MMMM YYYY") +
     " at " +
     dayjs(data.workspace.creationDate).format("h:mm A");
+  }
+
+
   workspaceHistory.innerHTML = historyText;
 
   const workspaceTitle = document.getElementById("workspaceTitle");
@@ -124,9 +135,10 @@ function displayWorkspace(data) {
   }
 
   const manageWorkspaceBtn = document.getElementById("manageWorkspaceBtn");
-  if (sessionAccountID !== data.workspace.owner) {
+
+  if((data.workspace.type == "Personal") ||  (sessionAccountID !== data.workspace.owner) ){
     manageWorkspaceBtn.classList.add("d-none");
-  }
+  } 
 }
 
 function displayManageWorkspace(data) {

@@ -81,22 +81,22 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 200);
   });
 
-    const currentPath = window.location.pathname.split("/").pop(); // Get the current file name from the URL
+  const currentPath = window.location.pathname.split("/").pop(); // Get the current file name from the URL
 
-    const dashboard = document.getElementById("dashboard");
+  const dashboard = document.getElementById("dashboard");
 
-    switch (currentPath) {
-        case "dashboard.php":
-            dashboard.classList.add("active");
-            workspace.classList.remove("active");
-            break;
-        case "workspace.php":
-            dashboard.classList.remove("active");
-            workspace.classList.add("active");
-            break;
-        default:
-            break;
-    }
+  switch (currentPath) {
+    case "dashboard.php":
+      dashboard.classList.add("active");
+      workspace.classList.remove("active");
+      break;
+    case "workspace.php":
+      dashboard.classList.remove("active");
+      workspace.classList.add("active");
+      break;
+    default:
+      break;
+  }
 
   workspace.addEventListener("click", () => {
     if (!workspaceOpened) {
@@ -259,21 +259,41 @@ document.addEventListener("DOMContentLoaded", function () {
           } else if (data.status == "success") {
             alert(data.message);
             createWorkspaceModal.hide();
-            showPostCreation(data.code, data.workspaceID);
+            showPostCreation(data.code, data.workspaceID, data.type);
             getWorkspaceList();
             e.target.reset();
           }
         });
     });
-
 });
 
-function showPostCreation(workspaceCode, workspaceID) {
+function showPostCreation(workspaceCode, workspaceID, type) {
   const postCreationModal = new bootstrap.Modal(
     document.getElementById("postCreationModal")
   );
-  var workspaceCodeEl = document.getElementById("postWorkspaceCode");
-  workspaceCodeEl.innerHTML = workspaceCode;
+
+  var postTitleDesc = document.getElementById("postTitleDesc");
+  var postImg = document.getElementById("postImage");
+  var title = document.getElementById("postSecTitle");
+  var workspaceCode = document.getElementById("postWorkspaceCode");
+  var secDesc = document.getElementById("postSecDesc")
+
+
+  if (type == "Personal") {
+    postTitleDesc.innerHTML = "You can manage your tasks in your private workspace";
+    postImg.setAttribute("src","./images/workspacePersonal.png");
+    title.innerHTML = "Personal Workspace"
+    workspaceCode.style.display="none";
+    secDesc.innerHTML = `Welcome aboard! Your workspace is ready for <br> productivity.`
+  } else {
+    postTitleDesc.innerHTML = "You can invite people to your workspace via the generated  code";
+    postImg.setAttribute("src","./images/workspaceCode.png");
+    title.innerHTML = "Workspace Code:"
+    workspaceCode.style.display="block";
+    workspaceCode.innerHTML = workspaceID;
+    secDesc.innerHTML = `To manage or send invitations via email, navigate to <br> Workspace > Manage Workspace`;
+
+  }
 
   var viewWorkspaceBtn = document.getElementById("viewWorkspaceBtn");
   const endcode = btoa(workspaceID);
