@@ -21,11 +21,12 @@ async function initializeWorkspace() {
         workspace: workspace,
       }),
     });
+
     const validateData = await validateResponse.json();
     if (validateData.status == "error") {
       alert(validateData.message);
       window.location.href = "./dashboard.php";
-      return; // Stop execution if workspace validation fails
+      return;
     } else {
       // Fetch session data
       const sessionResponse = await fetch("./backend/getSessionData.php");
@@ -127,9 +128,12 @@ function displayWorkspace(data) {
   taskWorkspaceID.value = data.workspace.workspaceID;
 
   const workspaceCode = document.getElementById("modalWorkspaceCode");
+  var sendCodeBtn = document.getElementById("sendCodeBtn");
+
   if (data.workspace.workspaceCode === null) {
     workspaceCode.classList.add("text-secondary");
     workspaceCode.innerHTML = "Disabled";
+    sendCodeBtn.setAttribute("disabled", true);
   } else {
     workspaceCode.innerHTML = data.workspace.workspaceCode;
   }

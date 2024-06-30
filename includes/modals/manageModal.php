@@ -47,7 +47,7 @@
               <div class="accordion-body d-flex flex-column">
                 <div class="text-center">
                   <p class="workspace-code-title mb-1">Workspace Code</p>
-                  <p class="workspace-code" id="modalWorkspaceCode">Disabled</p>
+                  <p class="workspace-code" id="modalWorkspaceCode"></p>
                   <div class="d-flex justify-content-center">
                     <button class="button-fill me-3" id="disableCodeBtn"><i class="bi bi-x me-3"></i>Disable Code</button>
                     <button class="button-fill ms-3" id="regenerateCodeBtn"><i class="bi bi-arrow-repeat me-3"></i>Regenerate Code</button>
@@ -56,9 +56,9 @@
                 <hr style="opacity: 1;">
                 <div class="mb-3">
                   <label class="input-label">Invite via Email</label>
-                  <input class="inputs" type="text" placeholder="Enter recipient email" />
+                  <input class="inputs" type="text" placeholder="Enter recipient email" id="recipient"/>
                 </div>
-                <button class="button-fill mx-auto px-3">Send Invitation</button>
+                <button class="button-fill mx-auto px-3" id="sendCodeBtn">Send Invitation</button>
 
               </div>
             </div>
