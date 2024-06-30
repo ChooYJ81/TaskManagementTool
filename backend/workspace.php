@@ -61,7 +61,7 @@ function createTask($pdo, $data)
   $stmt = $pdo->prepare($query);
   $stmt->bindParam(':taskID', $taskID, PDO::PARAM_STR);
   $stmt->bindParam(':workspaceID', $data['workspaceID'], PDO::PARAM_STR);
-  $accountID = 'A0001'; // Hardcoded for testing
+  $accountID = $_SESSION['accountID']; // Hardcoded for testing
   $stmt->bindParam(':creator', $accountID, PDO::PARAM_STR);
   $stmt->bindParam(':taskName', $data['taskName'], PDO::PARAM_STR);
   $stmt->bindParam(':taskDesc', $data['taskDesc'], PDO::PARAM_STR);
@@ -143,14 +143,14 @@ function deleteTask($pdo, $taskID)
   $stmt = $pdo->prepare($query);
   $stmt->bindParam(':taskID', $taskID, PDO::PARAM_STR);
   $stmt->execute();
-  $assigned = $stmt->fetchAll(PDO::FETCH_COLUMN);
+  $assigned = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
   if ($assigned != null) {
     foreach ($assigned as $member) {
       $query = "DELETE FROM Assigned WHERE taskID = :taskID AND assignedMember = :assignedMember";
       $stmt = $pdo->prepare($query);
       $stmt->bindParam(':taskID', $taskID, PDO::PARAM_STR);
-      $stmt->bindParam(':assignedMember', $member, PDO::PARAM_STR);
+      $stmt->bindParam(':assignedMember', $member['assignedMember'], PDO::PARAM_STR);
       $stmt->execute();
     }
   }

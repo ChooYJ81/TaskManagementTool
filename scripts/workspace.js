@@ -423,6 +423,7 @@ function viewTask() {
       const button = event.relatedTarget;
       const taskJson = button.getAttribute("data-bs-task");
       const task = JSON.parse(taskJson.replace(/&quot;/g, '"'));
+      const editTaskBtn = document.getElementById("editTaskModalBtn");
 
       try {
         var viewTask = await getCreatorAndAssigned(task.taskID); // Contains creator and members assigned
@@ -440,6 +441,13 @@ function viewTask() {
         } else {
           membersAssigned = `<p class="text-1">No members assigned</p>`;
         }
+
+        if (viewTask.creator.accountID == sessionAccountID) {
+          editTaskBtn.style.display = "block"; 
+        } else {
+          editTaskBtn.style.display = "none";
+        }
+
       } catch (error) {
         console.error("Error fetching task details:", error);
       }
@@ -554,7 +562,7 @@ function editTask() {
 
         deleteTaskBtn.addEventListener("click", async () => {
           const taskID = deleteTaskBtn.getAttribute("task-id"); // Get the task-id attribute
-          console.log(taskID);
+          // console.log(taskID);
           const confirmDelete = confirm(
             "Are you sure you want to delete this task?"
           );
