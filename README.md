@@ -19,6 +19,10 @@ Enable PHP mailing feature
 <br><img src="images/documentation/sendMail2.png">
 2. Update the send mail function from (`\xampp\php\php.ini`)
 <br><img src="images/documentation/php.png"><br>
+-> Update sendmail_from to (`sendmail_from = suncollab@outlook.com`)<br>
+-> Update sendmail_path to (`sendmail_path = "\"C:\xampp\sendmail\sendmail.exe\" -t"`)
+
+
 ** Default sender email is (`suncollab@outlook.com`) with the password of (`SunCol@2024`)
 
 <br>
