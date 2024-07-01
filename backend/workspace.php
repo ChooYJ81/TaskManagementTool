@@ -55,12 +55,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 // Main functions
-function validateWorkspaceAccess($pdo, $workspaceID){
+function validateWorkspaceAccess($pdo, $workspaceID)
+{
   $query = "SELECT * FROM Member WHERE workspaceID = :workspaceID AND accountID = :accountID";
   $stmt = $pdo->prepare($query);
   $stmt->bindParam(':workspaceID', $workspaceID, PDO::PARAM_STR);
   $stmt->bindParam(':accountID', $_SESSION['accountID'], PDO::PARAM_STR);
-  $stmt->execute(); 
+  $stmt->execute();
   $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
   if ($row) {
@@ -287,6 +288,12 @@ function generateTaskID($pdo)
   $stmt = $pdo->prepare($query);
   $stmt->execute();
   $lastTaskID = $stmt->fetchColumn();
+
+  if ($lastTaskID = null) {
+    $lastTaskID= "T0000";
+  } else {
+    $lastTaskID = $lastTaskID;
+  }
 
   // Extract the numeric part of the taskID
   $number = substr($lastTaskID, 1);

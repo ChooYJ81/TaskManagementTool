@@ -1,4 +1,8 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 0);
+ini_set('log_errors', 1);
+ini_set('error_log', './error.log');
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $jsonData = file_get_contents('php://input');
@@ -41,38 +45,38 @@ function register($pdo, $data)
     }
 
     if (checkEmail($pdo, $data['email'])) {
-    $response = [
-        'status' => 'error',
-        'message' => 'Email already exists',
-    ];
-    return $response;
+        $response = [
+            'status' => 'error',
+            'message' => 'Email already exists',
+        ];
+        return $response;
     } else {
-    $otp = generateRandomOTP(5, $pdo);
-    $accountID = getLatestUserID($pdo);
-    $status = "Pending";
-    $_SESSION['otp'] = $otp;
-    $_SESSION['email'] = $data['email'];
-    $password = password_hash($data['password'], PASSWORD_DEFAULT);
+        $otp = generateRandomOTP(5, $pdo);
+        $accountID = getLatestUserID($pdo);
+        $status = "Pending";
+        $_SESSION['otp'] = $otp;
+        $_SESSION['email'] = $data['email'];
+        $password = password_hash($data['password'], PASSWORD_DEFAULT);
 
-    $query = "INSERT INTO account (accountID, username, phoneNo, email, pwd, OTP, status) VALUES (:accountID, :username, null, :email, :password, :otp, :status)";
-    $stmt = $pdo->prepare($query);
-    $stmt->bindParam(':accountID', $accountID, PDO::PARAM_STR);
-    $stmt->bindParam(':username', $data['name'], PDO::PARAM_STR);
-    $stmt->bindParam(':email', $data['email'], PDO::PARAM_STR);
-    $stmt->bindParam(':password', $password, PDO::PARAM_STR);
-    $stmt->bindParam(':otp', $otp, PDO::PARAM_STR);
-    $stmt->bindParam(':status', $status, PDO::PARAM_STR);
+        $query = "INSERT INTO account (accountID, username, email, pwd, OTP, status) VALUES (:accountID, :username, :email, :password, :otp, :status)";
+        $stmt = $pdo->prepare($query);
+        $stmt->bindParam(':accountID', $accountID, PDO::PARAM_STR);
+        $stmt->bindParam(':username', $data['name'], PDO::PARAM_STR);
+        $stmt->bindParam(':email', $data['email'], PDO::PARAM_STR);
+        $stmt->bindParam(':password', $password, PDO::PARAM_STR);
+        $stmt->bindParam(':otp', $otp, PDO::PARAM_STR);
+        $stmt->bindParam(':status', $status, PDO::PARAM_STR);
 
-    $stmt->execute();
+        $stmt->execute();
 
-    $response = [
-        'status' => 'success',
-        'email' => $data['email'],
-        'otp' => $otp,
-        'message' => 'Your account has been created successfully. Please wait a moment for the OTP to be sent to your email.',
-    ];
+        $response = [
+            'status' => 'success',
+            'email' => $data['email'],
+            'otp' => $otp,
+            'message' => 'Your account has been created successfully. Please wait a moment for the OTP to be sent to your email.',
+        ];
 
-    return $response;
+        return $response;
     }
 }
 
@@ -92,13 +96,13 @@ function checkEmail($pdo, $email)
 
 function addWorkspace($pdo)
 {
-    if(isset($_SESSION['email'])){
+    if (isset($_SESSION['email'])) {
         $email = $_SESSION['email'];
     } else {
         // $email = $_SESSION['email'];
     }
 
-    $accountID = getAccountID($pdo,$email);
+    $accountID = getAccountID($pdo, $email);
 
     $workspaceCode = generateWorkspaceCode(5, $pdo);
     $workspaceID = generateWorkspaceID($pdo);
@@ -127,7 +131,7 @@ function addWorkspace($pdo)
     $stmt->execute();
 }
 
-function getAccountID($pdo,$email)
+function getAccountID($pdo, $email)
 {
     $query = "SELECT accountID FROM account WHERE email = :email";
     $stmt = $pdo->prepare($query);
@@ -145,10 +149,16 @@ function generateWorkspaceID($pdo)
     $stmt->execute();
     $lastWorkspaceID = $stmt->fetchColumn();
 
+    if ($lastWorkspaceID = null) {
+        $lastWorkspaceID = "W0000";
+    } else {
+        $lastWorkspaceID = $lastWorkspaceID;
+    }
+
     $number = substr($lastWorkspaceID, 1);
     $newNumber = intval($number) + 1;
     $workspaceID = "W" . str_pad($newNumber, 4, "0", STR_PAD_LEFT);
-    
+
     return $workspaceID;
 }
 
@@ -207,11 +217,16 @@ function getLatestUserID($pdo)
     $stmt->execute();
     $lastAccountID = $stmt->fetchColumn();
 
+    if ($lastAccountID = null) {
+        $lastAccountID = "A0000";
+    } else {
+        $lastAccountID = $lastAccountID;
+    }
 
     $number = substr($lastAccountID, 1);
     $newNumber = intval($number) + 1;
     $accountID = "A" . str_pad($newNumber, 4, "0", STR_PAD_LEFT);
-    
+
     return $accountID;
 }
 

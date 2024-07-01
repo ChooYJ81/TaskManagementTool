@@ -16,6 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       break;
     case 'resendOTP':
       $otp = generateOTP(5,$pdo);
+      $_SESSION['otp'] = $otp;  // Store the OTP in the session
       $content = sendOTP($otp);
       $email = $_SESSION['email'];
       break;
