@@ -259,6 +259,7 @@ document.addEventListener("DOMContentLoaded", function () {
           } else if (data.status == "success") {
             alert(data.message);
             createWorkspaceModal.hide();
+            console.log(data.code)
             showPostCreation(data.code, data.workspaceID, data.type);
             getWorkspaceList();
             e.target.reset();
@@ -275,7 +276,7 @@ function showPostCreation(workspaceCode, workspaceID, type) {
   var postTitleDesc = document.getElementById("postTitleDesc");
   var postImg = document.getElementById("postImage");
   var title = document.getElementById("postSecTitle");
-  var workspaceCode = document.getElementById("postWorkspaceCode");
+  var workspaceCodeEl = document.getElementById("postWorkspaceCode");
   var secDesc = document.getElementById("postSecDesc")
 
 
@@ -289,8 +290,8 @@ function showPostCreation(workspaceCode, workspaceID, type) {
     postTitleDesc.innerHTML = "You can invite people to your workspace via the generated  code";
     postImg.setAttribute("src","./images/workspaceCode.png");
     title.innerHTML = "Workspace Code:"
-    workspaceCode.style.display="block";
-    workspaceCode.innerHTML = workspaceID;
+    workspaceCodeEl.style.display="block";
+    workspaceCodeEl.innerHTML = workspaceCode;
     secDesc.innerHTML = `To manage or send invitations via email, navigate to <br> Workspace > Manage Workspace`;
 
   }
