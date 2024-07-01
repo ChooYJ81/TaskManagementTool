@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 26, 2024 at 07:44 PM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.4
+-- Generation Time: Jul 01, 2024 at 05:35 AM
+-- Server version: 10.4.24-MariaDB
+-- PHP Version: 8.1.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -30,22 +30,21 @@ SET time_zone = "+00:00";
 CREATE TABLE `account` (
   `accountID` varchar(255) NOT NULL,
   `username` varchar(255) DEFAULT NULL,
-  `phoneNo` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   `pwd` varchar(255) DEFAULT NULL,
   `OTP` varchar(5) DEFAULT NULL,
   `status` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `account`
 --
 
-INSERT INTO `account` (`accountID`, `username`, `phoneNo`, `email`, `pwd`, `OTP`, `status`) VALUES
-('A0001', 'John Smith', NULL, 'test@mail.com', '$2y$10$DxC8bnloaERsfPG9aqThfu6.p6pRrxJsyFShXmw51nFIdkUyYpwIG', '123AB', 'Verified'),
-('A0002', 'Jacob', '012345678', 'jacob@mail.com', '12345', NULL, ''),
-('A0003', 'Jie', NULL, 'chooyanjie@gmail.com', '$2y$10$rqUkNSRKQPYbze4vn0AB6um2OtYcLjmJZOHIfemcvU2sqqgYrvgSu', 'HXE5C', 'Verified'),
-('A0004', 'test3', NULL, 'test3@mail.com', '$2y$10$xxSeo85.1dzlq1bwu8eukumzCkcuKWObJJFAEyyhjwrFnVsi4DYQ.', 'IVNGV', 'Verified');
+INSERT INTO `account` (`accountID`, `username`, `email`, `pwd`, `OTP`, `status`) VALUES
+('A0001', 'Cheah Shaoren', 'shaorencheah@gmail.com', '$2y$10$DMX3k8/SbTzfW8.PHBawrOLmt71sm0VeO7WHTX9LfDILL4y525sna', 'Z2L7Q', 'Verified'),
+('A0002', 'Jacob Tan', 'jacobtan@gmail.com', '$2y$10$tdPnBmX8Asz50X17Hw5bpun21UwLMge5Oi/.pv6LPpQMGxhCUlhR.', 'LI5BB', 'Verified'),
+('A0003', 'Jane Lee', 'janelee@gmail.com', '$2y$10$r/EL/nE/EHWOKbBToCmBZ.RslOLf1.UhzvEAurCi2YYPqDvN1xUYS', '72KPB', 'Verified'),
+('A0004', 'Kenneth Young', 'kennethyoung@gmail.com', '$2y$10$PiVER9VwJQgXQ8T7V8ii/.Kpid6RGiwV/RJgJb46yjVmBsz1XTj7S', 'UCN4I', 'Verified');
 
 -- --------------------------------------------------------
 
@@ -56,20 +55,22 @@ INSERT INTO `account` (`accountID`, `username`, `phoneNo`, `email`, `pwd`, `OTP`
 CREATE TABLE `assigned` (
   `taskID` varchar(255) NOT NULL,
   `assignedMember` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `assigned`
 --
 
 INSERT INTO `assigned` (`taskID`, `assignedMember`) VALUES
-('T0001', 'A0001'),
-('T0003', 'A0001'),
-('T0004', 'A0001'),
+('T0001', 'A0002'),
+('T0001', 'A0003'),
+('T0002', 'A0001'),
+('T0003', 'A0003'),
+('T0004', 'A0004'),
 ('T0005', 'A0001'),
-('T0006', 'A0001'),
-('T0007', 'A0001'),
-('T0008', 'A0001');
+('T0005', 'A0002'),
+('T0006', 'A0003'),
+('T0006', 'A0004');
 
 -- --------------------------------------------------------
 
@@ -81,7 +82,7 @@ CREATE TABLE `member` (
   `workspaceID` varchar(255) NOT NULL,
   `accountID` varchar(255) NOT NULL,
   `role` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `member`
@@ -89,14 +90,13 @@ CREATE TABLE `member` (
 
 INSERT INTO `member` (`workspaceID`, `accountID`, `role`) VALUES
 ('W0001', 'A0001', 'Owner'),
-('W0001', 'A0002', 'Member'),
 ('W0002', 'A0001', 'Owner'),
-('W0003', 'A0001', 'Owner'),
-('W0003', 'A0002', 'Member'),
-('W0004', 'A0001', 'Owner'),
-('W0005', 'A0001', 'Owner'),
-('W0006', 'A0003', 'Owner'),
-('W0007', 'A0004', 'Owner');
+('W0002', 'A0002', 'Member'),
+('W0002', 'A0003', 'Member'),
+('W0002', 'A0004', 'Member'),
+('W0003', 'A0002', 'Owner'),
+('W0004', 'A0003', 'Owner'),
+('W0005', 'A0004', 'Owner');
 
 -- --------------------------------------------------------
 
@@ -114,22 +114,19 @@ CREATE TABLE `task` (
   `priority` varchar(255) DEFAULT NULL,
   `creationDate` datetime DEFAULT NULL,
   `due` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `task`
 --
 
 INSERT INTO `task` (`taskID`, `workspaceID`, `creator`, `taskName`, `taskDesc`, `type`, `priority`, `creationDate`, `due`) VALUES
-('T0001', 'W0001', 'A0001', 'Complete Front-end', 'Please complete the design for the upcoming modules.', 'Completed', 'Low Priority', '2024-06-20 18:27:36', '2024-06-10 00:27:00'),
-('T0002', 'W0001', 'A0001', 'Design Database Architecture', 'Please finish up and finalize the database ERD to be shown to client on the upcoming meeting.', 'To-Do', 'Medium Priority', '2024-06-20 18:28:07', '2024-06-12 00:28:00'),
-('T0003', 'W0001', 'A0001', '12', '12', 'To-Do', 'Medium Priority', '2024-06-23 16:20:16', '2024-06-23 22:20:00'),
-('T0004', 'W0001', 'A0001', '12', '12', 'In Progress', 'Low Priority', '2024-06-23 16:20:33', '2024-06-24 22:20:00'),
-('T0005', 'W0001', 'A0001', '21', '12', 'In Progress', 'Medium Priority', '2024-06-23 16:20:43', '2024-06-23 22:20:00'),
-('T0006', 'W0001', 'A0001', '12', '12', 'In Progress', 'Low Priority', '2024-06-23 16:20:53', '2024-06-23 22:20:00'),
-('T0007', 'W0001', 'A0001', '12', '12', 'To-Do', 'Medium Priority', '2024-06-23 16:21:05', '2024-06-25 22:21:00'),
-('T0008', 'W0001', 'A0001', '12', '12', 'Completed', 'Medium Priority', '2024-06-23 16:21:16', '2024-06-25 22:21:00'),
-('T0009', 'W0003', 'A0001', 'test task', '123', 'To-Do', 'Medium Priority', '2024-06-26 19:09:04', '2024-06-28 01:09:00');
+('T0001', 'W0002', 'A0001', 'Create Test Cases', 'Develop test cases for all modules.', 'To-Do', 'Low Priority', '2024-07-01 05:31:44', '2024-07-18 11:28:00'),
+('T0002', 'W0002', 'A0001', 'Identify the Functional and Non-Functional Requirements', 'Research and define the requirements before client meeting.', 'Completed', 'High Priority', '2024-07-01 05:32:28', '2024-06-29 11:31:00'),
+('T0003', 'W0002', 'A0001', 'Design Wireframe', 'Develop Low-fidelity and High-fidelity prototype.', 'Completed', 'Medium Priority', '2024-07-01 05:33:17', '2024-06-29 11:32:00'),
+('T0004', 'W0002', 'A0001', 'Conduct QA Testing', 'Carry out test cases and compile results.', 'To-Do', 'Medium Priority', '2024-07-01 05:33:48', '2024-07-17 11:33:00'),
+('T0005', 'W0002', 'A0001', 'Complete Back-end', 'Complete the back-end of relevant modules.', 'In Progress', 'High Priority', '2024-07-01 05:34:18', '2024-07-06 11:34:00'),
+('T0006', 'W0002', 'A0001', 'Complete Front-end', 'Develop the front-end for relevant modules.', 'In Progress', 'High Priority', '2024-07-01 05:34:43', '2024-07-06 11:34:00');
 
 -- --------------------------------------------------------
 
@@ -145,20 +142,18 @@ CREATE TABLE `workspace` (
   `creationDate` datetime DEFAULT NULL,
   `owner` varchar(255) DEFAULT NULL,
   `workspaceCode` varchar(5) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `workspace`
 --
 
 INSERT INTO `workspace` (`workspaceID`, `workspaceName`, `workspaceDesc`, `type`, `creationDate`, `owner`, `workspaceCode`) VALUES
-('W0001', 'Testing Workspace', 'this is a testing workspace', 'Personal', '2024-06-20 11:50:23', 'A0001', '079U8'),
-('W0002', 'Testing Workspace B', 'Hello there~', 'Collaboration', '2024-06-20 16:20:01', 'A0001', 'RX7KN'),
-('W0003', 'Testing Workspace C', 'Hellooo this is for testing purposes', 'Personal', '2024-06-20 16:43:06', 'A0001', NULL),
-('W0004', 'Testing Workspace D', 'This is another testing workspace.', 'Personal', '2024-06-20 18:17:22', 'A0001', 'F46NS'),
-('W0005', 'test2', '123', 'Personal', '2024-06-25 10:48:24', 'A0001', 'ADT29'),
-('W0006', 'Your Personal Workspace', 'This is your personal workspace, start adding tasks now!', 'Personal', '2024-06-26 14:22:35', 'A0003', 'Z6QP9'),
-('W0007', 'Your Personal Workspace', 'This is your personal workspace, start adding tasks now!', 'Personal', '2024-06-26 19:41:44', 'A0004', 'R2LXS');
+('W0001', 'Your Personal Workspace', 'This is your personal workspace, start adding tasks now!', 'Personal', '2024-07-01 05:17:38', 'A0001', 'FL9JZ'),
+('W0002', 'SunCollab Development', 'Workspace to keep track of the SDLC processes of SunCollab development.', 'Collaboration', '2024-07-01 05:22:06', 'A0001', 'WKR3J'),
+('W0003', 'Your Personal Workspace', 'This is your personal workspace, start adding tasks now!', 'Personal', '2024-07-01 05:25:11', 'A0002', 'J2CNJ'),
+('W0004', 'Your Personal Workspace', 'This is your personal workspace, start adding tasks now!', 'Personal', '2024-07-01 05:26:07', 'A0003', 'S7A33'),
+('W0005', 'Your Personal Workspace', 'This is your personal workspace, start adding tasks now!', 'Personal', '2024-07-01 05:27:36', 'A0004', 'YYPJG');
 
 --
 -- Indexes for dumped tables

@@ -289,7 +289,7 @@ function generateTaskID($pdo)
   $stmt->execute();
   $lastTaskID = $stmt->fetchColumn();
 
-  if ($lastTaskID = null) {
+  if ($lastTaskID == null) {
     $lastTaskID= "T0000";
   } else {
     $lastTaskID = $lastTaskID;

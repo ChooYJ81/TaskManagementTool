@@ -149,7 +149,7 @@ function generateWorkspaceID($pdo)
     $stmt->execute();
     $lastWorkspaceID = $stmt->fetchColumn();
 
-    if ($lastWorkspaceID = null) {
+    if ($lastWorkspaceID == null) {
         $lastWorkspaceID = "W0000";
     } else {
         $lastWorkspaceID = $lastWorkspaceID;
@@ -217,7 +217,7 @@ function getLatestUserID($pdo)
     $stmt->execute();
     $lastAccountID = $stmt->fetchColumn();
 
-    if ($lastAccountID = null) {
+    if ($lastAccountID == null) {
         $lastAccountID = "A0000";
     } else {
         $lastAccountID = $lastAccountID;
