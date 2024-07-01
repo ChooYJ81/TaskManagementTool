@@ -13,15 +13,39 @@
 
 smtp_server=smtp-mail.outlook.com
 
+
 ; smtp port (normally 25)
 
 smtp_port=587
+
+; SMTPS (SSL) support
+;   auto = use SSL for port 465, otherwise try to use TLS
+;   ssl  = alway use SSL
+;   tls  = always use TLS
+;   none = never try to use SSL
+
+smtp_ssl=tls
+
+; the default domain for this server will be read from the registry
+; this will be appended to email addresses when one isn't provided
+; if you want to override the value in the registry, uncomment and modify
+
+;default_domain=mydomain.com
+
+; log smtp errors to error.log (defaults to same directory as sendmail.exe)
+; uncomment to enable logging
+
+error_logfile=error.log
+
+; create debug log as debug.log (defaults to same directory as sendmail.exe)
+; uncomment to enable debugging
+
+;debug_logfile=debug.log
 
 ; if your smtp server requires authentication, modify the following two lines
 
 auth_username=suncollab@outlook.com
 auth_password=SunCol@2024
-
 ; if your smtp server uses pop3 before smtp authentication, modify the 
 ; following three lines.  do not enable unless it is required.
 
