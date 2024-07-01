@@ -229,7 +229,8 @@ Content-Transfer-Encoding: 7bit
         <table class=\"container\" cellpadding=\"0\" cellspacing=\"0\">
             <tr>
                 <td class=\"header\">
-                    <img src=\"cid:logo\" alt=\"SunCollab Logo\">
+                    <h1>SunCollab</h1>
+                    <p>Kanban Made Simple. Collaboration Made Brilliant.</p>
                 </td>
             </tr>
             <tr>
