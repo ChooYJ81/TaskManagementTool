@@ -25,4 +25,5 @@ Enable PHP mailing feature
 
 ## Accessing
 
-To access SunCollab, you can view the user's email from the database. The accounts have a default password of (`12345`)
+To access SunCollab, you can view the user's email from the database. The accounts have a default password of (`12345`)<br>
+Join the sample workspace with the code of (`WKR3J`) to view the workspace
