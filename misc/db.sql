@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 01, 2024 at 05:35 AM
+-- Generation Time: Jul 01, 2024 at 05:38 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -41,7 +41,7 @@ CREATE TABLE `account` (
 --
 
 INSERT INTO `account` (`accountID`, `username`, `email`, `pwd`, `OTP`, `status`) VALUES
-('A0001', 'Cheah Shaoren', 'shaorencheah@gmail.com', '$2y$10$DMX3k8/SbTzfW8.PHBawrOLmt71sm0VeO7WHTX9LfDILL4y525sna', 'Z2L7Q', 'Verified'),
+('A0001', 'Nelson Lee', 'nelsonlee@gmail.com', '$2y$10$DMX3k8/SbTzfW8.PHBawrOLmt71sm0VeO7WHTX9LfDILL4y525sna', 'Z2L7Q', 'Verified'),
 ('A0002', 'Jacob Tan', 'jacobtan@gmail.com', '$2y$10$tdPnBmX8Asz50X17Hw5bpun21UwLMge5Oi/.pv6LPpQMGxhCUlhR.', 'LI5BB', 'Verified'),
 ('A0003', 'Jane Lee', 'janelee@gmail.com', '$2y$10$r/EL/nE/EHWOKbBToCmBZ.RslOLf1.UhzvEAurCi2YYPqDvN1xUYS', '72KPB', 'Verified'),
 ('A0004', 'Kenneth Young', 'kennethyoung@gmail.com', '$2y$10$PiVER9VwJQgXQ8T7V8ii/.Kpid6RGiwV/RJgJb46yjVmBsz1XTj7S', 'UCN4I', 'Verified');
