@@ -15,7 +15,8 @@ Softwares required for this project: XAMPP, Apache and, MySQL
 Enable PHP mailing feature
 
 1. Update the SMTP port number and server from (`\xampp\sendmail\sendmail.ini`)
-<br><img src="images/documentation/sendMail.png">
+<br><img src="images/documentation/sendMail1.png">
+<br><img src="images/documentation/sendMail2.png">
 2. Update the send mail function from (`\xampp\php\php.ini`)
 <br><img src="images/documentation/php.png"><br>
 ** Default sender email is (`suncollab@outlook.com`) with the password of (`SunCol@2024`)
