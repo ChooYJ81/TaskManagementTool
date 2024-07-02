@@ -18,7 +18,10 @@
 </head>
 
 <body class="d-flex justify-content-between overflow-hidden w-100">
-  <?php include "./includes/modals/otpModal.php"; ?>
+  <?php
+  include "./includes/modals/otpModal.php";
+  include "./includes/modals/forgotPassword.php";
+  ?>
   <div class="waves-left">
   </div>
   <div class="align-items-center d-flex mt-4 mb-5 flex-column">
@@ -63,7 +66,7 @@
             <input class="inputs" type="password" placeholder="Enter your password" required id="loginPassword" name="loginPassword" />
           </div>
           <p class="m-0" style="font-size: 0.625rem">
-            Forgot your password? <a href="#">Reset it here</a>
+            Forgot your password? <a href="#" data-bs-target="#forgotPwModal" data-bs-toggle="modal">Reset it here</a>
           </p>
           <button class="button-fill mx-auto mt-3 px-3 py-2" type="submit" style="width: fit-content;" id="signin" name="signin">
             Sign In

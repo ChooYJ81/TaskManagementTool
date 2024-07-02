@@ -5,7 +5,7 @@
             <div class="modal-body text-center p-5">
                 <img src="./images/rafiki.png" />
                 <p class="title-1 mt-2">Verify your email</p>
-                <p style="font-size:0.875rem" class="text-wrap">Enter the five-digit code we sent to your email address to verify your new SunCollab account.</p>
+                <p style="font-size:0.875rem" class="text-wrap">Enter the five-digit code we sent to your email address to verify your SunCollab account.</p>
                 <form id="otpForm">
                     <div class="otpInputs">
                         <input type="text" maxlength="1" autofocus />
