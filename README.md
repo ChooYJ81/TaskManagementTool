@@ -1,3 +1,23 @@
+<br>
+
+<div align="center">
+    <img src="images/logoWhiteTransparent.png" style="width:200px;" alt="Logo">
+
+<h3 align="center">Collaborative Kanban Task Management Tool made by <a href="https://github.com/ShaorenCheah"> Cheah Shaoren & <a href="https://github.com/ChooYJ81">Choo Yan Jie</a></h3>
+</div>
+
+<br>
+
+## Description
+
+This project is developed as a requirement of SWE3033 Software Processes in a strict span of six weeks using the waterfall model to develop process models for software process improvement. The team consists of six different members with distinct roles responsible in different phases, which are Cheah Shaoren, Choo Yan Jie, Eugene Davis Goutama, Lim Zi Jie, Sean Tan Ming Sern, Tay Shin Ling.
+
+SunCollab is a collaborative online task management tool that enables the creation, management, and assignment of tasks within a collaborative environment, complete with features for user authentication and authorization. This project is developed using HTML, CSS, JavaScript, PHP, Bootstrap 5, AJAX, JSON, and MySQL database.
+
+Check out the demo video for SunCollab: https://youtu.be/KjR0FvuYGCU
+<br>
+
+
 ## Installation
 
 Softwares required for this project: XAMPP, Apache and, MySQL
