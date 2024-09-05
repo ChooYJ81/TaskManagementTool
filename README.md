@@ -3,7 +3,7 @@
 <div align="center">
     <img src="images/logoWhiteTransparent.png" style="width:300px;" alt="Logo">
 
-<h3 align="center">Collaborative Kanban Task Management Tool made by <a href="https://github.com/ShaorenCheah"> Cheah Shaoren & <a href="https://github.com/ChooYJ81">Choo Yan Jie</a></h3>
+<h3 align="center">Collaborative Kanban Task Management Tool made by <a href="https://github.com/ShaorenCheah"> Cheah Shaoren </a> & <a href="https://github.com/ChooYJ81">Choo Yan Jie</a></h3>
 </div>
 <br>
 
