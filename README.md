@@ -14,6 +14,7 @@ This project is developed as a requirement of SWE3033 Software Processes in a st
 SunCollab is a collaborative online task management tool that enables the creation, management, and assignment of tasks within a collaborative environment, complete with features for user authentication and authorization. This project is developed using HTML, CSS, JavaScript, PHP, Bootstrap 5, AJAX, JSON, and MySQL database.
 
 Check out the demo video for SunCollab: https://youtu.be/KjR0FvuYGCU
+
 View the prototype in Figma:https://www.figma.com/design/Cygd69TajjVxU4gBitSP92/Prototype?node-id=0-1&t=5xzCSOt7PFTvWJam-1 
 
 <br>
