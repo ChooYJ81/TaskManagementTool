@@ -15,7 +15,7 @@ SunCollab is a collaborative online task management tool that enables the creati
 
 Check out the demo video for SunCollab: https://youtu.be/KjR0FvuYGCU
 
-View the prototype in Figma:https://www.figma.com/design/Cygd69TajjVxU4gBitSP92/Prototype?node-id=0-1&t=5xzCSOt7PFTvWJam-1 
+View the prototypes in Figma (Navigate through the sidebar): https://www.figma.com/design/Cygd69TajjVxU4gBitSP92/Prototype?node-id=0-1&t=5xzCSOt7PFTvWJam-1 
 
 <br>
 
